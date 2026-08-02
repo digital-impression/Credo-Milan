@@ -34,8 +34,9 @@
 <meta name="twitter:description" content="Herstel. Kom sterker terug. Kinesitherapie, revalidatie en performance training in Diepenbeek, bij Hasselt.">
 <meta name="twitter:image" content="https://static.wixstatic.com/media/8cedec_5bd270f33c744e889c92226536ccfc62~mv2.jpg">
 
-<!-- Preload the hero image, everything else is lazy -->
-<link rel="preload" as="image" fetchpriority="high" href="https://static.wixstatic.com/media/c19dfb_ac72d592336340389027ac51d66ed50df000.jpg">
+<!-- Preload the hero poster so the first paint is the footage, not black.
+     The video itself is left to the browser — poster first, motion after. -->
+<link rel="preload" as="image" fetchpriority="high" href="assets/img/credo-hero-poster.jpg">
 
 <!-- Fonts: Anton (display, condensed caps) + Inter (body grotesque) -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -171,7 +172,11 @@
     opacity: .055; mix-blend-mode: overlay;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
   }
-  .grain > *:not(.grain-layer) { position: relative; z-index: 3; }
+  /* Lift ordinary content above the grain. This is more specific than
+     Tailwind's .absolute/.z-* utilities, so any child that is meant to be
+     pinned to the section box — a full-bleed video or photo layer, the video
+     control — must opt out with .grain-pin or it drops back into the flow. */
+  .grain > *:not(.grain-layer):not(.grain-pin) { position: relative; z-index: 3; }
 
   /* ---------- Photography treatment ---------- */
   .photo { filter: grayscale(1) contrast(1.08); display: block; width: 100%; height: 100%; object-fit: cover; }
@@ -402,47 +407,49 @@
      Full viewport, ink, black-and-white footage with slow parallax and
      oversized display type over it.
 
-     >>> VIDEO NEEDED <<<
-     Drop the footage at the two paths below (same clip, two formats):
-        assets/video/credo-hero.mp4   (H.264 — required)
-        assets/video/credo-hero.webm  (VP9 — optional, smaller)
-     Specs that work with this layout:
-        • 10–20 s silent loop, cut so the last frame matches the first
-        • 1920x1080 or wider, landscape, target < 6 MB
-        • Live action: sprint, sled push, kettlebell swing, an athlete
-          being taped/tested. Movement, not talking heads.
-     The grayscale/contrast treatment is applied in CSS, so deliver it
-     ungraded. Until the files exist the poster image below shows instead
-     — the section degrades gracefully with no broken state.
+     Footage lives in the repo (silent, 13 s loop, 1920x1080, 25 fps):
+        assets/video/credo-hero.webm  (VP9  — served first, ~0.7 MB)
+        assets/video/credo-hero.mp4   (H.264 — fallback,     ~1.5 MB)
+        assets/img/credo-hero-poster.jpg  (first frame, also the preload)
+     Source: Coverr (coverr.co) — free for commercial use, no attribution
+     required. To swap in Credo's own footage, replace those three files;
+     no markup change needed. Deliver it ungraded — the black-and-white
+     grade is applied in CSS (.photo).
+
+     The scrim below is deliberately thin. It only has to earn contrast for
+     the headline and the transparent header; the footage stays the hero.
      ============================================================ -->
 <section class="relative min-h-[100svh] flex items-end overflow-hidden grain bg-ink" aria-labelledby="hero-title">
   <div class="grain-layer" aria-hidden="true"></div>
 
-  <!-- Hero media: video with the existing photo as poster + fallback -->
-  <div class="absolute inset-0 z-0 overflow-hidden">
+  <!-- Hero media: full-bleed video, poster frame as the still fallback -->
+  <div class="grain-pin absolute inset-0 z-0 overflow-hidden">
     <video id="hero-video"
-           class="photo w-full h-[118%] object-cover will-change-transform"
-           poster="https://static.wixstatic.com/media/c19dfb_ac72d592336340389027ac51d66ed50df000.jpg"
-           autoplay muted loop playsinline preload="metadata" aria-hidden="true" tabindex="-1">
+           class="photo w-full h-[118%] object-cover object-[64%_center] md:object-center will-change-transform"
+           poster="assets/img/credo-hero-poster.jpg"
+           autoplay muted loop playsinline preload="auto" aria-hidden="true" tabindex="-1">
       <source src="assets/video/credo-hero.webm" type="video/webm">
       <source src="assets/video/credo-hero.mp4" type="video/mp4">
     </video>
 
     <!-- Shown only if the video element itself is unusable (very old browsers) -->
     <img id="hero-img"
-         src="https://static.wixstatic.com/media/c19dfb_ac72d592336340389027ac51d66ed50df000.jpg"
-         alt="Kinesitherapeut van Credo begeleidt een atleet tijdens een revalidatiesessie in de oefenzaal."
-         class="photo w-full h-[118%] object-cover will-change-transform absolute inset-0 hidden"
+         src="assets/img/credo-hero-poster.jpg"
+         alt="Atleet traint met vrije gewichten in de oefenzaal."
+         class="photo w-full h-[118%] object-cover object-[64%_center] md:object-center will-change-transform absolute inset-0 hidden"
          fetchpriority="high" decoding="async"
          onerror="imgFail(this,'01')">
 
-    <div class="absolute inset-0 bg-gradient-to-t from-ink via-ink/70 to-ink/40" aria-hidden="true"></div>
-    <div class="absolute inset-0 bg-ink/25" aria-hidden="true"></div>
+    <!-- Scrim, in three thin passes instead of one heavy blanket:
+         bottom for the headline, left for the body copy, top for the header. -->
+    <div class="absolute inset-0 bg-gradient-to-t from-ink via-ink/40 to-transparent" aria-hidden="true"></div>
+    <div class="hidden md:block absolute inset-0 bg-gradient-to-r from-ink/70 via-ink/15 to-transparent" aria-hidden="true"></div>
+    <div class="absolute inset-x-0 top-0 h-44 bg-gradient-to-b from-ink/65 to-transparent" aria-hidden="true"></div>
   </div>
 
   <!-- Pause/play control — WCAG 2.2.2 requires a way to stop moving content -->
   <button id="video-toggle" type="button" hidden
-          class="absolute z-20 bottom-5 right-5 md:bottom-8 md:right-10 w-11 h-11 frame-dark bg-ink/60 backdrop-blur-sm text-bone items-center justify-center hover:bg-bone hover:text-ink transition-colors"
+          class="grain-pin absolute z-20 bottom-5 right-5 md:bottom-8 md:right-10 w-11 h-11 frame-dark bg-ink/60 backdrop-blur-sm text-bone items-center justify-center hover:bg-bone hover:text-ink transition-colors"
           aria-label="Pauzeer de achtergrondvideo">
     <svg id="vt-pause" width="12" height="14" viewBox="0 0 12 14" aria-hidden="true" fill="currentColor">
       <rect x="0" y="0" width="4" height="14"></rect><rect x="8" y="0" width="4" height="14"></rect>
@@ -1466,7 +1473,7 @@
 <section class="relative bg-ink grain overflow-hidden" aria-labelledby="cta-title">
   <div class="grain-layer" aria-hidden="true"></div>
 
-  <div class="absolute inset-0 z-0" data-imgwrap>
+  <div class="grain-pin absolute inset-0 z-0" data-imgwrap>
     <img src="https://static.wixstatic.com/media/8cedec_5bd270f33c744e889c92226536ccfc62~mv2.jpg"
          alt="Atleet in volle inspanning tijdens een trainingssessie bij Credo."
          class="photo w-full h-full" loading="lazy" decoding="async"
