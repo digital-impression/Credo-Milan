@@ -88,7 +88,6 @@
        (the base taupe lands at 4.2:1 on both surfaces — just under 4.5). */
     --taupe-on-dark:  #8C8474;   /* 5.25:1 on ink  */
     --taupe-on-light: #6E6757;   /* 4.98:1 on bone */
-    --taupe-band:     #6B6456;   /* partner band, 5.2:1 with bone text */
     --header-h: 72px;
   }
 
@@ -127,6 +126,24 @@
   .d-sm    { font-size: clamp(1.15rem, 2.4vw, 1.6rem); }
   .d-num   { font-size: clamp(3rem, 9vw, 6.5rem); }
 
+  /* CREDO wordmark filled with photography. Stays solid ink until JS has
+     confirmed the image decoded, so a failed fetch never yields blank text. */
+  .credo-word {
+    font-size: clamp(4rem, 20vw, 16rem);
+    line-height: 0.82;
+    color: var(--ink);
+  }
+  .credo-word.has-fill {
+    background-image: linear-gradient(rgba(13,13,13,.42), rgba(13,13,13,.42)), var(--credo-fill);
+    background-size: cover;
+    background-position: center 35%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    filter: grayscale(1) contrast(1.15);
+  }
+
   .eyebrow {
     font-size: 11px;
     line-height: 1.4;
@@ -138,7 +155,6 @@
   }
   .on-light .eyebrow { color: var(--taupe-on-light); }
   .eyebrow-light { color: #8F8877; }
-  .band-taupe { background: var(--taupe-band); }
 
   .prose-body { max-width: 62ch; }
 
@@ -163,9 +179,6 @@
 
   /* ---------- Image failure fallback: flat ink block with the section number ---------- */
   .img-failed { background: #0D0D0D; position: relative; min-height: 180px; }
-  /* logo row: keep a failed logo the height of the row, not a 180px slab */
-  .band-taupe .img-failed { min-height: 4rem; }
-  .band-taupe .img-failed::after { font-size: 1.25rem; }
   .img-failed::after {
     content: attr(data-fallback);
     position: absolute; inset: 0;
@@ -268,12 +281,39 @@
   .team-toggle { position: absolute; inset: 0; z-index: 5; width: 100%; height: 100%; background: transparent; border: 0; cursor: pointer; }
   .team-toggle span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
+  /* ---------- Converging hairlines in the stats section ---------- */
+  .converge path {
+    fill: none;
+    stroke: rgba(244,241,234,.28);
+    stroke-width: 1;
+    vector-effect: non-scaling-stroke;
+    stroke-dasharray: 260;
+    stroke-dashoffset: 260;
+    transition: stroke-dashoffset 1.5s cubic-bezier(.22,.61,.36,1);
+  }
+  .converge.is-drawn path { stroke-dashoffset: 0; }
+  .converge path:nth-child(2) { transition-delay: .12s; }
+  .converge path:nth-child(3) { transition-delay: .24s; }
+  .converge path:nth-child(4) { transition-delay: .36s; }
+  @media (prefers-reduced-motion: reduce) {
+    .converge path { stroke-dashoffset: 0; transition: none; }
+  }
+
   /* ---------- Step timeline ---------- */
   .step-dot { width: 9px; height: 9px; background: var(--taupe); border-radius: 999px; }
 
-  /* ---------- Partner logos ---------- */
-  .partner-logo { filter: grayscale(1) brightness(.85) contrast(1.05); opacity: .7; transition: filter .35s ease, opacity .35s ease; }
-  .partner-logo:hover, a:focus-visible .partner-logo { filter: none; opacity: 1; }
+  /* ---------- Partner cards ----------
+     Logos sit on a bone tile so light and dark marks both read; they
+     return to full colour when the card is hovered or focused. */
+  .partner-logo { filter: grayscale(1) contrast(1.05); opacity: .72; transition: filter .35s ease, opacity .35s ease; }
+  .partner-card:hover .partner-logo,
+  .partner-card:focus-within .partner-logo { filter: none; opacity: 1; }
+  .partner-card { transition: border-color .35s ease, background-color .35s ease; }
+  .partner-card:hover, .partner-card:focus-within { border-color: rgba(244,241,234,.45); background: #141414; }
+  .partner-wordmark { letter-spacing: .01em; }
+  /* failed logo inside a bone tile: keep the fallback block tile-sized */
+  .partner-card .img-failed { min-height: 5rem; }
+  .partner-card .img-failed::after { font-size: 1.25rem; }
 
   /* ---------- Accordion ---------- */
   details > summary { list-style: none; cursor: pointer; }
@@ -358,24 +398,59 @@
 <span id="top"></span>
 
 <!-- ============================================================
-     SECTION 01 — HERO
-     Full viewport, ink, black-and-white photo with slow parallax,
-     oversized display type overlapping the image.
+     SECTION 01 — HERO (live-action video)
+     Full viewport, ink, black-and-white footage with slow parallax and
+     oversized display type over it.
+
+     >>> VIDEO NEEDED <<<
+     Drop the footage at the two paths below (same clip, two formats):
+        assets/video/credo-hero.mp4   (H.264 — required)
+        assets/video/credo-hero.webm  (VP9 — optional, smaller)
+     Specs that work with this layout:
+        • 10–20 s silent loop, cut so the last frame matches the first
+        • 1920x1080 or wider, landscape, target < 6 MB
+        • Live action: sprint, sled push, kettlebell swing, an athlete
+          being taped/tested. Movement, not talking heads.
+     The grayscale/contrast treatment is applied in CSS, so deliver it
+     ungraded. Until the files exist the poster image below shows instead
+     — the section degrades gracefully with no broken state.
      ============================================================ -->
 <section class="relative min-h-[100svh] flex items-end overflow-hidden grain bg-ink" aria-labelledby="hero-title">
   <div class="grain-layer" aria-hidden="true"></div>
 
-  <!-- Hero image -->
-  <div class="absolute inset-0 z-0 overflow-hidden" data-imgwrap>
+  <!-- Hero media: video with the existing photo as poster + fallback -->
+  <div class="absolute inset-0 z-0 overflow-hidden">
+    <video id="hero-video"
+           class="photo w-full h-[118%] object-cover will-change-transform"
+           poster="https://static.wixstatic.com/media/c19dfb_ac72d592336340389027ac51d66ed50df000.jpg"
+           autoplay muted loop playsinline preload="metadata" aria-hidden="true" tabindex="-1">
+      <source src="assets/video/credo-hero.webm" type="video/webm">
+      <source src="assets/video/credo-hero.mp4" type="video/mp4">
+    </video>
+
+    <!-- Shown only if the video element itself is unusable (very old browsers) -->
     <img id="hero-img"
          src="https://static.wixstatic.com/media/c19dfb_ac72d592336340389027ac51d66ed50df000.jpg"
          alt="Kinesitherapeut van Credo begeleidt een atleet tijdens een revalidatiesessie in de oefenzaal."
-         class="photo w-full h-[118%] object-cover will-change-transform"
+         class="photo w-full h-[118%] object-cover will-change-transform absolute inset-0 hidden"
          fetchpriority="high" decoding="async"
          onerror="imgFail(this,'01')">
+
     <div class="absolute inset-0 bg-gradient-to-t from-ink via-ink/70 to-ink/40" aria-hidden="true"></div>
     <div class="absolute inset-0 bg-ink/25" aria-hidden="true"></div>
   </div>
+
+  <!-- Pause/play control — WCAG 2.2.2 requires a way to stop moving content -->
+  <button id="video-toggle" type="button" hidden
+          class="absolute z-20 bottom-5 right-5 md:bottom-8 md:right-10 w-11 h-11 frame-dark bg-ink/60 backdrop-blur-sm text-bone items-center justify-center hover:bg-bone hover:text-ink transition-colors"
+          aria-label="Pauzeer de achtergrondvideo">
+    <svg id="vt-pause" width="12" height="14" viewBox="0 0 12 14" aria-hidden="true" fill="currentColor">
+      <rect x="0" y="0" width="4" height="14"></rect><rect x="8" y="0" width="4" height="14"></rect>
+    </svg>
+    <svg id="vt-play" class="hidden" width="12" height="14" viewBox="0 0 12 14" aria-hidden="true" fill="currentColor">
+      <path d="M0 0l12 7-12 7z"></path>
+    </svg>
+  </button>
 
   <!-- Hero content -->
   <div class="relative z-10 w-full mx-auto max-w-[1500px] px-5 md:px-10 pt-32 pb-16 md:pb-20">
@@ -411,28 +486,62 @@
 </section>
 
 <!-- ============================================================
-     SECTION 02 — CREDO STATEMENT (bone, quiet)
-     Etymology as typographic centrepiece + three numbered values.
+     SECTION 02 — CREDO STATEMENT
+     The word CREDO is filled with live-action photography
+     (background-clip: text), then the manifesto, then the three values.
+     If the fill image fails to load the word stays solid ink — the
+     photo fill is only switched on once the image has decoded.
      ============================================================ -->
-<section id="aanpak" class="bg-bone text-ink on-light py-24 md:py-36">
+<section id="aanpak" class="bg-bone text-ink on-light py-24 md:py-36 overflow-hidden">
   <div class="mx-auto max-w-[1500px] px-5 md:px-10">
 
     <div class="frame-light p-6 md:p-14 lg:p-20">
-      <p class="eyebrow mb-14 md:mb-20 reveal">Credo / 01</p>
+      <p class="eyebrow mb-10 md:mb-14 reveal">Credo / 01</p>
 
-      <div class="grid gap-10 lg:grid-cols-12 lg:items-end">
+      <!-- Photo-filled wordmark -->
+      <h2 class="display credo-word reveal"
+          data-fill="https://static.wixstatic.com/media/8cedec_5bd270f33c744e889c92226536ccfc62~mv2.jpg">Credo</h2>
+
+      <div class="mt-8 md:mt-10 flex flex-wrap items-baseline gap-x-8 gap-y-3 reveal reveal-d1">
+        <p class="font-body text-[15px] md:text-lg text-ink/65 tracking-wide">[ˈkreeːdoː]</p>
+        <p class="eyebrow">Latijns voor &lsquo;ik geloof&rsquo;</p>
+      </div>
+
+      <!-- Manifesto + portrait -->
+      <div class="mt-14 md:mt-20 grid gap-12 lg:grid-cols-12 lg:gap-16 lg:items-start">
+
         <div class="lg:col-span-7 reveal">
-          <p class="display d-hero leading-[0.86]">Credo</p>
-          <p class="mt-5 font-body text-[15px] md:text-lg text-ink/65 tracking-wide">[ˈkreeːdoː]</p>
-        </div>
-        <div class="lg:col-span-5 reveal reveal-d1">
-          <p class="text-[15px] md:text-base text-ink/70 prose-body">
-            <span class="font-semibold text-ink">Latijns voor &lsquo;ik geloof&rsquo;.</span>
-            Een verklaring van de overtuigingen en doelen die iemands handelen sturen.
-            Wij vonden geen betere naam. Dit zijn de drie waarden waarop elke behandeling,
-            elke oefening en elk trainingsschema hier gebouwd is.
+          <p class="text-[15px] text-ink/70 prose-body">
+            Een credo is geen slogan aan de muur. Het is de verklaring van waar je in gelooft,
+            en waarnaar je elke dag handelt. Dit is de onze.
+          </p>
+
+          <blockquote class="mt-8 border-l-2 pl-6 md:pl-8" style="border-color: var(--taupe);">
+            <p class="display d-md text-ink">
+              Wij geloven dat een blessure geen eindpunt is, maar een startlijn.
+            </p>
+            <p class="mt-6 text-[15px] md:text-base text-ink/75 prose-body">
+              Dat pijn een signaal is en geen levenslange diagnose. Dat je lichaam veel meer aankan
+              dan je vandaag denkt, op voorwaarde dat iemand het slim en geduldig opbouwt.
+              En dat je pas écht terug bent op het moment dat je het zelf weer gelooft.
+            </p>
+          </blockquote>
+
+          <p class="mt-8 text-[15px] text-ink/70 prose-body">
+            Daarom staan er drie woorden onder alles wat hier gebeurt — onder elke behandeling,
+            elke oefening en elk schema.
           </p>
         </div>
+
+        <figure class="lg:col-span-5 reveal reveal-d1">
+          <div class="relative overflow-hidden aspect-[3/4] frame-light" data-imgwrap>
+            <img src="https://static.wixstatic.com/media/c19dfb_ac72d592336340389027ac51d66ed50df000.jpg"
+                 alt="Kinesist van Credo begeleidt een atleet door een zware oefening."
+                 class="photo absolute inset-0" loading="lazy" decoding="async"
+                 onerror="imgFail(this,'01')">
+          </div>
+          <figcaption class="eyebrow mt-4">Motivatie · Passie · Empathie</figcaption>
+        </figure>
       </div>
 
       <hr class="rule-light my-14 md:my-20 border-0" aria-hidden="true">
@@ -622,42 +731,95 @@
 </section>
 
 <!-- ============================================================
-     SECTION 04 — STATISTIEKEN
-     Oversized numerals on ink, count-up on scroll.
+     SECTION 04 — IN CIJFERS
+     The supporting numbers physically converge, via drawn hairlines,
+     into one enormous "1". Numbers count up and the connector draws
+     itself when the section enters view.
      >>> PLACEHOLDER WARNING <<<
-     "6 KINESISTEN", "4 PROFCLUBS" and "1 DOEL" are taken from the brief.
-     The two marked [PLACEHOLDER] below are INVENTED plausible figures —
+     "6 KINESISTEN", "4 PROFCLUBS" and "1 DOEL" come from the brief.
+     The two marked [PLACEHOLDER] are INVENTED plausible figures —
      confirm or replace them before this goes live.
      ============================================================ -->
-<section class="bg-ink grain py-24 md:py-32" aria-labelledby="cijfers-title">
+<section id="cijfers" class="bg-ink grain py-24 md:py-36 overflow-hidden" aria-labelledby="cijfers-title">
   <div class="grain-layer" aria-hidden="true"></div>
   <div class="mx-auto max-w-[1500px] px-5 md:px-10">
-    <p class="eyebrow mb-12 md:mb-16 reveal">In cijfers / 03</p>
-    <h2 id="cijfers-title" class="sr-only">Credo in cijfers</h2>
 
-    <div class="grid grid-cols-2 lg:grid-cols-5 border-t border-l border-bone/15">
-      <div class="border-r border-b border-bone/15 p-6 md:p-8 reveal">
-        <p class="display d-num text-bone" data-count="6" data-suffix="">0</p>
-        <p class="eyebrow mt-4">Kinesisten</p>
+    <div class="grid gap-6 md:grid-cols-12 md:items-end mb-14 md:mb-20">
+      <div class="md:col-span-7">
+        <p class="eyebrow mb-8 reveal">In cijfers / 03</p>
+        <h2 id="cijfers-title" class="display d-xl text-bone reveal reveal-d1">
+          Alles komt<br>samen in één.
+        </h2>
       </div>
-      <div class="border-r border-b border-bone/15 p-6 md:p-8 reveal reveal-d1">
-        <p class="display d-num text-bone" data-count="4" data-suffix="">0</p>
-        <p class="eyebrow mt-4">Profclubs</p>
+      <p class="md:col-span-5 text-[15px] text-bone/65 prose-body reveal reveal-d2">
+        Tel de kinesisten, de profclubs, de specialisaties en de trainingsuren bij elkaar op.
+        Wat overblijft is één cijfer, en dat gaat over jou.
+      </p>
+    </div>
+
+    <div class="grid lg:grid-cols-12 lg:items-center gap-y-12 lg:gap-y-0">
+
+      <!-- The four supporting numbers -->
+      <ul class="lg:col-span-5 border-t border-bone/15">
+
+        <li class="grid grid-cols-[5rem_1fr] md:grid-cols-[9rem_1fr] gap-x-4 items-baseline border-b border-bone/15 py-6 reveal">
+          <span class="display text-[clamp(2.4rem,5vw,3.4rem)] leading-none text-bone whitespace-nowrap" data-count="6">0</span>
+          <span class="min-w-0">
+            <span class="eyebrow block">Kinesisten</span>
+            <span class="block mt-2 text-[13px] leading-relaxed text-bone/60">allemaal master revalidatiewetenschappen</span>
+          </span>
+        </li>
+
+        <li class="grid grid-cols-[5rem_1fr] md:grid-cols-[9rem_1fr] gap-x-4 items-baseline border-b border-bone/15 py-6 reveal reveal-d1">
+          <span class="display text-[clamp(2.4rem,5vw,3.4rem)] leading-none text-bone whitespace-nowrap" data-count="4">0</span>
+          <span class="min-w-0">
+            <span class="eyebrow block">Profclubs</span>
+            <span class="block mt-2 text-[13px] leading-relaxed text-bone/60">Red Flames · KRC Genk Ladies · OH Leuven · Sporting Hasselt</span>
+          </span>
+        </li>
+
+        <!-- [PLACEHOLDER] invented figure — verify with the practice -->
+        <li class="grid grid-cols-[5rem_1fr] md:grid-cols-[9rem_1fr] gap-x-4 items-baseline border-b border-bone/15 py-6 reveal reveal-d2">
+          <span class="display text-[clamp(2.4rem,5vw,3.4rem)] leading-none text-bone whitespace-nowrap" data-count="6" data-suffix="+">0</span>
+          <span class="min-w-0">
+            <span class="eyebrow block">Specialisaties</span>
+            <span class="block mt-2 text-[13px] leading-relaxed text-bone/60">manuele therapie · dry needling · BFR · sportvoeding</span>
+          </span>
+        </li>
+
+        <!-- [PLACEHOLDER] invented figure — verify with the practice -->
+        <li class="grid grid-cols-[5rem_1fr] md:grid-cols-[9rem_1fr] gap-x-4 items-baseline border-b border-bone/15 py-6 reveal reveal-d3">
+          <span class="display text-[clamp(2.4rem,5vw,3.4rem)] leading-none text-bone whitespace-nowrap" data-count="250" data-suffix="+">0</span>
+          <span class="min-w-0">
+            <span class="eyebrow block">Atleten begeleid</span>
+            <span class="block mt-2 text-[13px] leading-relaxed text-bone/60">van jeugdspeler tot international</span>
+          </span>
+        </li>
+      </ul>
+
+      <!-- Connector: four hairlines converging into the 1 (desktop) -->
+      <div class="hidden lg:block lg:col-span-2 h-[300px] px-2">
+        <svg class="converge w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+          <path d="M0 12 C 55 12, 45 50, 100 50"></path>
+          <path d="M0 37 C 55 37, 45 50, 100 50"></path>
+          <path d="M0 63 C 55 63, 45 50, 100 50"></path>
+          <path d="M0 88 C 55 88, 45 50, 100 50"></path>
+        </svg>
       </div>
-      <!-- [PLACEHOLDER] invented figure — verify with the practice -->
-      <div class="border-r border-b border-bone/15 p-6 md:p-8 reveal reveal-d2">
-        <p class="display d-num text-bone" data-count="6" data-suffix="+">0</p>
-        <p class="eyebrow mt-4">Specialisaties</p>
+
+      <!-- The one -->
+      <div class="lg:col-span-5 reveal reveal-d2">
+        <div class="flex items-center gap-6 md:gap-10 lg:pl-4">
+          <p class="display leading-[0.78] text-taupe2 text-[clamp(6.5rem,20vw,14rem)] shrink-0" data-count="1">0</p>
+          <div class="border-l border-bone/20 pl-6 md:pl-8">
+            <h3 class="display d-lg text-bone">Doel</h3>
+            <p class="mt-4 text-[15px] text-bone/75 max-w-[30ch]">
+              Jou terugbrengen op het niveau waar je vandaan komt. En daarna voorbij.
+            </p>
+          </div>
+        </div>
       </div>
-      <!-- [PLACEHOLDER] invented figure — verify with the practice -->
-      <div class="border-r border-b border-bone/15 p-6 md:p-8 reveal reveal-d3">
-        <p class="display d-num text-bone" data-count="250" data-suffix="+">0</p>
-        <p class="eyebrow mt-4">Atleten begeleid</p>
-      </div>
-      <div class="border-r border-b border-bone/15 p-6 md:p-8 col-span-2 lg:col-span-1 reveal reveal-d4">
-        <p class="display d-num text-taupe2" data-count="1" data-suffix="">0</p>
-        <p class="eyebrow mt-4">Doel: jij, terug op niveau</p>
-      </div>
+
     </div>
   </div>
 </section>
@@ -1016,8 +1178,9 @@
 </section>
 
 <!-- ============================================================
-     SECTION 07 — DE STUDIO
-     Editorial three-image grid + vertical rotated side label.
+     SECTION 07 — DE VLOER (studio)
+     Opinionated positioning block: what you do and don't find here,
+     followed by the three facility images.
      ============================================================ -->
 <section id="studio" class="bg-bone text-ink on-light py-24 md:py-36 relative">
   <div class="mx-auto max-w-[1500px] px-5 md:px-10">
@@ -1025,26 +1188,74 @@
 
       <!-- Vertical rotated label -->
       <div class="hidden md:flex shrink-0 items-start pt-2">
-        <p class="vertical-label eyebrow tracking-[0.32em]">De studio / Over ons</p>
+        <p class="vertical-label eyebrow tracking-[0.32em]">De vloer / Kapelstraat 89</p>
       </div>
 
       <div class="flex-1 min-w-0">
         <div class="grid gap-6 md:grid-cols-12 md:items-end mb-14 md:mb-20">
           <div class="md:col-span-7">
-            <p class="eyebrow mb-8 reveal">Studio / 06</p>
-            <h2 class="display d-xl text-ink reveal reveal-d1">Kapelstraat 89.<br>Geen wachtkamer&shy;praktijk.</h2>
+            <p class="eyebrow mb-8 reveal">De vloer / 06</p>
+            <h2 class="display d-xl text-ink reveal reveal-d1">Je komt hier<br>om te werken.</h2>
           </div>
           <p class="md:col-span-5 text-[15px] text-ink/70 prose-body reveal reveal-d2">
-            Een behandelruimte alleen brengt je niet terug op het veld. Bij ons in Diepenbeek staat een volledig
-            uitgeruste oefenzaal waar je effectief kan belasten, plus een ijsbad en een relaxatieruimte om te
-            recupereren. Alles onder één dak, van eerste behandeling tot laatste sprinttest.
+            Een behandeltafel alleen brengt je niet terug op het veld. Daarom staat bij ons de oefenzaal
+            in het midden en niet de wachtzaal. Je wordt getest, je krijgt gewicht in handen,
+            en je gaat buiten met werk voor de week erna.
           </p>
         </div>
 
-        <div class="grid gap-4 md:gap-6 md:grid-cols-12">
+        <!-- What this practice is, and what it deliberately is not -->
+        <div class="grid md:grid-cols-2 border-t border-ink/15 mb-14 md:mb-20">
 
-          <figure class="md:col-span-7 reveal">
-            <div class="relative overflow-hidden aspect-[16/11] frame-light" data-imgwrap>
+          <div class="border-b md:border-r border-ink/15 py-10 md:py-12 md:pr-10 reveal">
+            <p class="eyebrow mb-8">Wat je hier vindt</p>
+            <ul class="space-y-5">
+              <li class="flex gap-4 text-[15px] text-ink/80">
+                <span class="display text-ink shrink-0 leading-none pt-[2px]" aria-hidden="true">/</span>
+                Een volledig uitgeruste oefenzaal met vrije gewichten, waar je écht mag belasten.
+              </li>
+              <li class="flex gap-4 text-[15px] text-ink/80">
+                <span class="display text-ink shrink-0 leading-none pt-[2px]" aria-hidden="true">/</span>
+                Een ijsbad en een aparte plek om te recupereren, niet als extraatje maar als deel van het plan.
+              </li>
+              <li class="flex gap-4 text-[15px] text-ink/80">
+                <span class="display text-ink shrink-0 leading-none pt-[2px]" aria-hidden="true">/</span>
+                Kinesisten die wekelijks zelf langs het veld staan bij een profclub.
+              </li>
+              <li class="flex gap-4 text-[15px] text-ink/80">
+                <span class="display text-ink shrink-0 leading-none pt-[2px]" aria-hidden="true">/</span>
+                Een traject met testmomenten, cijfers en een einddatum.
+              </li>
+            </ul>
+          </div>
+
+          <div class="border-b border-ink/15 py-10 md:py-12 md:pl-10 reveal reveal-d1">
+            <p class="eyebrow mb-8">Wat je hier niet vindt</p>
+            <ul class="space-y-5">
+              <li class="flex gap-4 text-[15px] text-ink/65">
+                <span class="display shrink-0 leading-none pt-[2px]" style="color: var(--taupe);" aria-hidden="true">&times;</span>
+                Tien minuten massage en tot volgende week.
+              </li>
+              <li class="flex gap-4 text-[15px] text-ink/65">
+                <span class="display shrink-0 leading-none pt-[2px]" style="color: var(--taupe);" aria-hidden="true">&times;</span>
+                Een blaadje met oefeningen dat je thuis nooit meer bovenhaalt.
+              </li>
+              <li class="flex gap-4 text-[15px] text-ink/65">
+                <span class="display shrink-0 leading-none pt-[2px]" style="color: var(--taupe);" aria-hidden="true">&times;</span>
+                Een wachtzaal als belangrijkste ruimte van het gebouw.
+              </li>
+              <li class="flex gap-4 text-[15px] text-ink/65">
+                <span class="display shrink-0 leading-none pt-[2px]" style="color: var(--taupe);" aria-hidden="true">&times;</span>
+                Vage beloftes over &lsquo;het wat rustiger aan doen&rsquo;.
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="grid gap-4 md:gap-6 md:grid-cols-12 md:grid-rows-2">
+
+          <figure class="md:col-span-7 md:row-span-2 flex flex-col reveal">
+            <div class="relative overflow-hidden frame-light aspect-[16/11] md:aspect-auto md:flex-1 md:min-h-[420px]" data-imgwrap>
               <img src="https://static.wixstatic.com/media/b42414_cf6a1c19bb9343ea8ef83e3bae540e5a~mv2.jpeg"
                    alt="De oefenzaal van Credo met krachttoestellen en vrije gewichten."
                    class="photo absolute inset-0" loading="lazy" decoding="async"
@@ -1053,9 +1264,8 @@
             <figcaption class="eyebrow mt-4">Oefenzaal</figcaption>
           </figure>
 
-          <div class="md:col-span-5 grid gap-4 md:gap-6">
-            <figure class="reveal reveal-d1">
-              <div class="relative overflow-hidden aspect-[16/11] frame-light" data-imgwrap>
+          <figure class="md:col-span-5 flex flex-col reveal reveal-d1">
+            <div class="relative overflow-hidden frame-light aspect-[16/11] md:aspect-auto md:flex-1 md:min-h-[200px]" data-imgwrap>
                 <img src="https://static.wixstatic.com/media/b42414_484cecfcdbde4c35a4e586a81f5fa746~mv2.jpeg"
                      alt="De inkomhal van de praktijk in de Kapelstraat in Diepenbeek."
                      class="photo absolute inset-0" loading="lazy" decoding="async"
@@ -1064,16 +1274,15 @@
               <figcaption class="eyebrow mt-4">Inkomhal</figcaption>
             </figure>
 
-            <figure class="reveal reveal-d2">
-              <div class="relative overflow-hidden aspect-[16/11] frame-light" data-imgwrap>
+            <figure class="md:col-span-5 flex flex-col reveal reveal-d2">
+              <div class="relative overflow-hidden frame-light aspect-[16/11] md:aspect-auto md:flex-1 md:min-h-[200px]" data-imgwrap>
                 <img src="https://static.wixstatic.com/media/b42414_48490da28324410a877d31d7c8d2aa60~mv2.jpeg"
                      alt="Het ijsbad en de relaxatieruimte voor herstel na inspanning."
                      class="photo absolute inset-0" loading="lazy" decoding="async"
                      onerror="imgFail(this,'06')">
               </div>
               <figcaption class="eyebrow mt-4">IJsbad &amp; relaxatie</figcaption>
-            </figure>
-          </div>
+          </figure>
 
         </div>
       </div>
@@ -1082,54 +1291,171 @@
 </section>
 
 <!-- ============================================================
-     SECTION 08 — SAMENWERKINGEN (taupe band)
+     SECTION 08 — SAMENWERKINGEN
+     Every partner gets its own framed card: logo on a bone tile
+     (so any logo reads, in colour on hover) plus the concrete Credo
+     connection — who does what there. That is what makes the row
+     credible rather than decorative.
+
+     >>> LOGOS NEEDED <<<
+     Red Flames and OH Leuven have no logo in the supplied set, so those
+     two cards use a typographic wordmark. Drop the files in and swap the
+     .partner-wordmark block for an <img> like the others.
      ============================================================ -->
-<section class="band-taupe text-bone py-16 md:py-20" aria-labelledby="partners-title">
+<section id="partners" class="bg-ink grain py-24 md:py-36" aria-labelledby="partners-title">
+  <div class="grain-layer" aria-hidden="true"></div>
   <div class="mx-auto max-w-[1500px] px-5 md:px-10">
-    <div class="flex flex-col lg:flex-row lg:items-center gap-10 lg:gap-16">
 
-      <div class="lg:w-1/4 shrink-0">
-        <p class="eyebrow !text-bone mb-4">Partners / 07</p>
-        <h2 id="partners-title" class="display d-sm text-bone">Samen&shy;werkingen</h2>
+    <div class="grid gap-6 md:grid-cols-12 md:items-end mb-14 md:mb-20">
+      <div class="md:col-span-7">
+        <p class="eyebrow mb-8 reveal">Partners / 07</p>
+        <h2 id="partners-title" class="display d-xl text-bone reveal reveal-d1">
+          Onze mensen<br>staan langs het veld.
+        </h2>
       </div>
-
-      <ul class="lg:w-3/4 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-8 lg:gap-6 items-center">
-
-        <li class="flex items-center justify-center h-16 reveal" data-imgwrap>
-          <img src="https://static.wixstatic.com/media/8cedec_f5d040f24ed5485ba38bae0312419876~mv2.png"
-               alt="Logo van Sporting Hasselt" class="partner-logo max-h-16 w-auto object-contain"
-               loading="lazy" decoding="async" onerror="imgFail(this,'07')">
-        </li>
-
-        <li class="flex items-center justify-center h-16 reveal reveal-d1" data-imgwrap>
-          <img src="https://static.wixstatic.com/media/c19dfb_a5d049eb6f2f4f0980a8dd9b1a275195~mv2.png"
-               alt="Logo van KRC Genk Ladies" class="partner-logo max-h-16 w-auto object-contain"
-               loading="lazy" decoding="async" onerror="imgFail(this,'07')">
-        </li>
-
-        <li class="flex items-center justify-center h-16 reveal reveal-d2" data-imgwrap>
-          <img src="https://static.wixstatic.com/media/8cedec_c79d613aa9b04da18cea8b89fbca31a4~mv2.png"
-               alt="Logo van 6D Sports Nutrition" class="partner-logo max-h-16 w-auto object-contain"
-               loading="lazy" decoding="async" onerror="imgFail(this,'07')">
-        </li>
-
-        <li class="flex items-center justify-center h-16 reveal reveal-d3" data-imgwrap>
-          <img src="https://static.wixstatic.com/media/b42414_c1f9187c6cc04d6bb2ce53a365c331b5~mv2.png"
-               alt="Logo van Torpedo Hasselt" class="partner-logo max-h-16 w-auto object-contain"
-               loading="lazy" decoding="async" onerror="imgFail(this,'07')">
-        </li>
-
-        <li class="flex items-center justify-center h-16 reveal reveal-d4" data-imgwrap>
-          <a href="https://www.forwardhasselt.be/" target="_blank" rel="noopener noreferrer"
-             class="flex items-center justify-center h-full" aria-label="Forward Hasselt — opent in een nieuw venster">
-            <img src="https://static.wixstatic.com/media/c19dfb_7baa96e9eeaf47fcbd0806b819ff4636~mv2.png"
-                 alt="Logo van Forward Hasselt" class="partner-logo max-h-16 w-auto object-contain"
-                 loading="lazy" decoding="async" onerror="imgFail(this,'07')">
-          </a>
-        </li>
-
-      </ul>
+      <p class="md:col-span-5 text-[15px] text-bone/65 prose-body reveal reveal-d2">
+        Niet als sponsor, maar met een functie en een contract. Wat we in de eerste klasse
+        en bij de nationale ploeg leren over belasting, herstel en terugkeer na blessure,
+        gebruiken we hier op de vloer bij jou.
+      </p>
     </div>
+
+    <ul class="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+
+      <!-- Sporting Hasselt -->
+      <li class="partner-card frame-dark flex flex-col reveal">
+        <div class="bg-bone h-32 flex items-center justify-center p-6" data-imgwrap>
+          <img src="https://static.wixstatic.com/media/8cedec_f5d040f24ed5485ba38bae0312419876~mv2.png"
+               alt="Logo van Sporting Hasselt" class="partner-logo max-h-20 w-auto object-contain"
+               loading="lazy" decoding="async" onerror="imgFail(this,'07')">
+        </div>
+        <div class="p-5 md:p-6 flex-1">
+          <h3 class="display d-sm text-bone">Sporting Hasselt</h3>
+          <p class="eyebrow mt-3">Fysieke &amp; medische staf</p>
+          <p class="mt-4 text-[13px] leading-relaxed text-bone/65">
+            Vier van ons zijn of waren aan de club verbonden: Tuur als physical coach (2020–2025),
+            Milan als strength coach, Dries als hoofdkinesitherapeut en Rimke bij de Ladies.
+          </p>
+        </div>
+      </li>
+
+      <!-- KRC Genk Ladies -->
+      <li class="partner-card frame-dark flex flex-col reveal reveal-d1">
+        <div class="bg-bone h-32 flex items-center justify-center p-6" data-imgwrap>
+          <img src="https://static.wixstatic.com/media/c19dfb_a5d049eb6f2f4f0980a8dd9b1a275195~mv2.png"
+               alt="Logo van KRC Genk Ladies" class="partner-logo max-h-20 w-auto object-contain"
+               loading="lazy" decoding="async" onerror="imgFail(this,'07')">
+        </div>
+        <div class="p-5 md:p-6 flex-1">
+          <h3 class="display d-sm text-bone">KRC Genk Ladies</h3>
+          <p class="eyebrow mt-3">Physical coaching</p>
+          <p class="mt-4 text-[13px] leading-relaxed text-bone/65">
+            Milan Vandecaetsbeek is er physical coach sinds 2024 en volgt de fysieke opbouw
+            van de kern doorheen het seizoen.
+          </p>
+        </div>
+      </li>
+
+      <!-- Red Flames — LOGO NEEDED, typographic wordmark for now -->
+      <li class="partner-card frame-dark flex flex-col reveal reveal-d2">
+        <div class="bg-bone h-32 flex items-center justify-center p-6">
+          <span class="partner-wordmark display text-[clamp(1.5rem,4vw,2rem)] text-ink text-center leading-none">Red Flames</span>
+        </div>
+        <div class="p-5 md:p-6 flex-1">
+          <h3 class="display d-sm text-bone">Red Flames</h3>
+          <p class="eyebrow mt-3">Nationale ploeg — physical coaching</p>
+          <p class="mt-4 text-[13px] leading-relaxed text-bone/65">
+            Sinds 2025 staat Milan als physical coach bij de Belgische nationale vrouwenploeg.
+            Internationaal niveau, dezelfde principes.
+          </p>
+        </div>
+      </li>
+
+      <!-- OH Leuven — LOGO NEEDED, typographic wordmark for now -->
+      <li class="partner-card frame-dark flex flex-col reveal reveal-d3">
+        <div class="bg-bone h-32 flex items-center justify-center p-6">
+          <span class="partner-wordmark display text-[clamp(1.5rem,4vw,2rem)] text-ink text-center leading-none">OH Leuven</span>
+        </div>
+        <div class="p-5 md:p-6 flex-1">
+          <h3 class="display d-sm text-bone">OH Leuven</h3>
+          <p class="eyebrow mt-3">Physical coaching</p>
+          <p class="mt-4 text-[13px] leading-relaxed text-bone/65">
+            Tuur Vanderstukken is er physical coach sinds 2025, na vijf seizoenen
+            bij Sporting Hasselt.
+          </p>
+        </div>
+      </li>
+
+      <!-- Torpedo Hasselt -->
+      <li class="partner-card frame-dark flex flex-col reveal">
+        <div class="bg-bone h-32 flex items-center justify-center p-6" data-imgwrap>
+          <img src="https://static.wixstatic.com/media/b42414_c1f9187c6cc04d6bb2ce53a365c331b5~mv2.png"
+               alt="Logo van Torpedo Hasselt" class="partner-logo max-h-20 w-auto object-contain"
+               loading="lazy" decoding="async" onerror="imgFail(this,'07')">
+        </div>
+        <div class="p-5 md:p-6 flex-1">
+          <h3 class="display d-sm text-bone">Torpedo Hasselt</h3>
+          <p class="eyebrow mt-3">Clubkinesitherapie</p>
+          <p class="mt-4 text-[13px] leading-relaxed text-bone/65">
+            Thomas Casier is kinesitherapeut van de club en volgt de spelers
+            van blessure tot terugkeer.
+          </p>
+        </div>
+      </li>
+
+      <!-- 6D Sports Nutrition -->
+      <li class="partner-card frame-dark flex flex-col reveal reveal-d1">
+        <div class="bg-bone h-32 flex items-center justify-center p-6" data-imgwrap>
+          <img src="https://static.wixstatic.com/media/8cedec_c79d613aa9b04da18cea8b89fbca31a4~mv2.png"
+               alt="Logo van 6D Sports Nutrition" class="partner-logo max-h-20 w-auto object-contain"
+               loading="lazy" decoding="async" onerror="imgFail(this,'07')">
+        </div>
+        <div class="p-5 md:p-6 flex-1">
+          <h3 class="display d-sm text-bone">6D Sports Nutrition</h3>
+          <p class="eyebrow mt-3">Sportvoeding</p>
+          <p class="mt-4 text-[13px] leading-relaxed text-bone/65">
+            Onze partner voor sportvoeding en supplementatie, afgestemd op je
+            trainingsbelasting en je wedstrijdkalender.
+          </p>
+        </div>
+      </li>
+
+      <!-- Forward Hasselt -->
+      <li class="partner-card frame-dark flex flex-col reveal reveal-d2">
+        <div class="bg-bone h-32 flex items-center justify-center p-6" data-imgwrap>
+          <img src="https://static.wixstatic.com/media/c19dfb_7baa96e9eeaf47fcbd0806b819ff4636~mv2.png"
+               alt="Logo van Forward Hasselt" class="partner-logo max-h-20 w-auto object-contain"
+               loading="lazy" decoding="async" onerror="imgFail(this,'07')">
+        </div>
+        <div class="p-5 md:p-6 flex-1">
+          <h3 class="display d-sm text-bone">Forward Hasselt</h3>
+          <p class="eyebrow mt-3">Partner</p>
+          <p class="mt-4 text-[13px] leading-relaxed text-bone/65">
+            Samen zetten we in op sport en beweging in de regio Hasselt.
+          </p>
+          <a href="https://www.forwardhasselt.be/" target="_blank" rel="noopener noreferrer"
+             class="link-line mt-5 text-bone">Bekijk
+            <svg width="16" height="9" viewBox="0 0 16 9" fill="none" aria-hidden="true"><path d="M0 4.5h14M10.5 1L14 4.5 10.5 8" stroke="currentColor" stroke-width="1.3"/></svg>
+          </a>
+        </div>
+      </li>
+
+      <!-- Open invitation, fills the eighth cell -->
+      <li class="partner-card frame-dark flex flex-col justify-between p-5 md:p-6 reveal reveal-d3">
+        <div>
+          <p class="eyebrow">Club of federatie</p>
+          <h3 class="display d-sm text-bone mt-3">Samenwerken?</h3>
+          <p class="mt-4 text-[13px] leading-relaxed text-bone/65">
+            We begeleiden ploegen op vlak van fysieke opbouw, blessurepreventie
+            en return to play. Laat het ons weten.
+          </p>
+        </div>
+        <a href="#contact" class="link-line mt-8 text-bone">Contacteer ons
+          <svg width="16" height="9" viewBox="0 0 16 9" fill="none" aria-hidden="true"><path d="M0 4.5h14M10.5 1L14 4.5 10.5 8" stroke="currentColor" stroke-width="1.3"/></svg>
+        </a>
+      </li>
+
+    </ul>
   </div>
 </section>
 
@@ -1482,8 +1808,45 @@
     counters.forEach(function (el) { countObserver.observe(el); });
   }
 
+  /* ---------- Hero video: autoplay loop, pause control, reduced motion ---------- */
+  var heroVideo  = document.getElementById('hero-video');
+  var vToggle    = document.getElementById('video-toggle');
+  var vPause     = document.getElementById('vt-pause');
+  var vPlay      = document.getElementById('vt-play');
+
+  function setVideoUI(playing) {
+    if (!vToggle) return;
+    vToggle.setAttribute('aria-label', playing ? 'Pauzeer de achtergrondvideo' : 'Speel de achtergrondvideo af');
+    if (vPause) vPause.classList.toggle('hidden', !playing);
+    if (vPlay)  vPlay.classList.toggle('hidden', playing);
+  }
+
+  if (heroVideo && vToggle) {
+    // The control only appears once we know there is real footage playing —
+    // with no video file the poster image shows and the button stays hidden.
+    heroVideo.addEventListener('playing', function () {
+      vToggle.hidden = false;
+      vToggle.classList.add('flex');
+      setVideoUI(true);
+    }, { once: true });
+
+    if (reduce) {
+      heroVideo.autoplay = false;
+      heroVideo.pause();
+    } else {
+      // Some browsers reject autoplay; ignore the rejection and keep the poster.
+      var pr = heroVideo.play();
+      if (pr && typeof pr.catch === 'function') pr.catch(function () {});
+    }
+
+    vToggle.addEventListener('click', function () {
+      if (heroVideo.paused) { heroVideo.play().catch(function () {}); setVideoUI(true); }
+      else { heroVideo.pause(); setVideoUI(false); }
+    });
+  }
+
   /* ---------- Hero parallax (slow, transform only) ---------- */
-  var heroImg = document.getElementById('hero-img');
+  var heroImg = heroVideo || document.getElementById('hero-img');
   var ticking = false;
   function parallax() {
     if (!heroImg || reduce) return;
@@ -1503,6 +1866,36 @@
   }
   window.addEventListener('scroll', onScroll, { passive: true });
   parallax();
+
+  /* ---------- Converging hairlines draw in with the stats ---------- */
+  var converge = document.querySelector('.converge');
+  if (converge) {
+    if (reduce || !('IntersectionObserver' in window)) {
+      converge.classList.add('is-drawn');
+    } else {
+      var cObs = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-drawn');
+            cObs.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.3 });
+      cObs.observe(converge);
+    }
+  }
+
+  /* ---------- Photo-filled display type ---------- */
+  document.querySelectorAll('[data-fill]').forEach(function (el) {
+    var url = el.getAttribute('data-fill');
+    if (!url) return;
+    var pre = new Image();
+    pre.onload = function () {
+      el.style.setProperty('--credo-fill', 'url("' + url + '")');
+      el.classList.add('has-fill');
+    };
+    pre.src = url;
+  });
 
   /* ---------- Team cards: tap to reveal on touch devices ---------- */
   document.querySelectorAll('.team-toggle').forEach(function (btn) {
