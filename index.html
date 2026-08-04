@@ -254,6 +254,13 @@
   /* ---------- Scroll reveal ---------- */
   .reveal { opacity: 0; transform: translateY(28px); transition: opacity .8s cubic-bezier(.22,.61,.36,1), transform .8s cubic-bezier(.22,.61,.36,1); }
   .reveal.is-visible { opacity: 1; transform: none; }
+  /* Fly-in variant: comes in from the side instead of rising. Used where a
+     row of items should read as one sweep — the three values, the roster.
+     Declared after .reveal so it overrides that transform at equal weight. */
+  .reveal-fly { transform: translate3d(-46px, 0, 0); }
+  .reveal-fly.is-visible { transform: none; }
+  @media (prefers-reduced-motion: reduce) { .reveal-fly { transform: none !important; } }
+
   .reveal-d1 { transition-delay: .08s; }
   .reveal-d2 { transition-delay: .16s; }
   .reveal-d3 { transition-delay: .24s; }
@@ -285,6 +292,25 @@
   .team-card.is-open .team-panel { opacity: 1; }
   .team-toggle { position: absolute; inset: 0; z-index: 5; width: 100%; height: 100%; background: transparent; border: 0; cursor: pointer; }
   .team-toggle span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+  /* The credentials panel used to have no affordance — nothing on the card
+     said it was there. This badge is that cue, and it steps aside once the
+     panel is up. */
+  .team-cue {
+    position: absolute; z-index: 4; right: .75rem; bottom: .75rem;
+    display: flex; align-items: center; justify-content: center;
+    width: 2rem; height: 2rem;
+    background: rgba(13,13,13,.72); color: var(--bone);
+    border: 1px solid rgba(244,241,234,.35);
+    font-size: 15px; line-height: 1;
+    transition: opacity .3s ease, background-color .3s ease;
+  }
+  .team-card:hover .team-cue,
+  .team-card:focus-within .team-cue,
+  .team-card.is-open .team-cue { opacity: 0; }
+
+  /* Roster index sits behind the name, like the section numbering elsewhere. */
+  .team-index { font-size: 11px; letter-spacing: .2em; color: var(--taupe); }
 
   /* ---------- Converging hairlines in the stats section ---------- */
   .converge path {
@@ -499,23 +525,25 @@
      If the fill image fails to load the word stays solid ink — the
      photo fill is only switched on once the image has decoded.
      ============================================================ -->
-<section id="aanpak" class="bg-bone text-ink on-light py-24 md:py-36 overflow-hidden">
+<section id="aanpak" class="bg-bone text-ink on-light py-20 md:py-28 overflow-hidden">
   <div class="mx-auto max-w-[1500px] px-5 md:px-10">
 
-    <div class="frame-light p-6 md:p-14 lg:p-20">
-      <p class="eyebrow mb-10 md:mb-14 reveal">Credo / 01</p>
+    <div class="frame-light p-6 md:p-10 lg:p-14">
+      <p class="eyebrow mb-8 md:mb-10 reveal">Credo / 01</p>
 
       <!-- Photo-filled wordmark -->
       <h2 class="display credo-word reveal"
-          data-fill="https://static.wixstatic.com/media/8cedec_5bd270f33c744e889c92226536ccfc62~mv2.jpg">Credo</h2>
+          data-fill="assets/img/credo-wordmark-fill.jpg">Credo</h2>
 
-      <div class="mt-8 md:mt-10 flex flex-wrap items-baseline gap-x-8 gap-y-3 reveal reveal-d1">
+      <div class="mt-6 md:mt-8 flex flex-wrap items-baseline gap-x-8 gap-y-3 reveal reveal-d1">
         <p class="font-body text-[15px] md:text-lg text-ink/65 tracking-wide">[ˈkreeːdoː]</p>
         <p class="eyebrow">Latijns voor &lsquo;ik geloof&rsquo;</p>
       </div>
 
-      <!-- Manifesto + portrait -->
-      <div class="mt-14 md:mt-20 grid gap-12 lg:grid-cols-12 lg:gap-16 lg:items-start">
+      <!-- Manifesto + portrait. items-stretch, and the figure has no fixed
+           aspect: the photo takes exactly the height the copy needs, so the
+           column can't run past it and leave a dead gap underneath. -->
+      <div class="mt-10 md:mt-14 grid gap-10 lg:grid-cols-12 lg:gap-14 lg:items-stretch">
 
         <div class="lg:col-span-7 reveal">
           <p class="text-[15px] text-ink/70 prose-body">
@@ -540,43 +568,44 @@
           </p>
         </div>
 
-        <figure class="lg:col-span-5 reveal reveal-d1">
-          <div class="relative overflow-hidden aspect-[3/4] frame-light" data-imgwrap>
-            <img src="https://static.wixstatic.com/media/c19dfb_ac72d592336340389027ac51d66ed50df000.jpg"
-                 alt="Kinesist van Credo begeleidt een atleet door een zware oefening."
+        <figure class="lg:col-span-5 reveal reveal-d1 flex flex-col">
+          <div class="relative overflow-hidden grow min-h-[340px] md:min-h-[420px] frame-light" data-imgwrap>
+            <img src="assets/img/credo-portret.jpg"
+                 alt="Atleet tilt een barbell tijdens een krachtoefening in de Credo-zaal."
                  class="photo absolute inset-0" loading="lazy" decoding="async"
                  onerror="imgFail(this,'01')">
           </div>
-          <figcaption class="eyebrow mt-4">Motivatie · Passie · Empathie</figcaption>
+          <figcaption class="eyebrow mt-4 shrink-0">Motivatie · Passie · Empathie</figcaption>
         </figure>
       </div>
 
-      <hr class="rule-light my-14 md:my-20 border-0" aria-hidden="true">
+      <hr class="rule-light my-12 md:my-16 border-0" aria-hidden="true">
 
-      <!-- Three values -->
-      <div class="grid gap-12 md:grid-cols-3 md:gap-10">
+      <!-- Three values — the section's payoff, so they get display scale,
+           a rule to sit under and a staggered fly-in rather than a rise. -->
+      <div class="grid gap-10 md:grid-cols-3 md:gap-8">
 
-        <div class="reveal">
-          <p class="eyebrow mb-6">Waarde 01</p>
-          <h2 class="display d-lg text-ink">Motivatie</h2>
+        <div class="reveal reveal-fly border-t-2 border-ink pt-6">
+          <p class="eyebrow mb-4 text-ink/45">Waarde 01</p>
+          <h3 class="display text-[clamp(2.7rem,7vw,4.6rem)] leading-[0.88] text-ink">Motivatie</h3>
           <p class="mt-5 text-[15px] text-ink/70 prose-body">
             Jouw doel wordt ons doel. We zetten het scherp, we meten het, en we blijven duwen —
             ook op de dagen dat jij dat even niet doet.
           </p>
         </div>
 
-        <div class="reveal reveal-d1 md:border-l md:border-ink/15 md:pl-10">
-          <p class="eyebrow mb-6">Waarde 02</p>
-          <h2 class="display d-lg text-ink">Passie</h2>
+        <div class="reveal reveal-fly reveal-d2 border-t-2 border-ink pt-6">
+          <p class="eyebrow mb-4 text-ink/45">Waarde 02</p>
+          <h3 class="display text-[clamp(2.7rem,7vw,4.6rem)] leading-[0.88] text-ink">Passie</h3>
           <p class="mt-5 text-[15px] text-ink/70 prose-body">
             We doen dit niet half. Van de eerste anamnese tot je laatste sprinttest voor de terugkeer
             op het veld staat er iemand naast je die er evenveel van wil maken als jij.
           </p>
         </div>
 
-        <div class="reveal reveal-d2 md:border-l md:border-ink/15 md:pl-10">
-          <p class="eyebrow mb-6">Waarde 03</p>
-          <h2 class="display d-lg text-ink">Empathie</h2>
+        <div class="reveal reveal-fly reveal-d4 border-t-2 border-ink pt-6">
+          <p class="eyebrow mb-4 text-ink/45">Waarde 03</p>
+          <h3 class="display text-[clamp(2.7rem,7vw,4.6rem)] leading-[0.88] text-ink">Empathie</h3>
           <p class="mt-5 text-[15px] text-ink/70 prose-body">
             Een blessure is meer dan weefsel. Wij luisteren eerst en behandelen daarna —
             want wat een letsel met je hoofd doet, bepaalt mee hoe snel je lichaam terugkomt.
@@ -616,8 +645,8 @@
     <div class="mx-auto max-w-[1500px] px-5 md:px-10">
       <div class="grid lg:grid-cols-2">
         <div class="relative overflow-hidden aspect-[4/3] lg:aspect-auto lg:min-h-[540px] reveal" data-imgwrap>
-          <img src="https://static.wixstatic.com/media/8cedec_1d5cc0162765461c8f78a6758a75efb0~mv2.jpg"
-               alt="Kinesist voert een manuele behandeling uit op de schouder van een patiënt."
+          <img src="assets/img/work/manuele-therapie.jpg"
+               alt="Kinesist voert een manuele behandeling uit op het been van een patiënt."
                class="photo absolute inset-0" loading="lazy" decoding="async"
                onerror="imgFail(this,'01')">
         </div>
@@ -665,8 +694,8 @@
           </div>
         </div>
         <div class="relative overflow-hidden aspect-[4/3] lg:aspect-auto lg:min-h-[540px] order-1 lg:order-2 reveal reveal-d1" data-imgwrap>
-          <img src="https://static.wixstatic.com/media/8cedec_e873d0f2196542b5b53de8b8f2fa5a91~mv2.jpg"
-               alt="Patiënt voert onder begeleiding een krachtoefening uit in de oefenzaal van Credo."
+          <img src="assets/img/work/oefentherapie.jpg"
+               alt="Patiënt voert een core-oefening met het abdominale wiel uit in de oefenzaal van Credo."
                class="photo absolute inset-0" loading="lazy" decoding="async"
                onerror="imgFail(this,'02')">
         </div>
@@ -679,8 +708,8 @@
     <div class="mx-auto max-w-[1500px] px-5 md:px-10">
       <div class="grid lg:grid-cols-2">
         <div class="relative overflow-hidden aspect-[4/3] lg:aspect-auto lg:min-h-[540px] reveal" data-imgwrap>
-          <img src="https://static.wixstatic.com/media/c19dfb_5f3865a8330f429f939ec10f9a4d0a8df000.jpg"
-               alt="Atleet tijdens een krachttraining met halterstang onder begeleiding van een physical coach."
+          <img src="assets/img/work/performance.jpg"
+               alt="Atleet werkt met een medicijnbal op de indoorpiste tijdens een performance-sessie."
                class="photo absolute inset-0" loading="lazy" decoding="async"
                onerror="imgFail(this,'03')">
         </div>
@@ -727,8 +756,8 @@
           </div>
         </div>
         <div class="relative overflow-hidden aspect-[4/3] lg:aspect-auto lg:min-h-[540px] order-1 lg:order-2 reveal reveal-d1" data-imgwrap>
-          <img src="https://static.wixstatic.com/media/c19dfb_a8443c43919a4866bfb0f5064229e5a4f000.jpg"
-               alt="Atleet drinkt een sportdrank na een intensieve trainingssessie."
+          <img src="assets/img/work/sportvoeding.jpg"
+               alt="Supplementen van Credo op een rek, onder ingekaderde wedstrijdshirts."
                class="photo absolute inset-0" loading="lazy" decoding="async"
                onerror="imgFail(this,'04')">
         </div>
@@ -819,9 +848,12 @@
         <div class="flex items-center gap-6 md:gap-10 lg:pl-4">
           <p class="display leading-[0.78] text-taupe2 text-[clamp(6.5rem,20vw,14rem)] shrink-0" data-count="1">0</p>
           <div class="border-l border-bone/20 pl-6 md:pl-8">
-            <h3 class="display d-lg text-bone">Doel</h3>
-            <p class="mt-4 text-[15px] text-bone/75 max-w-[30ch]">
-              Jou terugbrengen op het niveau waar je vandaan komt. En daarna voorbij.
+            <p class="eyebrow text-bone/50">Doel</p>
+            <!-- The one line the whole section counts towards, so it is set at
+                 display scale rather than as body copy. -->
+            <p class="mt-4 display text-[clamp(1.5rem,3.2vw,2.5rem)] leading-[1.02] text-bone max-w-[16ch]">
+              Jou terugbrengen op het niveau waar je vandaan komt.
+              <span class="text-taupe2">En daarna voorbij.</span>
             </p>
           </div>
         </div>
@@ -852,12 +884,12 @@
       </p>
     </div>
 
-    <div class="grid gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
+    <div class="grid gap-x-6 gap-y-14 sm:grid-cols-2 lg:grid-cols-3">
 
       <!-- Thomas Casier — IMAGE MAPPING UNCONFIRMED: swap src if wrong -->
-      <article class="team-card reveal">
+      <article class="team-card reveal reveal-fly">
         <div class="relative overflow-hidden aspect-[3/4] frame-light" data-imgwrap>
-          <img src="https://static.wixstatic.com/media/c19dfb_14baa4272fc84ac3a69dfe697c826b0a~mv2.jpeg"
+          <img src="assets/img/team/thomas.jpg"
                alt="Portret van Thomas Casier, kinesist en zaakvoerder bij Credo."
                class="photo team-photo absolute inset-0" loading="lazy" decoding="async"
                onerror="imgFail(this,'T1')">
@@ -873,15 +905,17 @@
           <button class="team-toggle" type="button" aria-expanded="false" aria-controls="cred-thomas">
             <span>Toon credentials van Thomas Casier</span>
           </button>
+          <span class="team-cue" aria-hidden="true">+</span>
         </div>
-        <h3 class="display d-sm mt-5 text-ink">Thomas Casier</h3>
+        <p class="team-index mt-5 uppercase">01</p>
+        <h3 class="display mt-2 text-[clamp(1.35rem,2.6vw,2rem)] leading-[0.95] text-ink">Thomas Casier</h3>
         <p class="eyebrow mt-2">Kinesist — Zaakvoerder</p>
       </article>
 
       <!-- Milan Vandecaetsbeek — IMAGE MAPPING UNCONFIRMED -->
-      <article class="team-card reveal reveal-d1">
+      <article class="team-card reveal reveal-fly reveal-d1">
         <div class="relative overflow-hidden aspect-[3/4] frame-light" data-imgwrap>
-          <img src="https://static.wixstatic.com/media/c19dfb_86b5691f495b47eb935df716f6d9c0cf~mv2.png"
+          <img src="assets/img/team/milan.jpg"
                alt="Portret van Milan Vandecaetsbeek, kinesist en zaakvoerder bij Credo."
                class="photo team-photo absolute inset-0" loading="lazy" decoding="async"
                onerror="imgFail(this,'T2')">
@@ -898,15 +932,17 @@
           <button class="team-toggle" type="button" aria-expanded="false" aria-controls="cred-milan">
             <span>Toon credentials van Milan Vandecaetsbeek</span>
           </button>
+          <span class="team-cue" aria-hidden="true">+</span>
         </div>
-        <h3 class="display d-sm mt-5 text-ink">Milan Vandecaetsbeek</h3>
+        <p class="team-index mt-5 uppercase">02</p>
+        <h3 class="display mt-2 text-[clamp(1.35rem,2.6vw,2rem)] leading-[0.95] text-ink">Milan Vandecaetsbeek</h3>
         <p class="eyebrow mt-2">Kinesist — Zaakvoerder</p>
       </article>
 
       <!-- Tuur Vanderstukken — IMAGE MAPPING UNCONFIRMED -->
-      <article class="team-card reveal reveal-d2">
+      <article class="team-card reveal reveal-fly reveal-d2">
         <div class="relative overflow-hidden aspect-[3/4] frame-light" data-imgwrap>
-          <img src="https://static.wixstatic.com/media/c19dfb_3d7bf2a194534d268563d74aa03c3021~mv2.jpeg"
+          <img src="assets/img/team/tuur.jpg"
                alt="Portret van Tuur Vanderstukken, kinesist en zaakvoerder bij Credo."
                class="photo team-photo absolute inset-0" loading="lazy" decoding="async"
                onerror="imgFail(this,'T3')">
@@ -924,15 +960,17 @@
           <button class="team-toggle" type="button" aria-expanded="false" aria-controls="cred-tuur">
             <span>Toon credentials van Tuur Vanderstukken</span>
           </button>
+          <span class="team-cue" aria-hidden="true">+</span>
         </div>
-        <h3 class="display d-sm mt-5 text-ink">Tuur Vanderstukken</h3>
+        <p class="team-index mt-5 uppercase">03</p>
+        <h3 class="display mt-2 text-[clamp(1.35rem,2.6vw,2rem)] leading-[0.95] text-ink">Tuur Vanderstukken</h3>
         <p class="eyebrow mt-2">Kinesist — Zaakvoerder</p>
       </article>
 
       <!-- Rimke Eurlings — IMAGE MAPPING UNCONFIRMED -->
-      <article class="team-card reveal">
+      <article class="team-card reveal reveal-fly">
         <div class="relative overflow-hidden aspect-[3/4] frame-light" data-imgwrap>
-          <img src="https://static.wixstatic.com/media/c19dfb_402ef10b55da4d18bb19d14de800c439~mv2.jpeg"
+          <img src="assets/img/team/rimke.jpg"
                alt="Portret van Rimke Eurlings, kinesist bij Credo."
                class="photo team-photo absolute inset-0" loading="lazy" decoding="async"
                onerror="imgFail(this,'T4')">
@@ -948,15 +986,17 @@
           <button class="team-toggle" type="button" aria-expanded="false" aria-controls="cred-rimke">
             <span>Toon credentials van Rimke Eurlings</span>
           </button>
+          <span class="team-cue" aria-hidden="true">+</span>
         </div>
-        <h3 class="display d-sm mt-5 text-ink">Rimke Eurlings</h3>
+        <p class="team-index mt-5 uppercase">04</p>
+        <h3 class="display mt-2 text-[clamp(1.35rem,2.6vw,2rem)] leading-[0.95] text-ink">Rimke Eurlings</h3>
         <p class="eyebrow mt-2">Kinesist</p>
       </article>
 
       <!-- Philippe Valvekens — IMAGE MAPPING UNCONFIRMED -->
-      <article class="team-card reveal reveal-d1">
+      <article class="team-card reveal reveal-fly reveal-d1">
         <div class="relative overflow-hidden aspect-[3/4] frame-light" data-imgwrap>
-          <img src="https://static.wixstatic.com/media/c19dfb_cca510f0f8df47a7b9c76d75794a9946~mv2.jpeg"
+          <img src="assets/img/team/philippe.jpg"
                alt="Portret van Philippe Valvekens, kinesist bij Credo."
                class="photo team-photo absolute inset-0" loading="lazy" decoding="async"
                onerror="imgFail(this,'T5')">
@@ -970,15 +1010,17 @@
           <button class="team-toggle" type="button" aria-expanded="false" aria-controls="cred-philippe">
             <span>Toon credentials van Philippe Valvekens</span>
           </button>
+          <span class="team-cue" aria-hidden="true">+</span>
         </div>
-        <h3 class="display d-sm mt-5 text-ink">Philippe Valvekens</h3>
+        <p class="team-index mt-5 uppercase">05</p>
+        <h3 class="display mt-2 text-[clamp(1.35rem,2.6vw,2rem)] leading-[0.95] text-ink">Philippe Valvekens</h3>
         <p class="eyebrow mt-2">Kinesist</p>
       </article>
 
       <!-- Dries Verschueren — IMAGE MAPPING UNCONFIRMED -->
-      <article class="team-card reveal reveal-d2">
+      <article class="team-card reveal reveal-fly reveal-d2">
         <div class="relative overflow-hidden aspect-[3/4] frame-light" data-imgwrap>
-          <img src="https://static.wixstatic.com/media/c19dfb_9838ef9ceb9848bdbfb644475d1431b3~mv2.jpg"
+          <img src="assets/img/team/dries.jpg"
                alt="Portret van Dries Verschueren, kinesist bij Credo."
                class="photo team-photo absolute inset-0" loading="lazy" decoding="async"
                onerror="imgFail(this,'T6')">
@@ -993,8 +1035,10 @@
           <button class="team-toggle" type="button" aria-expanded="false" aria-controls="cred-dries">
             <span>Toon credentials van Dries Verschueren</span>
           </button>
+          <span class="team-cue" aria-hidden="true">+</span>
         </div>
-        <h3 class="display d-sm mt-5 text-ink">Dries Verschueren</h3>
+        <p class="team-index mt-5 uppercase">06</p>
+        <h3 class="display mt-2 text-[clamp(1.35rem,2.6vw,2rem)] leading-[0.95] text-ink">Dries Verschueren</h3>
         <p class="eyebrow mt-2">Kinesist</p>
       </article>
 
@@ -1102,8 +1146,8 @@
 
       <li class="relative reveal">
         <div class="relative overflow-hidden aspect-[4/5] frame-dark mb-6" data-imgwrap>
-          <img src="https://static.wixstatic.com/media/8cedec_5bd270f33c744e889c92226536ccfc62~mv2.jpg"
-               alt="Onthaal van Credo waar een afspraak wordt ingepland."
+          <img src="assets/img/traject/afspraak.jpg"
+               alt="De behandelruimte van Credo, klaar voor een eerste afspraak."
                class="photo photo-soft absolute inset-0" loading="lazy" decoding="async"
                onerror="imgFail(this,'S1')">
         </div>
@@ -1118,8 +1162,8 @@
 
       <li class="relative reveal reveal-d1">
         <div class="relative overflow-hidden aspect-[4/5] frame-dark mb-6" data-imgwrap>
-          <img src="https://static.wixstatic.com/media/8cedec_1d5cc0162765461c8f78a6758a75efb0~mv2.jpg"
-               alt="Kinesist voert een klinisch onderzoek uit tijdens de intake."
+          <img src="assets/img/traject/intake.jpg"
+               alt="Kinesist onderzoekt de knie van een patiënt tijdens de intake."
                class="photo photo-soft absolute inset-0" loading="lazy" decoding="async"
                onerror="imgFail(this,'S2')">
         </div>
@@ -1134,8 +1178,8 @@
 
       <li class="relative reveal reveal-d2">
         <div class="relative overflow-hidden aspect-[4/5] frame-dark mb-6" data-imgwrap>
-          <img src="https://static.wixstatic.com/media/c19dfb_a8443c43919a4866bfb0f5064229e5a4f000.jpg"
-               alt="Kinesist bespreekt het behandelplan met een patiënt."
+          <img src="assets/img/traject/plan.jpg"
+               alt="Coach volgt een atleet op in de oefenzaal en stuurt het plan bij."
                class="photo photo-soft absolute inset-0" loading="lazy" decoding="async"
                onerror="imgFail(this,'S3')">
         </div>
@@ -1150,8 +1194,8 @@
 
       <li class="relative reveal reveal-d3">
         <div class="relative overflow-hidden aspect-[4/5] frame-dark mb-6" data-imgwrap>
-          <img src="https://static.wixstatic.com/media/8cedec_e873d0f2196542b5b53de8b8f2fa5a91~mv2.jpg"
-               alt="Atleet traint in de oefenzaal als onderdeel van het revalidatietraject."
+          <img src="assets/img/traject/training.jpg"
+               alt="Atleet traint met een barbell als onderdeel van het revalidatietraject."
                class="photo photo-soft absolute inset-0" loading="lazy" decoding="async"
                onerror="imgFail(this,'S4')">
         </div>
@@ -1166,8 +1210,8 @@
 
       <li class="relative reveal reveal-d4">
         <div class="relative overflow-hidden aspect-[4/5] frame-dark mb-6" data-imgwrap>
-          <img src="https://static.wixstatic.com/media/c19dfb_5f3865a8330f429f939ec10f9a4d0a8df000.jpg"
-               alt="Atleet presteert opnieuw op volle intensiteit na het revalidatietraject."
+          <img src="assets/img/traject/niveau.jpg"
+               alt="Atleet werkt met een medicijnbal op de indoorpiste, terug op niveau."
                class="photo photo-soft absolute inset-0" loading="lazy" decoding="async"
                onerror="imgFail(this,'S5')">
         </div>
