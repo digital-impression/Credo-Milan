@@ -462,14 +462,15 @@
      Full viewport, ink, black-and-white footage with slow parallax and
      oversized display type over it.
 
-     Footage lives in the repo (silent, 13 s loop, 1920x1080, 25 fps):
-        assets/video/credo-hero.webm  (VP9  — served first, ~0.7 MB)
-        assets/video/credo-hero.mp4   (H.264 — fallback,     ~1.5 MB)
+     Footage lives in the repo (silent, 6.1 s loop, 1280x720, 25 fps):
+        assets/video/credo-hero.webm  (VP9  — served first, ~0.4 MB)
+        assets/video/credo-hero.mp4   (H.264 — fallback,     ~0.6 MB)
         assets/img/credo-hero-poster.jpg  (first frame, also the preload)
-     Source: Coverr (coverr.co) — free for commercial use, no attribution
-     required. To swap in Credo's own footage, replace those three files;
-     no markup change needed. Deliver it ungraded — the black-and-white
-     grade is applied in CSS (.photo).
+     The supplied clip ran 7.12 s and cut hard back to the start, so the last
+     second is cross-faded onto the first: frame one and the final frame now
+     match and the loop point is invisible. Audio stripped. To swap in other
+     footage, replace those three files; no markup change needed. Deliver it
+     ungraded — the black-and-white grade is applied in CSS (.photo).
 
      The scrim below is deliberately thin. It only has to earn contrast for
      the headline and the transparent header; the footage stays the hero.
@@ -480,7 +481,7 @@
   <!-- Hero media: full-bleed video, poster frame as the still fallback -->
   <div class="grain-pin absolute inset-0 z-0 overflow-hidden">
     <video id="hero-video"
-           class="photo w-full h-[118%] object-cover object-[64%_center] md:object-center will-change-transform"
+           class="photo w-full h-[118%] object-cover object-[42%_center] md:object-center will-change-transform"
            poster="assets/img/credo-hero-poster.jpg"
            autoplay muted loop playsinline preload="auto" aria-hidden="true" tabindex="-1">
       <source src="assets/video/credo-hero.webm" type="video/webm">
@@ -490,8 +491,8 @@
     <!-- Shown only if the video element itself is unusable (very old browsers) -->
     <img id="hero-img"
          src="assets/img/credo-hero-poster.jpg"
-         alt="Atleet traint met vrije gewichten in de oefenzaal."
-         class="photo w-full h-[118%] object-cover object-[64%_center] md:object-center will-change-transform absolute inset-0 hidden"
+         alt="Atleet schuift een schijf van 15 kg op de halterstang in de oefenzaal."
+         class="photo w-full h-[118%] object-cover object-[42%_center] md:object-center will-change-transform absolute inset-0 hidden"
          fetchpriority="high" decoding="async"
          onerror="imgFail(this,'01')">
 
