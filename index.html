@@ -471,6 +471,9 @@
      match and the loop point is invisible. Audio stripped. To swap in other
      footage, replace those three files; no markup change needed. Deliver it
      ungraded — the black-and-white grade is applied in CSS (.photo).
+     The clip is also mirrored (hflip) so the plate sits right of the type;
+     that is baked into the files rather than done with a CSS transform,
+     because the parallax below writes to the same transform property.
 
      The scrim below is deliberately thin. It only has to earn contrast for
      the headline and the transparent header; the footage stays the hero.
@@ -481,7 +484,7 @@
   <!-- Hero media: full-bleed video, poster frame as the still fallback -->
   <div class="grain-pin absolute inset-0 z-0 overflow-hidden">
     <video id="hero-video"
-           class="photo w-full h-[118%] object-cover object-[42%_center] md:object-center will-change-transform"
+           class="photo w-full h-[118%] object-cover object-[58%_center] md:object-center will-change-transform"
            poster="assets/img/credo-hero-poster.jpg"
            autoplay muted loop playsinline preload="auto" aria-hidden="true" tabindex="-1">
       <source src="assets/video/credo-hero.webm" type="video/webm">
@@ -492,7 +495,7 @@
     <img id="hero-img"
          src="assets/img/credo-hero-poster.jpg"
          alt="Atleet schuift een schijf van 15 kg op de halterstang in de oefenzaal."
-         class="photo w-full h-[118%] object-cover object-[42%_center] md:object-center will-change-transform absolute inset-0 hidden"
+         class="photo w-full h-[118%] object-cover object-[58%_center] md:object-center will-change-transform absolute inset-0 hidden"
          fetchpriority="high" decoding="async"
          onerror="imgFail(this,'01')">
 
