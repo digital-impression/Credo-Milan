@@ -2,394 +2,57 @@
 <html lang="nl-BE">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-
-<!-- ============================================================
-     CREDO REHAB & PERFORMANCE — single-file build
-     Every block below is wrapped in a numbered "SECTION xx" comment
-     so it can be lifted straight into Webflow / Framer.
-     Stack: Tailwind CDN + Google Fonts + vanilla JS. No build step.
-     ============================================================ -->
-
-<title>Credo Rehab &amp; Performance | Kinesitherapie in Diepenbeek bij Hasselt</title>
-<meta name="description" content="Credo Rehab &amp; Performance in Diepenbeek: kinesitherapie, manuele therapie, oefentherapie, performance training en sportvoeding. Zes masters kinesitherapie, physical coaches bij Red Flames, KRC Genk Ladies en OH Leuven. Boek online.">
-<meta name="keywords" content="kinesitherapie Diepenbeek, kinesist Hasselt, manuele therapie Limburg, sportkine Hasselt, revalidatie sportletsel, performance training Hasselt">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Credo Rehab &amp; Performance | Kinesitherapie in Diepenbeek</title>
+<meta name="description" content="Kinesitherapie, revalidatie en performance training in Diepenbeek bij Hasselt. Zes masters kinesitherapie, physical coaches bij de Red Flames, KRC Genk Ladies en OH Leuven.">
 <link rel="canonical" href="https://www.credokinesitherapie.be/">
-<link rel="alternate" hreflang="nl-be" href="https://www.credokinesitherapie.be/">
-<link rel="alternate" hreflang="x-default" href="https://www.credokinesitherapie.be/">
 <meta name="theme-color" content="#0D0D0D">
-<meta name="robots" content="index,follow">
+<meta name="robots" content="index, follow">
 
-<!-- Open Graph / social -->
 <meta property="og:type" content="website">
 <meta property="og:locale" content="nl_BE">
 <meta property="og:site_name" content="Credo Rehab &amp; Performance">
 <meta property="og:title" content="Credo Rehab &amp; Performance | Kinesitherapie in Diepenbeek">
-<meta property="og:description" content="Herstel. Kom sterker terug. Kinesitherapie, revalidatie en performance training in Diepenbeek, bij Hasselt.">
+<meta property="og:description" content="Herstel of presteer. Kies je traject: revalidatie na een blessure, of performance training onder begeleiding van coaches uit de profsport.">
 <meta property="og:url" content="https://www.credokinesitherapie.be/">
-<meta property="og:image" content="https://static.wixstatic.com/media/8cedec_5bd270f33c744e889c92226536ccfc62~mv2.jpg">
-<meta property="og:image:alt" content="Kinesitherapeut van Credo begeleidt een atleet tijdens een oefensessie.">
+<meta property="og:image" content="https://www.credokinesitherapie.be/assets/img/hero-performance-poster.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Credo Rehab &amp; Performance | Kinesitherapie in Diepenbeek">
-<meta name="twitter:description" content="Herstel. Kom sterker terug. Kinesitherapie, revalidatie en performance training in Diepenbeek, bij Hasselt.">
-<meta name="twitter:image" content="https://static.wixstatic.com/media/8cedec_5bd270f33c744e889c92226536ccfc62~mv2.jpg">
+<meta name="twitter:description" content="Herstel of presteer. Kies je traject bij Credo in Diepenbeek.">
+<meta name="twitter:image" content="https://www.credokinesitherapie.be/assets/img/hero-performance-poster.jpg">
 
-<!-- Preload the hero poster so the first paint is the footage, not black.
-     The video itself is left to the browser — poster first, motion after. -->
-<link rel="preload" as="image" fetchpriority="high" href="assets/img/credo-hero-poster.jpg">
+<link rel="preload" as="image" fetchpriority="high" href="assets/img/keuze-rehab.jpg">
+<link rel="preload" as="image" fetchpriority="high" href="assets/img/keuze-performance.jpg">
 
-<!-- Fonts: Anton (display, condensed caps) + Inter (body grotesque) -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
 <script src="https://cdn.tailwindcss.com"></script>
-<script>
-  // Guarded so a blocked/failed CDN degrades gracefully instead of throwing.
-  if (typeof tailwind !== 'undefined') tailwind.config = {
-    theme: {
-      extend: {
-        colors: {
-          ink:    '#0D0D0D',
-          ink2:   '#141414',
-          bone:   '#F4F1EA',
-          bone2:  '#E8E4DA',
-          taupe:  '#7C7466',
-          taupe2: '#9A9384',
-          ash:    '#6E6E6E'
-        },
-        fontFamily: {
-          display: ['Anton', 'Arial Narrow', 'Impact', 'sans-serif'],
-          body:    ['Inter', 'Helvetica Neue', 'Arial', 'sans-serif']
-        },
-        maxWidth: { measure: '62ch' }
-      }
-    }
-  }
-</script>
-
-<!-- Image failure handler is declared early so it exists before any img errors fire -->
-<script>
-  function imgFail(el, label) {
-    el.style.display = 'none';
-    var p = el.closest('[data-imgwrap]') || el.parentElement;
-    if (p) {
-      p.classList.add('img-failed');
-      p.setAttribute('data-fallback', label || '—');
-    }
-  }
-</script>
+<script src="assets/js/credo-config.js"></script>
+<link rel="stylesheet" href="assets/css/credo.css">
 
 <style>
-  :root {
-    --ink:   #0D0D0D;
-    --bone:  #F4F1EA;
-    --taupe: #7C7466;        /* brand accent: dividers, dots, button hover */
-    /* Two tints of the accent for TEXT, so 11px eyebrows clear WCAG AA
-       (the base taupe lands at 4.2:1 on both surfaces — just under 4.5). */
-    --taupe-on-dark:  #8C8474;   /* 5.25:1 on ink  */
-    --taupe-on-light: #6E6757;   /* 4.98:1 on bone */
-    --header-h: 72px;
+  /* The two doors. On desktop the hovered half takes the extra room, which
+     makes the choice feel like a choice instead of a menu. */
+  .doors { display: flex; flex-direction: column; }
+  @media (min-width: 1024px) {
+    .doors { flex-direction: row; height: calc(100svh - 72px); }
+    .door { flex: 1 1 50%; transition: flex-grow .6s cubic-bezier(.22,.61,.36,1); }
+    .doors:hover .door { flex-grow: .82; }
+    .doors .door:hover { flex-grow: 1.36; }
   }
-
-  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
-  body {
-    background: var(--ink);
-    color: var(--bone);
-    font-family: 'Inter', Helvetica, Arial, sans-serif;
-    line-height: 1.7;
-    overflow-x: hidden;
-    /* room for the sticky mobile action bar */
-    padding-bottom: 64px;
-  }
-  @media (min-width: 768px) { body { padding-bottom: 0; } }
-
-  /* Anchor targets clear the fixed header */
-  section[id] { scroll-margin-top: var(--header-h); }
-
-  /* ---------- Typography primitives ---------- */
-  .display {
-    font-family: 'Anton', 'Arial Narrow', Impact, sans-serif;
-    font-weight: 400;
-    text-transform: uppercase;
-    line-height: 0.9;
-    letter-spacing: 0.005em;
-    /* 'anywhere' (not 'break-word') so a long word also shrinks the
-       min-content size — otherwise it widens its grid track at 320px. */
-    overflow-wrap: anywhere;
-  }
-  /* Grid/flex children must be allowed to shrink below their content width */
-  .grid > *, .flex > * { min-width: 0; }
-  .d-hero  { font-size: clamp(3.1rem, 13vw, 7rem); }
-  .d-xl    { font-size: clamp(2.6rem, 8.5vw, 5.5rem); }
-  .d-lg    { font-size: clamp(2.1rem, 6vw, 4rem); }
-  .d-md    { font-size: clamp(1.6rem, 4vw, 2.6rem); }
-  .d-sm    { font-size: clamp(1.15rem, 2.4vw, 1.6rem); }
-  .d-num   { font-size: clamp(3rem, 9vw, 6.5rem); }
-
-  /* CREDO wordmark filled with photography. Stays solid ink until JS has
-     confirmed the image decoded, so a failed fetch never yields blank text. */
-  .credo-word {
-    font-size: clamp(4rem, 20vw, 16rem);
-    line-height: 0.82;
-    color: var(--ink);
-  }
-  .credo-word.has-fill {
-    background-image: linear-gradient(rgba(13,13,13,.42), rgba(13,13,13,.42)), var(--credo-fill);
-    background-size: cover;
-    background-position: center 35%;
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    -webkit-text-fill-color: transparent;
-    filter: grayscale(1) contrast(1.15);
-  }
-
-  .eyebrow {
-    font-size: 11px;
-    line-height: 1.4;
-    text-transform: uppercase;
-    letter-spacing: 0.25em;
-    color: var(--taupe-on-dark);
-    font-weight: 500;
-    overflow-wrap: anywhere;
-  }
-  .on-light .eyebrow { color: var(--taupe-on-light); }
-  .eyebrow-light { color: #8F8877; }
-
-  .prose-body { max-width: 62ch; }
-
-  /* ---------- Hairlines & frames ---------- */
-  .frame-dark  { border: 1px solid rgba(244,241,234,.18); }
-  .frame-light { border: 1px solid rgba(13,13,13,.18); }
-  .rule-dark   { border-top: 1px solid rgba(244,241,234,.16); }
-  .rule-light  { border-top: 1px solid rgba(13,13,13,.16); }
-
-  /* ---------- Film grain over dark sections ---------- */
-  .grain { position: relative; }
-  .grain > .grain-layer {
-    position: absolute; inset: 0; pointer-events: none; z-index: 2;
-    opacity: .055; mix-blend-mode: overlay;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
-  }
-  /* Lift ordinary content above the grain. This is more specific than
-     Tailwind's .absolute/.z-* utilities, so any child that is meant to be
-     pinned to the section box — a full-bleed video or photo layer, the video
-     control — must opt out with .grain-pin or it drops back into the flow. */
-  .grain > *:not(.grain-layer):not(.grain-pin) { position: relative; z-index: 3; }
-
-  /* ---------- Photography treatment ---------- */
-  .photo { filter: grayscale(1) contrast(1.08); display: block; width: 100%; height: 100%; object-fit: cover; }
-  .photo-soft { filter: grayscale(1) contrast(1.04) brightness(.92); }
-
-  /* ---------- Image failure fallback: flat ink block with the section number ---------- */
-  .img-failed { background: #0D0D0D; position: relative; min-height: 180px; }
-  .img-failed::after {
-    content: attr(data-fallback);
-    position: absolute; inset: 0;
-    display: flex; align-items: center; justify-content: center;
-    font-family: 'Anton', Impact, sans-serif;
-    font-size: clamp(2rem, 6vw, 4.5rem);
-    letter-spacing: .06em;
-    color: rgba(244,241,234,.16);
-    border: 1px solid rgba(244,241,234,.10);
-  }
-
-  /* ---------- Buttons (pills — the only rounded element on the page) ---------- */
-  .btn {
-    display: inline-flex; align-items: center; justify-content: center; gap: .6rem;
-    border-radius: 999px;
-    padding: .85rem 1.6rem;
-    font-size: 12px; font-weight: 600;
-    text-transform: uppercase; letter-spacing: .16em;
-    transition: background-color .25s ease, color .25s ease, border-color .25s ease;
-    text-align: center;
-  }
-  .btn-bone   { background: var(--bone); color: var(--ink); border: 1px solid var(--bone); }
-  .btn-bone:hover   { background: var(--taupe); border-color: var(--taupe); color: var(--bone); }
-  .btn-ink    { background: var(--ink); color: var(--bone); border: 1px solid var(--ink); }
-  .btn-ink:hover    { background: var(--taupe); border-color: var(--taupe); }
-  .btn-ghost  { background: transparent; color: var(--bone); border: 1px solid rgba(244,241,234,.45); }
-  .btn-ghost:hover  { background: var(--bone); color: var(--ink); border-color: var(--bone); }
-  .btn-ghost-dark { background: transparent; color: var(--ink); border: 1px solid rgba(13,13,13,.4); }
-  .btn-ghost-dark:hover { background: var(--ink); color: var(--bone); }
-
-  /* Text link with a hairline underline that slides */
-  .link-line {
-    display: inline-flex; align-items: center; gap: .55rem;
-    font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .18em;
-    padding-bottom: 4px; border-bottom: 1px solid currentColor;
-    transition: color .25s ease, gap .25s ease;
-  }
-  .link-line:hover { gap: 1rem; color: var(--taupe-on-dark); }
-
-  /* ---------- Focus states (visible everywhere) ---------- */
-  a:focus-visible, button:focus-visible, input:focus-visible, summary:focus-visible, [tabindex]:focus-visible {
-    outline: 2px solid #C9BFA6;
-    outline-offset: 3px;
-  }
-  .on-light a:focus-visible, .on-light button:focus-visible, .on-light input:focus-visible {
-    outline-color: #0D0D0D;
-  }
-  /* Visually hidden until focused — clip() rather than a negative offset, so it
-     never contributes to horizontal scroll width on small screens. */
-  .skip-link {
-    position: absolute; width: 1px; height: 1px; overflow: hidden;
-    clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap;
-  }
-  .skip-link:focus {
-    position: fixed; left: 12px; top: 12px; z-index: 100;
-    width: auto; height: auto; overflow: visible; clip: auto; clip-path: none;
-    background: var(--bone); color: var(--ink); padding: .75rem 1.25rem; font-size: 12px;
-    text-transform: uppercase; letter-spacing: .16em; font-weight: 600;
-  }
-
-  /* ---------- Vertical rotated label ---------- */
-  .vertical-label {
-    writing-mode: vertical-rl;
-    transform: rotate(180deg);
-    white-space: nowrap;
-  }
-
-  /* ---------- Scroll reveal ---------- */
-  .reveal { opacity: 0; transform: translateY(28px); transition: opacity .8s cubic-bezier(.22,.61,.36,1), transform .8s cubic-bezier(.22,.61,.36,1); }
-  .reveal.is-visible { opacity: 1; transform: none; }
-  /* Fly-in variant: comes in from the side instead of rising. Used where a
-     row of items should read as one sweep — the three values, the roster.
-     Declared after .reveal so it overrides that transform at equal weight. */
-  .reveal-fly { transform: translate3d(-46px, 0, 0); }
-  .reveal-fly.is-visible { transform: none; }
-  @media (prefers-reduced-motion: reduce) { .reveal-fly { transform: none !important; } }
-
-  .reveal-d1 { transition-delay: .08s; }
-  .reveal-d2 { transition-delay: .16s; }
-  .reveal-d3 { transition-delay: .24s; }
-  .reveal-d4 { transition-delay: .32s; }
-  .reveal-d5 { transition-delay: .40s; }
-
-  /* ---------- Header ---------- */
-  #site-header { transition: background-color .35s ease, border-color .35s ease; }
-  #site-header.is-solid { background: rgba(13,13,13,.96); border-bottom-color: rgba(244,241,234,.14); }
-  .nav-link { font-size: 11px; text-transform: uppercase; letter-spacing: .2em; font-weight: 500; transition: color .2s ease; }
-  .nav-link:hover { color: var(--taupe2); }
-
-  /* ---------- Team cards ---------- */
-  .team-card .team-photo { filter: grayscale(1) contrast(1.1); transition: filter .5s ease, transform .8s cubic-bezier(.22,.61,.36,1); }
-  .team-card:hover .team-photo,
-  .team-card:focus-within .team-photo,
-  .team-card.is-open .team-photo { filter: grayscale(0) contrast(1.02); transform: scale(1.03); }
-  .team-panel {
-    position: absolute; inset: 0; z-index: 4;
-    background: rgba(13,13,13,.9);
-    padding: 1.25rem;
-    display: flex; flex-direction: column; justify-content: flex-end;
-    opacity: 0; transition: opacity .35s ease;
-    pointer-events: none;
-    overflow: auto;
-  }
-  .team-card:hover .team-panel,
-  .team-card:focus-within .team-panel,
-  .team-card.is-open .team-panel { opacity: 1; }
-  .team-toggle { position: absolute; inset: 0; z-index: 5; width: 100%; height: 100%; background: transparent; border: 0; cursor: pointer; }
-  .team-toggle span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
-
-  /* The credentials panel used to have no affordance — nothing on the card
-     said it was there. This badge is that cue, and it steps aside once the
-     panel is up. */
-  .team-cue {
-    position: absolute; z-index: 5; right: .85rem; top: .85rem;
-    display: flex; align-items: center; justify-content: center;
-    width: 2.1rem; height: 2.1rem;
-    background: rgba(13,13,13,.6); color: var(--bone);
-    border: 1px solid rgba(244,241,234,.4);
-    font-size: 16px; line-height: 1;
-    transition: opacity .3s ease, background-color .3s ease;
-  }
-  .team-card:hover .team-cue,
-  .team-card:focus-within .team-cue,
-  .team-card.is-open .team-cue { opacity: 0; }
-
-  /* Portrait carries the name rather than captioning it underneath — the
-     grid read as a contact sheet when the type sat outside the frame. */
-  .team-media { position: relative; overflow: hidden; aspect-ratio: 4 / 5; background: var(--ink); }
-  .team-scrim {
-    position: absolute; inset: 0; z-index: 2; pointer-events: none;
-    background: linear-gradient(to top,
-      rgba(13,13,13,.94) 0%, rgba(13,13,13,.72) 22%, rgba(13,13,13,.18) 48%, rgba(13,13,13,0) 68%);
-  }
-  .team-caption {
-    position: absolute; z-index: 6; inset-inline: 0; bottom: 0;
-    padding: 1.15rem 1.15rem 1.25rem;
-    pointer-events: none;                 /* clicks fall through to .team-toggle */
-  }
-  .team-name {
-    font-size: clamp(1.5rem, 2.6vw, 2.15rem);
-    line-height: .92; color: var(--bone);
-  }
-  .team-no {
-    position: absolute; z-index: 3; top: .9rem; left: 1.15rem;
-    font-size: 11px; letter-spacing: .22em; color: rgba(244,241,234,.75);
-  }
-  /* Keep the credentials clear of the name that stays visible below them. */
-  .team-panel { padding-bottom: 6.75rem; justify-content: flex-start; padding-top: 1.25rem; }
-
-  .team-chip {
-    display: inline-block;
-    border: 1px solid rgba(13,13,13,.22);
-    padding: .34rem .7rem;
-    font-size: 10px; letter-spacing: .16em; text-transform: uppercase;
-    color: rgba(13,13,13,.7);
-  }
-
-  /* ---------- Converging hairlines in the stats section ---------- */
-  .converge path {
-    fill: none;
-    stroke: rgba(244,241,234,.28);
-    stroke-width: 1;
-    vector-effect: non-scaling-stroke;
-    stroke-dasharray: 260;
-    stroke-dashoffset: 260;
-    transition: stroke-dashoffset 1.5s cubic-bezier(.22,.61,.36,1);
-  }
-  .converge.is-drawn path { stroke-dashoffset: 0; }
-  .converge path:nth-child(2) { transition-delay: .12s; }
-  .converge path:nth-child(3) { transition-delay: .24s; }
-  .converge path:nth-child(4) { transition-delay: .36s; }
+  .door-photo { filter: grayscale(1) contrast(1.1); transform: scale(1.02);
+                transition: filter .6s ease, transform 1.1s cubic-bezier(.22,.61,.36,1); }
+  .door:hover .door-photo, .door:focus-visible .door-photo { filter: grayscale(0) contrast(1.02); transform: scale(1.07); }
+  .door + .door { border-top: 1px solid rgba(244,241,234,.2); }
+  @media (min-width: 1024px) { .door + .door { border-top: 0; border-left: 1px solid rgba(244,241,234,.2); } }
+  .door-arrow { transition: transform .4s cubic-bezier(.22,.61,.36,1); }
+  .door:hover .door-arrow { transform: translateX(6px); }
+  .door:focus-visible { outline: 2px solid var(--bone); outline-offset: -6px; }
   @media (prefers-reduced-motion: reduce) {
-    .converge path { stroke-dashoffset: 0; transition: none; }
-  }
-
-  /* ---------- Step timeline ---------- */
-  .step-dot { width: 9px; height: 9px; background: var(--taupe); border-radius: 999px; }
-
-  /* ---------- Partner cards ----------
-     Logos sit on a bone tile so light and dark marks both read; they
-     return to full colour when the card is hovered or focused. */
-  .partner-logo { filter: grayscale(1) contrast(1.05); opacity: .72; transition: filter .35s ease, opacity .35s ease; }
-  .partner-card:hover .partner-logo,
-  .partner-card:focus-within .partner-logo { filter: none; opacity: 1; }
-  .partner-card { transition: border-color .35s ease, background-color .35s ease; }
-  .partner-card:hover, .partner-card:focus-within { border-color: rgba(244,241,234,.45); background: #141414; }
-  .partner-wordmark { letter-spacing: .01em; }
-  /* failed logo inside a bone tile: keep the fallback block tile-sized */
-  .partner-card .img-failed { min-height: 5rem; }
-  .partner-card .img-failed::after { font-size: 1.25rem; }
-
-  /* ---------- Accordion ---------- */
-  details > summary { list-style: none; cursor: pointer; }
-  details > summary::-webkit-details-marker { display: none; }
-  details[open] .acc-plus { transform: rotate(45deg); }
-  .acc-plus { transition: transform .3s ease; display: inline-block; }
-
-  /* ---------- Mobile menu ---------- */
-  #mobile-menu[hidden] { display: none; }
-
-  /* ---------- Reduced motion ---------- */
-  @media (prefers-reduced-motion: reduce) {
-    html { scroll-behavior: auto; }
-    .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
-    * { animation-duration: .001ms !important; transition-duration: .001ms !important; }
-    .team-card:hover .team-photo { transform: none; }
+    .door, .door-photo, .door-arrow { transition: none !important; }
+    .doors:hover .door, .doors .door:hover { flex-grow: 1; }
   }
 </style>
 </head>
@@ -399,58 +62,23 @@
 <a href="#main" class="skip-link">Naar hoofdinhoud</a>
 
 <!-- ============================================================
-     HEADER — transparent over hero, solid ink after scroll
+     HEADER — no section nav here; the homepage has one job.
      ============================================================ -->
-<header id="site-header" class="fixed top-0 inset-x-0 z-50 border-b border-transparent">
+<header id="site-header" class="relative z-50 border-b border-bone/15 bg-ink">
   <div class="mx-auto max-w-[1500px] px-5 md:px-10">
     <div class="flex items-center justify-between h-[72px]">
-
-      <a href="#top" class="flex items-center gap-3 shrink-0" aria-label="Credo Rehab en Performance — naar boven">
+      <a href="#top" class="flex items-center gap-3 shrink-0" aria-label="Credo Rehab en Performance">
         <span class="display text-[19px] md:text-[22px] tracking-[0.02em] text-bone">CREDO</span>
         <span class="hidden sm:inline-block h-4 w-px bg-bone/25" aria-hidden="true"></span>
         <span class="hidden sm:inline eyebrow eyebrow-light">Rehab &amp; Performance</span>
       </a>
 
-      <nav class="hidden lg:flex items-center gap-9" aria-label="Hoofdnavigatie">
-        <a href="#aanpak"  class="nav-link text-bone">Aanpak</a>
-        <a href="#team"    class="nav-link text-bone">Team</a>
-        <a href="#diensten" class="nav-link text-bone">Wat we doen</a>
-        <a href="#studio"  class="nav-link text-bone">Studio</a>
-        <a href="#contact" class="nav-link text-bone">Contact</a>
-      </nav>
-
       <div class="flex items-center gap-3">
+        <a href="tel:+32480628545" class="nav-link text-bone hidden sm:inline">+32 480 62 85 45</a>
         <a href="https://altagenda.crossuite.com/credokinesitherapie/step1" target="_blank" rel="noopener noreferrer"
-           class="btn btn-bone hidden sm:inline-flex !py-[10px] !px-5 !text-[11px]">
-          Boek een afspraak
-        </a>
-
-        <button id="menu-btn" type="button"
-                class="lg:hidden inline-flex items-center justify-center w-11 h-11 frame-dark text-bone"
-                aria-expanded="false" aria-controls="mobile-menu" aria-label="Menu openen">
-          <svg id="menu-icon-open" width="20" height="14" viewBox="0 0 20 14" aria-hidden="true" fill="none">
-            <path d="M0 1h20M0 7h20M0 13h20" stroke="currentColor" stroke-width="1.4"/>
-          </svg>
-          <svg id="menu-icon-close" class="hidden" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" fill="none">
-            <path d="M1 1l14 14M15 1L1 15" stroke="currentColor" stroke-width="1.4"/>
-          </svg>
-        </button>
+           class="btn btn-bone !py-[10px] !px-5 !text-[11px]">Boek een afspraak</a>
       </div>
     </div>
-  </div>
-
-  <!-- Mobile menu -->
-  <div id="mobile-menu" hidden class="lg:hidden bg-ink border-t border-bone/15">
-    <nav class="px-5 py-8 flex flex-col gap-1" aria-label="Mobiele navigatie">
-      <a href="#aanpak"   class="mob-link display d-md text-bone py-2">Aanpak</a>
-      <a href="#team"     class="mob-link display d-md text-bone py-2">Team</a>
-      <a href="#diensten" class="mob-link display d-md text-bone py-2">Wat we doen</a>
-      <a href="#studio"   class="mob-link display d-md text-bone py-2">Studio</a>
-      <a href="#contact"  class="mob-link display d-md text-bone py-2">Contact</a>
-      <a href="https://altagenda.crossuite.com/credokinesitherapie/step1" target="_blank" rel="noopener noreferrer"
-         class="btn btn-bone mt-6 w-full">Boek een afspraak</a>
-      <a href="tel:+32480628545" class="btn btn-ghost mt-3 w-full">Bel +32 480 62 85 45</a>
-    </nav>
   </div>
 </header>
 
@@ -458,437 +86,117 @@
 <span id="top"></span>
 
 <!-- ============================================================
-     SECTION 01 — HERO (live-action video)
-     Full viewport, ink, black-and-white footage with slow parallax and
-     oversized display type over it.
-
-     Footage lives in the repo (silent, 6.1 s loop, 1280x720, 25 fps):
-        assets/video/credo-hero.webm  (VP9  — served first, ~0.4 MB)
-        assets/video/credo-hero.mp4   (H.264 — fallback,     ~0.6 MB)
-        assets/img/credo-hero-poster.jpg  (first frame, also the preload)
-     The supplied clip ran 7.12 s and cut hard back to the start, so the last
-     second is cross-faded onto the first: frame one and the final frame now
-     match and the loop point is invisible. Audio stripped. To swap in other
-     footage, replace those three files; no markup change needed. Deliver it
-     ungraded — the black-and-white grade is applied in CSS (.photo).
-     The clip is also mirrored (hflip) so the plate sits right of the type;
-     that is baked into the files rather than done with a CSS transform,
-     because the parallax below writes to the same transform property.
-
-     The scrim below is deliberately thin. It only has to earn contrast for
-     the headline and the transparent header; the footage stays the hero.
+     DE KEUZE
+     Twee doelgroepen met een ander probleem, een ander doel en een andere
+     eerste stap. Ze in één funnel duwen kost aan beide kanten leads, dus
+     splitst de site hier — en pas hier.
      ============================================================ -->
-<section class="relative min-h-[100svh] flex items-end overflow-hidden grain bg-ink" aria-labelledby="hero-title">
+<section class="grain bg-ink" aria-labelledby="keuze-title">
   <div class="grain-layer" aria-hidden="true"></div>
 
-  <!-- Hero media: full-bleed video, poster frame as the still fallback -->
-  <div class="grain-pin absolute inset-0 z-0 overflow-hidden">
-    <video id="hero-video"
-           class="photo w-full h-[118%] object-cover object-[58%_center] md:object-center will-change-transform"
-           poster="assets/img/credo-hero-poster.jpg"
-           autoplay muted loop playsinline preload="auto" aria-hidden="true" tabindex="-1">
-      <source src="assets/video/credo-hero.webm" type="video/webm">
-      <source src="assets/video/credo-hero.mp4" type="video/mp4">
-    </video>
+  <h1 id="keuze-title" class="sr-only">Credo Rehab &amp; Performance — kinesitherapie, revalidatie en performance training in Diepenbeek</h1>
 
-    <!-- Shown only if the video element itself is unusable (very old browsers) -->
-    <img id="hero-img"
-         src="assets/img/credo-hero-poster.jpg"
-         alt="Atleet schuift een schijf van 15 kg op de halterstang in de oefenzaal."
-         class="photo w-full h-[118%] object-cover object-[58%_center] md:object-center will-change-transform absolute inset-0 hidden"
-         fetchpriority="high" decoding="async"
-         onerror="imgFail(this,'01')">
+  <div class="doors">
 
-    <!-- Scrim, in three thin passes instead of one heavy blanket:
-         bottom for the headline, left for the body copy, top for the header. -->
-    <div class="absolute inset-0 bg-gradient-to-t from-ink via-ink/40 to-transparent" aria-hidden="true"></div>
-    <div class="hidden md:block absolute inset-0 bg-gradient-to-r from-ink/70 via-ink/15 to-transparent" aria-hidden="true"></div>
-    <div class="absolute inset-x-0 top-0 h-44 bg-gradient-to-b from-ink/65 to-transparent" aria-hidden="true"></div>
-  </div>
+    <a href="rehab/" class="door group relative flex-1 min-h-[52svh] lg:min-h-0 overflow-hidden bg-ink"
+       aria-label="Naar Credo Rehab — kinesitherapie en revalidatie">
+      <img src="assets/img/keuze-rehab.jpg" alt=""
+           class="door-photo absolute inset-0 w-full h-full object-cover" loading="eager" decoding="async">
+      <span class="absolute inset-0 bg-ink/55 group-hover:bg-ink/35 transition-colors duration-500" aria-hidden="true"></span>
+      <span class="absolute inset-0 bg-gradient-to-t from-ink via-ink/40 to-transparent" aria-hidden="true"></span>
 
-  <!-- Pause/play control — WCAG 2.2.2 requires a way to stop moving content -->
-  <button id="video-toggle" type="button" hidden
-          class="grain-pin absolute z-20 bottom-5 right-5 md:bottom-8 md:right-10 w-11 h-11 frame-dark bg-ink/60 backdrop-blur-sm text-bone items-center justify-center hover:bg-bone hover:text-ink transition-colors"
-          aria-label="Pauzeer de achtergrondvideo">
-    <svg id="vt-pause" width="12" height="14" viewBox="0 0 12 14" aria-hidden="true" fill="currentColor">
-      <rect x="0" y="0" width="4" height="14"></rect><rect x="8" y="0" width="4" height="14"></rect>
-    </svg>
-    <svg id="vt-play" class="hidden" width="12" height="14" viewBox="0 0 12 14" aria-hidden="true" fill="currentColor">
-      <path d="M0 0l12 7-12 7z"></path>
-    </svg>
-  </button>
+      <span class="relative z-10 h-full flex flex-col justify-end p-6 md:p-10 lg:p-14">
+        <span class="eyebrow text-bone/70">Ik heb een klacht of blessure</span>
+        <span class="display block mt-4 text-bone leading-[0.86] text-[clamp(2.8rem,7vw,5.5rem)]">Rehab</span>
+        <span class="block mt-5 max-w-[34ch] text-[15px] text-bone/75 prose-body">Pijn, een blessure of een operatie achter de rug. Wij zoeken de oorzaak, behandelen met de hand en bouwen je op tot je weer doet wat je deed.</span>
 
-  <!-- Hero content -->
-  <div class="relative z-10 w-full mx-auto max-w-[1500px] px-5 md:px-10 pt-32 pb-16 md:pb-20">
-    <div class="frame-dark p-6 md:p-10 lg:p-12">
-      <p class="eyebrow mb-8 md:mb-12">Kinesitherapie &amp; Performance — Diepenbeek</p>
+        <span class="mt-8 inline-flex items-center gap-3 eyebrow text-bone">
+          Naar revalidatie
+          <svg width="26" height="9" viewBox="0 0 26 9" fill="none" aria-hidden="true"
+               class="door-arrow"><path d="M0 4.5h23M19.5 1L23 4.5 19.5 8" stroke="currentColor" stroke-width="1.3"/></svg>
+        </span>
+      </span>
+    </a>
 
-      <h1 id="hero-title" class="display d-hero text-bone">
-        Herstel.<br>
-        <span class="block md:-ml-1">Kom sterker terug.</span>
-      </h1>
+    <a href="performance/" class="door group relative flex-1 min-h-[52svh] lg:min-h-0 overflow-hidden bg-ink"
+       aria-label="Naar Credo Performance — sportscreening en krachttraining">
+      <img src="assets/img/keuze-performance.jpg" alt=""
+           class="door-photo absolute inset-0 w-full h-full object-cover" loading="eager" decoding="async">
+      <span class="absolute inset-0 bg-ink/55 group-hover:bg-ink/35 transition-colors duration-500" aria-hidden="true"></span>
+      <span class="absolute inset-0 bg-gradient-to-t from-ink via-ink/40 to-transparent" aria-hidden="true"></span>
 
-      <div class="mt-8 md:mt-12 grid gap-8 md:grid-cols-12 md:items-end">
-        <p class="md:col-span-6 lg:col-span-5 text-[15px] md:text-base text-bone/75 prose-body">
-          Zes masters kinesitherapie. Physical coaches bij de Red Flames, KRC Genk Ladies en OH Leuven.
-          Wij behandelen je blessure niet tot ze weg is — we bouwen je op tot je sterker staat dan ervoor.
-        </p>
+      <span class="relative z-10 h-full flex flex-col justify-end p-6 md:p-10 lg:p-14">
+        <span class="eyebrow text-bone/70">Ik wil beter presteren</span>
+        <span class="display block mt-4 text-bone leading-[0.86] text-[clamp(2.8rem,7vw,5.5rem)]">Performance</span>
+        <span class="block mt-5 max-w-[34ch] text-[15px] text-bone/75 prose-body">Niet geblesseerd, wel op zoek naar meer. Screening, cijfers en een programma van coaches die wekelijks bij profclubs op het veld staan.</span>
 
-        <div class="md:col-span-6 lg:col-span-7 flex flex-wrap gap-3 md:justify-end">
-          <a href="https://altagenda.crossuite.com/credokinesitherapie/step1" target="_blank" rel="noopener noreferrer"
-             class="btn btn-bone">Boek een afspraak</a>
-          <a href="#aanpak" class="btn btn-ghost">Ontdek onze aanpak</a>
-        </div>
-      </div>
-    </div>
+        <span class="mt-8 inline-flex items-center gap-3 eyebrow text-bone">
+          Naar performance
+          <svg width="26" height="9" viewBox="0 0 26 9" fill="none" aria-hidden="true"
+               class="door-arrow"><path d="M0 4.5h23M19.5 1L23 4.5 19.5 8" stroke="currentColor" stroke-width="1.3"/></svg>
+        </span>
+      </span>
+    </a>
 
-    <!-- Ticker rule under the frame -->
-    <div class="mt-6 hidden md:flex items-center justify-between eyebrow text-bone/60">
-      <span>Kapelstraat 89 — 3590 Diepenbeek</span>
-      <span>Motivatie · Passie · Empathie</span>
-      <span>Scroll</span>
-    </div>
   </div>
 </section>
 
 <!-- ============================================================
-     SECTION 02 — CREDO STATEMENT
-     The word CREDO is filled with live-action photography
-     (background-clip: text), then the manifesto, then the three values.
-     If the fill image fails to load the word stays solid ink — the
-     photo fill is only switched on once the image has decoded.
+     KORTE INTRO — voor wie nog niet wil kiezen, en voor Google.
      ============================================================ -->
-<section id="aanpak" class="bg-bone text-ink on-light py-20 md:py-28 overflow-hidden">
+<section id="credo" class="bg-bone text-ink on-light py-20 md:py-28 overflow-hidden">
   <div class="mx-auto max-w-[1500px] px-5 md:px-10">
-
     <div class="frame-light p-6 md:p-10 lg:p-14">
-      <p class="eyebrow mb-8 md:mb-10 reveal">Credo / 01</p>
 
-      <!-- Photo-filled wordmark -->
-      <h2 class="display credo-word reveal"
-          data-fill="assets/img/credo-wordmark-fill.jpg">Credo</h2>
+      <p class="eyebrow mb-8 md:mb-10 reveal">Credo / 01</p>
+      <h2 class="display credo-word reveal" data-fill="assets/img/credo-wordmark-fill.jpg">Credo</h2>
 
       <div class="mt-6 md:mt-8 flex flex-wrap items-baseline gap-x-8 gap-y-3 reveal reveal-d1">
         <p class="font-body text-[15px] md:text-lg text-ink/65 tracking-wide">[ˈkreeːdoː]</p>
         <p class="eyebrow">Latijns voor &lsquo;ik geloof&rsquo;</p>
       </div>
 
-      <!-- Manifesto + portrait. items-stretch, and the figure has no fixed
-           aspect: the photo takes exactly the height the copy needs, so the
-           column can't run past it and leave a dead gap underneath. -->
-      <div class="mt-10 md:mt-14 grid gap-10 lg:grid-cols-12 lg:gap-14 lg:items-stretch">
-
+      <div class="mt-10 md:mt-14 grid gap-10 lg:grid-cols-12 lg:gap-14">
         <div class="lg:col-span-7 reveal">
-          <p class="text-[15px] text-ink/70 prose-body">
-            Een credo is geen slogan aan de muur. Het is de verklaring van waar je in gelooft,
-            en waarnaar je elke dag handelt. Dit is de onze.
-          </p>
-
-          <blockquote class="mt-8 border-l-2 pl-6 md:pl-8" style="border-color: var(--taupe);">
+          <blockquote class="border-l-2 pl-6 md:pl-8" style="border-color: var(--taupe);">
             <p class="display d-md text-ink">
               Wij geloven dat een blessure geen eindpunt is, maar een startlijn.
             </p>
             <p class="mt-6 text-[15px] md:text-base text-ink/75 prose-body">
-              Dat pijn een signaal is en geen levenslange diagnose. Dat je lichaam veel meer aankan
-              dan je vandaag denkt, op voorwaarde dat iemand het slim en geduldig opbouwt.
-              En dat je pas écht terug bent op het moment dat je het zelf weer gelooft.
+              Zes masters revalidatiewetenschappen en kinesitherapie in Diepenbeek. Verschillende van ons
+              staan wekelijks op het veld als physical of strength coach bij de Red Flames, KRC Genk Ladies,
+              OH Leuven en Sporting Hasselt. Die ervaring komt rechtstreeks in jouw behandeling terecht.
             </p>
           </blockquote>
-
-          <p class="mt-8 text-[15px] text-ink/70 prose-body">
-            Daarom staan er drie woorden onder alles wat hier gebeurt — onder elke behandeling,
-            elke oefening en elk schema.
-          </p>
         </div>
 
-        <figure class="lg:col-span-5 reveal reveal-d1 flex flex-col">
-          <div class="relative overflow-hidden grow min-h-[340px] md:min-h-[420px] frame-light" data-imgwrap>
-            <img src="assets/img/credo-portret.jpg"
-                 alt="Atleet tilt een barbell tijdens een krachtoefening in de Credo-zaal."
-                 class="photo absolute inset-0" loading="lazy" decoding="async"
-                 onerror="imgFail(this,'01')">
+        <div class="lg:col-span-5 reveal reveal-d1">
+          <p class="text-[15px] text-ink/70 prose-body">
+            Of je nu binnenkomt met een blessure of met een doel: de aanpak is dezelfde. Eerst weten
+            wat er aan de hand is, dan pas behandelen of belasten — en meten of het werkt.
+          </p>
+          <div class="mt-8 flex flex-wrap gap-3">
+            <a href="rehab/" class="btn btn-ink">Ik heb een blessure</a>
+            <a href="performance/" class="btn btn-ghost-dark">Ik wil presteren</a>
           </div>
-          <figcaption class="eyebrow mt-4 shrink-0">Motivatie · Passie · Empathie</figcaption>
-        </figure>
+        </div>
       </div>
 
       <hr class="rule-light my-12 md:my-16 border-0" aria-hidden="true">
 
-      <!-- Three values — the section's payoff, so they get display scale,
-           a rule to sit under and a staggered fly-in rather than a rise. -->
       <div class="grid gap-10 md:grid-cols-3 md:gap-8">
-
         <div class="reveal reveal-fly border-t-2 border-ink pt-6">
           <p class="eyebrow mb-4 text-ink/45">Waarde 01</p>
           <h3 class="display text-[clamp(2.7rem,7vw,4.6rem)] leading-[0.88] text-ink">Motivatie</h3>
-          <p class="mt-5 text-[15px] text-ink/70 prose-body">
-            Jouw doel wordt ons doel. We zetten het scherp, we meten het, en we blijven duwen —
-            ook op de dagen dat jij dat even niet doet.
-          </p>
         </div>
-
         <div class="reveal reveal-fly reveal-d2 border-t-2 border-ink pt-6">
           <p class="eyebrow mb-4 text-ink/45">Waarde 02</p>
           <h3 class="display text-[clamp(2.7rem,7vw,4.6rem)] leading-[0.88] text-ink">Passie</h3>
-          <p class="mt-5 text-[15px] text-ink/70 prose-body">
-            We doen dit niet half. Van de eerste anamnese tot je laatste sprinttest voor de terugkeer
-            op het veld staat er iemand naast je die er evenveel van wil maken als jij.
-          </p>
         </div>
-
         <div class="reveal reveal-fly reveal-d4 border-t-2 border-ink pt-6">
           <p class="eyebrow mb-4 text-ink/45">Waarde 03</p>
           <h3 class="display text-[clamp(2.7rem,7vw,4.6rem)] leading-[0.88] text-ink">Empathie</h3>
-          <p class="mt-5 text-[15px] text-ink/70 prose-body">
-            Een blessure is meer dan weefsel. Wij luisteren eerst en behandelen daarna —
-            want wat een letsel met je hoofd doet, bepaalt mee hoe snel je lichaam terugkomt.
-          </p>
         </div>
-
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ============================================================
-     SECTION 03 — WAT WE DOEN
-     Four services as alternating full-width split blocks.
-     ============================================================ -->
-<section id="diensten" class="bg-ink grain" aria-labelledby="diensten-title">
-  <div class="grain-layer" aria-hidden="true"></div>
-
-  <div class="mx-auto max-w-[1500px] px-5 md:px-10 pt-24 md:pt-36 pb-6 md:pb-12">
-    <div class="grid gap-6 md:grid-cols-12 md:items-end">
-      <div class="md:col-span-7">
-        <p class="eyebrow mb-8 reveal">Wat we doen / 02</p>
-        <h2 id="diensten-title" class="display d-xl text-bone reveal reveal-d1">
-          Revalidatie en<br>performance zijn<br>één traject.
-        </h2>
-      </div>
-      <p class="md:col-span-5 text-[15px] text-bone/65 prose-body reveal reveal-d2">
-        Er is geen muur tussen &lsquo;weer pijnvrij&rsquo; en &lsquo;weer beter dan ervoor&rsquo;.
-        Wij behandelen met de hand, belasten met oefening en bouwen door tot je opnieuw
-        op je hoogste niveau presteert.
-      </p>
-    </div>
-  </div>
-
-  <!-- DIENST 01 — Manuele therapie & kinesitherapie -->
-  <article class="border-t border-bone/15">
-    <div class="mx-auto max-w-[1500px] px-5 md:px-10">
-      <div class="grid lg:grid-cols-2">
-        <div class="relative overflow-hidden aspect-[4/3] lg:aspect-auto lg:min-h-[540px] reveal" data-imgwrap>
-          <img src="assets/img/work/manuele-therapie.jpg"
-               alt="Kinesist voert een manuele behandeling uit op het been van een patiënt."
-               class="photo absolute inset-0" loading="lazy" decoding="async"
-               onerror="imgFail(this,'01')">
-        </div>
-        <div class="flex items-center py-14 lg:py-20 lg:pl-16 xl:pl-24 reveal reveal-d1">
-          <div>
-            <p class="eyebrow mb-7">Dienst 01</p>
-            <h3 class="display d-lg text-bone">Manuele therapie<br>&amp; kinesitherapie</h3>
-            <p class="mt-7 text-[15px] text-bone/70 prose-body">
-              Elk traject start met een grondige anamnese en een klinisch onderzoek. Pas als we weten
-              waar het probleem écht vandaan komt, gaan we aan de slag.
-            </p>
-            <p class="mt-4 text-[15px] text-bone/70 prose-body">
-              Mobilisaties, manipulaties en dry needling verlagen je pijn, halen spanning uit de spier
-              en geven je gewricht zijn beweeglijkheid terug. Geen recept van de plank: de techniek volgt de diagnose.
-            </p>
-            <a href="https://altagenda.crossuite.com/credokinesitherapie/step1" target="_blank" rel="noopener noreferrer"
-               class="link-line mt-10 text-bone">Plan een onderzoek
-              <svg width="16" height="9" viewBox="0 0 16 9" fill="none" aria-hidden="true"><path d="M0 4.5h14M10.5 1L14 4.5 10.5 8" stroke="currentColor" stroke-width="1.3"/></svg>
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </article>
-
-  <!-- DIENST 02 — Oefentherapie (reversed) -->
-  <article class="border-t border-bone/15">
-    <div class="mx-auto max-w-[1500px] px-5 md:px-10">
-      <div class="grid lg:grid-cols-2">
-        <div class="flex items-center py-14 lg:py-20 lg:pr-16 xl:pr-24 order-2 lg:order-1 reveal">
-          <div>
-            <p class="eyebrow mb-7">Dienst 02</p>
-            <h3 class="display d-lg text-bone">Oefentherapie</h3>
-            <p class="mt-7 text-[15px] text-bone/70 prose-body">
-              Als beweging in pilvorm bestond, was het wereldwijd het meest voorgeschreven medicijn.
-              Bij ons is het de basis, geen bijzaak.
-            </p>
-            <p class="mt-4 text-[15px] text-bone/70 prose-body">
-              We combineren manuele technieken met oefentherapie op maat: opgebouwd rond jouw letsel,
-              jouw belastbaarheid en jouw sport. Je krijgt een schema dat meegroeit, geen fotokopie.
-            </p>
-            <a href="#traject" class="link-line mt-10 text-bone">Bekijk het traject
-              <svg width="16" height="9" viewBox="0 0 16 9" fill="none" aria-hidden="true"><path d="M0 4.5h14M10.5 1L14 4.5 10.5 8" stroke="currentColor" stroke-width="1.3"/></svg>
-            </a>
-          </div>
-        </div>
-        <div class="relative overflow-hidden aspect-[4/3] lg:aspect-auto lg:min-h-[540px] order-1 lg:order-2 reveal reveal-d1" data-imgwrap>
-          <img src="assets/img/work/oefentherapie.jpg"
-               alt="Patiënt voert een core-oefening met het abdominale wiel uit in de oefenzaal van Credo."
-               class="photo absolute inset-0" loading="lazy" decoding="async"
-               onerror="imgFail(this,'02')">
-        </div>
-      </div>
-    </div>
-  </article>
-
-  <!-- DIENST 03 — Performance training -->
-  <article class="border-t border-bone/15">
-    <div class="mx-auto max-w-[1500px] px-5 md:px-10">
-      <div class="grid lg:grid-cols-2">
-        <div class="relative overflow-hidden aspect-[4/3] lg:aspect-auto lg:min-h-[540px] reveal" data-imgwrap>
-          <img src="assets/img/work/performance.jpg"
-               alt="Atleet werkt met een medicijnbal op de indoorpiste tijdens een performance-sessie."
-               class="photo absolute inset-0" loading="lazy" decoding="async"
-               onerror="imgFail(this,'03')">
-        </div>
-        <div class="flex items-center py-14 lg:py-20 lg:pl-16 xl:pl-24 reveal reveal-d1">
-          <div>
-            <p class="eyebrow mb-7">Dienst 03</p>
-            <h3 class="display d-lg text-bone">Performance<br>training</h3>
-            <p class="mt-7 text-[15px] text-bone/70 prose-body">
-              Voor atleten die hun plafond nog niet gezien hebben. We starten met een screening en een intake:
-              waar sta je, wat houdt je tegen, wat is haalbaar.
-            </p>
-            <p class="mt-4 text-[15px] text-bone/70 prose-body">
-              Daarna leggen we samen korte- en langetermijndoelen vast en volgen we ze op met continue feedback.
-              Dezelfde methodiek die we bij profclubs gebruiken — nu voor jou.
-            </p>
-            <a href="#team" class="link-line mt-10 text-bone">Wie traint je
-              <svg width="16" height="9" viewBox="0 0 16 9" fill="none" aria-hidden="true"><path d="M0 4.5h14M10.5 1L14 4.5 10.5 8" stroke="currentColor" stroke-width="1.3"/></svg>
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </article>
-
-  <!-- DIENST 04 — Sportvoeding (reversed) -->
-  <article class="border-t border-b border-bone/15">
-    <div class="mx-auto max-w-[1500px] px-5 md:px-10">
-      <div class="grid lg:grid-cols-2">
-        <div class="flex items-center py-14 lg:py-20 lg:pr-16 xl:pr-24 order-2 lg:order-1 reveal">
-          <div>
-            <p class="eyebrow mb-7">Dienst 04</p>
-            <h3 class="display d-lg text-bone">Sportvoeding</h3>
-            <p class="mt-7 text-[15px] text-bone/70 prose-body">
-              Voeding is vaak de marge tussen winnen en verliezen. Wie hard traint en slecht tankt,
-              laat recuperatie en vermogen liggen.
-            </p>
-            <p class="mt-4 text-[15px] text-bone/70 prose-body">
-              We hebben een specialisatie sportvoeding in huis en werken samen met 6D Sports Nutrition,
-              zodat je advies krijgt dat past bij je trainingsbelasting, je wedstrijdkalender en je herstel.
-            </p>
-            <a href="#contact" class="link-line mt-10 text-bone">Vraag advies
-              <svg width="16" height="9" viewBox="0 0 16 9" fill="none" aria-hidden="true"><path d="M0 4.5h14M10.5 1L14 4.5 10.5 8" stroke="currentColor" stroke-width="1.3"/></svg>
-            </a>
-          </div>
-        </div>
-        <div class="relative overflow-hidden aspect-[4/3] lg:aspect-auto lg:min-h-[540px] order-1 lg:order-2 reveal reveal-d1" data-imgwrap>
-          <img src="assets/img/work/sportvoeding.jpg"
-               alt="Supplementen van Credo op een rek, onder ingekaderde wedstrijdshirts."
-               class="photo absolute inset-0" loading="lazy" decoding="async"
-               onerror="imgFail(this,'04')">
-        </div>
-      </div>
-    </div>
-  </article>
-</section>
-
-<!-- ============================================================
-     SECTION 04 — IN CIJFERS
-     The supporting numbers physically converge, via drawn hairlines,
-     into one enormous "1". Numbers count up and the connector draws
-     itself when the section enters view.
-     >>> PLACEHOLDER WARNING <<<
-     "6 KINESISTEN", "4 PROFCLUBS" and "1 DOEL" come from the brief.
-     The two marked [PLACEHOLDER] are INVENTED plausible figures —
-     confirm or replace them before this goes live.
-     ============================================================ -->
-<section id="cijfers" class="bg-ink grain py-24 md:py-36 overflow-hidden" aria-labelledby="cijfers-title">
-  <div class="grain-layer" aria-hidden="true"></div>
-  <div class="mx-auto max-w-[1500px] px-5 md:px-10">
-
-    <div class="grid gap-6 md:grid-cols-12 md:items-end mb-14 md:mb-20">
-      <div class="md:col-span-7">
-        <p class="eyebrow mb-8 reveal">In cijfers / 03</p>
-        <h2 id="cijfers-title" class="display d-xl text-bone reveal reveal-d1">
-          Alles komt<br>samen in één.
-        </h2>
-      </div>
-      <p class="md:col-span-5 text-[15px] text-bone/65 prose-body reveal reveal-d2">
-        Tel de kinesisten, de profclubs, de specialisaties en de trainingsuren bij elkaar op.
-        Wat overblijft is één cijfer, en dat gaat over jou.
-      </p>
-    </div>
-
-    <div class="grid lg:grid-cols-12 lg:items-center gap-y-12 lg:gap-y-0">
-
-      <!-- The four supporting numbers -->
-      <ul class="lg:col-span-5 border-t border-bone/15">
-
-        <li class="grid grid-cols-[5rem_1fr] md:grid-cols-[9rem_1fr] gap-x-4 items-baseline border-b border-bone/15 py-6 reveal">
-          <span class="display text-[clamp(2.4rem,5vw,3.4rem)] leading-none text-bone whitespace-nowrap" data-count="6">0</span>
-          <span class="min-w-0">
-            <span class="eyebrow block">Kinesisten</span>
-            <span class="block mt-2 text-[13px] leading-relaxed text-bone/60">allemaal master revalidatiewetenschappen</span>
-          </span>
-        </li>
-
-        <li class="grid grid-cols-[5rem_1fr] md:grid-cols-[9rem_1fr] gap-x-4 items-baseline border-b border-bone/15 py-6 reveal reveal-d1">
-          <span class="display text-[clamp(2.4rem,5vw,3.4rem)] leading-none text-bone whitespace-nowrap" data-count="4">0</span>
-          <span class="min-w-0">
-            <span class="eyebrow block">Profclubs</span>
-            <span class="block mt-2 text-[13px] leading-relaxed text-bone/60">Red Flames · KRC Genk Ladies · OH Leuven · Sporting Hasselt</span>
-          </span>
-        </li>
-
-        <!-- [PLACEHOLDER] invented figure — verify with the practice -->
-        <li class="grid grid-cols-[5rem_1fr] md:grid-cols-[9rem_1fr] gap-x-4 items-baseline border-b border-bone/15 py-6 reveal reveal-d2">
-          <span class="display text-[clamp(2.4rem,5vw,3.4rem)] leading-none text-bone whitespace-nowrap" data-count="6" data-suffix="+">0</span>
-          <span class="min-w-0">
-            <span class="eyebrow block">Specialisaties</span>
-            <span class="block mt-2 text-[13px] leading-relaxed text-bone/60">manuele therapie · dry needling · BFR · sportvoeding</span>
-          </span>
-        </li>
-
-        <!-- [PLACEHOLDER] invented figure — verify with the practice -->
-        <li class="grid grid-cols-[5rem_1fr] md:grid-cols-[9rem_1fr] gap-x-4 items-baseline border-b border-bone/15 py-6 reveal reveal-d3">
-          <span class="display text-[clamp(2.4rem,5vw,3.4rem)] leading-none text-bone whitespace-nowrap" data-count="250" data-suffix="+">0</span>
-          <span class="min-w-0">
-            <span class="eyebrow block">Atleten begeleid</span>
-            <span class="block mt-2 text-[13px] leading-relaxed text-bone/60">van jeugdspeler tot international</span>
-          </span>
-        </li>
-      </ul>
-
-      <!-- Connector: four hairlines converging into the 1 (desktop) -->
-      <div class="hidden lg:block lg:col-span-2 h-[300px] px-2">
-        <svg class="converge w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true" focusable="false">
-          <path d="M0 12 C 55 12, 45 50, 100 50"></path>
-          <path d="M0 37 C 55 37, 45 50, 100 50"></path>
-          <path d="M0 63 C 55 63, 45 50, 100 50"></path>
-          <path d="M0 88 C 55 88, 45 50, 100 50"></path>
-        </svg>
-      </div>
-
-      <!-- The one -->
-      <div class="lg:col-span-5 reveal reveal-d2 lg:pl-4">
-        <!-- The numeral and the word read as one lockup; the line the whole
-             section counts towards sits underneath it, on its own rule. -->
-        <div class="flex items-center gap-5 md:gap-8">
-          <p class="display leading-[0.78] text-taupe2 text-[clamp(6.5rem,20vw,14rem)] shrink-0" data-count="1">0</p>
-          <p class="display text-bone leading-[0.82] text-[clamp(3.2rem,10vw,7rem)]">Doel</p>
-        </div>
-
-        <p class="mt-8 md:mt-10 pt-8 md:pt-10 border-t border-bone/20 display leading-[1.02] text-bone text-[clamp(1.5rem,3.2vw,2.5rem)] max-w-[22ch]">
-          Jou terugbrengen op het niveau waar je vandaan komt.
-          <span class="text-taupe2">En daarna voorbij.</span>
-        </p>
       </div>
 
     </div>
@@ -1236,426 +544,6 @@
   </div>
 </section>
 
-<!-- ============================================================
-     SECTION 06 — ZO WERKT HET
-     5-step horizontal timeline on ink with a connecting hairline.
-     ============================================================ -->
-<section id="traject" class="bg-ink grain py-24 md:py-36" aria-labelledby="traject-title">
-  <div class="grain-layer" aria-hidden="true"></div>
-  <div class="mx-auto max-w-[1500px] px-5 md:px-10">
-
-    <div class="grid gap-6 md:grid-cols-12 md:items-end mb-16 md:mb-24">
-      <div class="md:col-span-7">
-        <p class="eyebrow mb-8 reveal">Traject / 05</p>
-        <h2 id="traject-title" class="display d-xl text-bone reveal reveal-d1">Zo werkt het</h2>
-      </div>
-      <p class="md:col-span-5 text-[15px] text-bone/65 prose-body reveal reveal-d2">
-        Vijf stappen van eerste afspraak tot terug op niveau. Geen eindeloze reeks behandelingen —
-        een traject met een begin, een opbouw en een eindpunt.
-      </p>
-    </div>
-
-    <ol class="grid gap-12 sm:grid-cols-2 lg:grid-cols-5 lg:gap-6">
-
-      <li class="relative reveal">
-        <div class="relative overflow-hidden aspect-[4/5] frame-dark mb-6" data-imgwrap>
-          <img src="assets/img/traject/afspraak.jpg"
-               alt="De behandelruimte van Credo, klaar voor een eerste afspraak."
-               class="photo photo-soft absolute inset-0" loading="lazy" decoding="async"
-               onerror="imgFail(this,'S1')">
-        </div>
-        <div class="flex items-center gap-3 mb-4" aria-hidden="true">
-          <span class="step-dot"></span>
-          <span class="h-px flex-1 bg-bone/20"></span>
-        </div>
-        <p class="eyebrow mb-3">Stap 01</p>
-        <h3 class="display d-sm text-bone">Afspraak</h3>
-        <p class="mt-3 text-[14px] text-bone/65">Online geboekt in twee minuten, meestal binnen de week bij ons in de stoel.</p>
-      </li>
-
-      <li class="relative reveal reveal-d1">
-        <div class="relative overflow-hidden aspect-[4/5] frame-dark mb-6" data-imgwrap>
-          <img src="assets/img/traject/intake.jpg"
-               alt="Kinesist onderzoekt de knie van een patiënt tijdens de intake."
-               class="photo photo-soft absolute inset-0" loading="lazy" decoding="async"
-               onerror="imgFail(this,'S2')">
-        </div>
-        <div class="flex items-center gap-3 mb-4" aria-hidden="true">
-          <span class="step-dot"></span>
-          <span class="h-px flex-1 bg-bone/20"></span>
-        </div>
-        <p class="eyebrow mb-3">Stap 02</p>
-        <h3 class="display d-sm text-bone">Intake &amp; screening</h3>
-        <p class="mt-3 text-[14px] text-bone/65">Anamnese, klinisch onderzoek en testing. We zoeken de oorzaak, niet alleen de pijnplek.</p>
-      </li>
-
-      <li class="relative reveal reveal-d2">
-        <div class="relative overflow-hidden aspect-[4/5] frame-dark mb-6" data-imgwrap>
-          <img src="assets/img/traject/plan.jpg"
-               alt="Coach volgt een atleet op in de oefenzaal en stuurt het plan bij."
-               class="photo photo-soft absolute inset-0" loading="lazy" decoding="async"
-               onerror="imgFail(this,'S3')">
-        </div>
-        <div class="flex items-center gap-3 mb-4" aria-hidden="true">
-          <span class="step-dot"></span>
-          <span class="h-px flex-1 bg-bone/20"></span>
-        </div>
-        <p class="eyebrow mb-3">Stap 03</p>
-        <h3 class="display d-sm text-bone">Behandelplan</h3>
-        <p class="mt-3 text-[14px] text-bone/65">Doelen op korte en lange termijn, samen vastgelegd. Je weet waar je naartoe werkt.</p>
-      </li>
-
-      <li class="relative reveal reveal-d3">
-        <div class="relative overflow-hidden aspect-[4/5] frame-dark mb-6" data-imgwrap>
-          <img src="assets/img/traject/training.jpg"
-               alt="Atleet traint met een barbell als onderdeel van het revalidatietraject."
-               class="photo photo-soft absolute inset-0" loading="lazy" decoding="async"
-               onerror="imgFail(this,'S4')">
-        </div>
-        <div class="flex items-center gap-3 mb-4" aria-hidden="true">
-          <span class="step-dot"></span>
-          <span class="h-px flex-1 bg-bone/20"></span>
-        </div>
-        <p class="eyebrow mb-3">Stap 04</p>
-        <h3 class="display d-sm text-bone">Training</h3>
-        <p class="mt-3 text-[14px] text-bone/65">Manuele therapie en oefentherapie hand in hand. De belasting stijgt mee met je belastbaarheid.</p>
-      </li>
-
-      <li class="relative reveal reveal-d4">
-        <div class="relative overflow-hidden aspect-[4/5] frame-dark mb-6" data-imgwrap>
-          <img src="assets/img/traject/niveau.jpg"
-               alt="Atleet werkt met een medicijnbal op de indoorpiste, terug op niveau."
-               class="photo photo-soft absolute inset-0" loading="lazy" decoding="async"
-               onerror="imgFail(this,'S5')">
-        </div>
-        <div class="flex items-center gap-3 mb-4" aria-hidden="true">
-          <span class="step-dot"></span>
-          <span class="h-px flex-1 bg-transparent"></span>
-        </div>
-        <p class="eyebrow mb-3">Stap 05</p>
-        <h3 class="display d-sm text-bone">Terug op niveau</h3>
-        <p class="mt-3 text-[14px] text-bone/65">Getest en vrijgegeven. En als je wil: door naar performance training.</p>
-      </li>
-
-    </ol>
-  </div>
-</section>
-
-<!-- ============================================================
-     SECTION 07 — DE VLOER (studio)
-     Opinionated positioning block: what you do and don't find here,
-     followed by the three facility images.
-     ============================================================ -->
-<section id="studio" class="bg-bone text-ink on-light py-24 md:py-36 relative">
-  <div class="mx-auto max-w-[1500px] px-5 md:px-10">
-    <div class="flex gap-6 md:gap-12">
-
-      <!-- Vertical rotated label -->
-      <div class="hidden md:flex shrink-0 items-start pt-2">
-        <p class="vertical-label eyebrow tracking-[0.32em]">De vloer / Kapelstraat 89</p>
-      </div>
-
-      <div class="flex-1 min-w-0">
-        <div class="grid gap-6 md:grid-cols-12 md:items-end mb-14 md:mb-20">
-          <div class="md:col-span-7">
-            <p class="eyebrow mb-8 reveal">De vloer / 06</p>
-            <h2 class="display d-xl text-ink reveal reveal-d1">Je komt hier<br>om te werken.</h2>
-          </div>
-          <p class="md:col-span-5 text-[15px] text-ink/70 prose-body reveal reveal-d2">
-            Een behandeltafel alleen brengt je niet terug op het veld. Daarom staat bij ons de oefenzaal
-            in het midden en niet de wachtzaal. Je wordt getest, je krijgt gewicht in handen,
-            en je gaat buiten met werk voor de week erna.
-          </p>
-        </div>
-
-        <!-- What this practice is, and what it deliberately is not -->
-        <div class="grid md:grid-cols-2 border-t border-ink/15 mb-14 md:mb-20">
-
-          <div class="border-b md:border-r border-ink/15 py-10 md:py-12 md:pr-10 reveal">
-            <p class="eyebrow mb-8">Wat je hier vindt</p>
-            <ul class="space-y-5">
-              <li class="flex gap-4 text-[15px] text-ink/80">
-                <span class="display text-ink shrink-0 leading-none pt-[2px]" aria-hidden="true">/</span>
-                Een volledig uitgeruste oefenzaal met vrije gewichten, waar je écht mag belasten.
-              </li>
-              <li class="flex gap-4 text-[15px] text-ink/80">
-                <span class="display text-ink shrink-0 leading-none pt-[2px]" aria-hidden="true">/</span>
-                Een ijsbad en een aparte plek om te recupereren, niet als extraatje maar als deel van het plan.
-              </li>
-              <li class="flex gap-4 text-[15px] text-ink/80">
-                <span class="display text-ink shrink-0 leading-none pt-[2px]" aria-hidden="true">/</span>
-                Kinesisten die wekelijks zelf langs het veld staan bij een profclub.
-              </li>
-              <li class="flex gap-4 text-[15px] text-ink/80">
-                <span class="display text-ink shrink-0 leading-none pt-[2px]" aria-hidden="true">/</span>
-                Een traject met testmomenten, cijfers en een einddatum.
-              </li>
-            </ul>
-          </div>
-
-          <div class="border-b border-ink/15 py-10 md:py-12 md:pl-10 reveal reveal-d1">
-            <p class="eyebrow mb-8">Wat je hier niet vindt</p>
-            <ul class="space-y-5">
-              <li class="flex gap-4 text-[15px] text-ink/65">
-                <span class="display shrink-0 leading-none pt-[2px]" style="color: var(--taupe);" aria-hidden="true">&times;</span>
-                Tien minuten massage en tot volgende week.
-              </li>
-              <li class="flex gap-4 text-[15px] text-ink/65">
-                <span class="display shrink-0 leading-none pt-[2px]" style="color: var(--taupe);" aria-hidden="true">&times;</span>
-                Een blaadje met oefeningen dat je thuis nooit meer bovenhaalt.
-              </li>
-              <li class="flex gap-4 text-[15px] text-ink/65">
-                <span class="display shrink-0 leading-none pt-[2px]" style="color: var(--taupe);" aria-hidden="true">&times;</span>
-                Een wachtzaal als belangrijkste ruimte van het gebouw.
-              </li>
-              <li class="flex gap-4 text-[15px] text-ink/65">
-                <span class="display shrink-0 leading-none pt-[2px]" style="color: var(--taupe);" aria-hidden="true">&times;</span>
-                Vage beloftes over &lsquo;het wat rustiger aan doen&rsquo;.
-              </li>
-            </ul>
-          </div>
-        </div>
-
-        <div class="grid gap-4 md:gap-6 md:grid-cols-12 md:grid-rows-2">
-
-          <figure class="md:col-span-7 md:row-span-2 flex flex-col reveal">
-            <div class="relative overflow-hidden frame-light aspect-[16/11] md:aspect-auto md:flex-1 md:min-h-[420px]" data-imgwrap>
-              <img src="https://static.wixstatic.com/media/b42414_cf6a1c19bb9343ea8ef83e3bae540e5a~mv2.jpeg"
-                   alt="De oefenzaal van Credo met krachttoestellen en vrije gewichten."
-                   class="photo absolute inset-0" loading="lazy" decoding="async"
-                   onerror="imgFail(this,'06')">
-            </div>
-            <figcaption class="eyebrow mt-4">Oefenzaal</figcaption>
-          </figure>
-
-          <figure class="md:col-span-5 flex flex-col reveal reveal-d1">
-            <div class="relative overflow-hidden frame-light aspect-[16/11] md:aspect-auto md:flex-1 md:min-h-[200px]" data-imgwrap>
-                <img src="https://static.wixstatic.com/media/b42414_484cecfcdbde4c35a4e586a81f5fa746~mv2.jpeg"
-                     alt="De inkomhal van de praktijk in de Kapelstraat in Diepenbeek."
-                     class="photo absolute inset-0" loading="lazy" decoding="async"
-                     onerror="imgFail(this,'06')">
-              </div>
-              <figcaption class="eyebrow mt-4">Inkomhal</figcaption>
-            </figure>
-
-            <figure class="md:col-span-5 flex flex-col reveal reveal-d2">
-              <div class="relative overflow-hidden frame-light aspect-[16/11] md:aspect-auto md:flex-1 md:min-h-[200px]" data-imgwrap>
-                <img src="https://static.wixstatic.com/media/b42414_48490da28324410a877d31d7c8d2aa60~mv2.jpeg"
-                     alt="Het ijsbad en de relaxatieruimte voor herstel na inspanning."
-                     class="photo absolute inset-0" loading="lazy" decoding="async"
-                     onerror="imgFail(this,'06')">
-              </div>
-              <figcaption class="eyebrow mt-4">IJsbad &amp; relaxatie</figcaption>
-          </figure>
-
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ============================================================
-     SECTION 08 — SAMENWERKINGEN
-     Every partner gets its own framed card: logo on a bone tile
-     (so any logo reads, in colour on hover) plus the concrete Credo
-     connection — who does what there. That is what makes the row
-     credible rather than decorative.
-
-     >>> LOGOS NEEDED <<<
-     Red Flames and OH Leuven have no logo in the supplied set, so those
-     two cards use a typographic wordmark. Drop the files in and swap the
-     .partner-wordmark block for an <img> like the others.
-     ============================================================ -->
-<section id="partners" class="bg-ink grain py-24 md:py-36" aria-labelledby="partners-title">
-  <div class="grain-layer" aria-hidden="true"></div>
-  <div class="mx-auto max-w-[1500px] px-5 md:px-10">
-
-    <div class="grid gap-6 md:grid-cols-12 md:items-end mb-14 md:mb-20">
-      <div class="md:col-span-7">
-        <p class="eyebrow mb-8 reveal">Partners / 07</p>
-        <h2 id="partners-title" class="display d-xl text-bone reveal reveal-d1">
-          Onze mensen<br>staan langs het veld.
-        </h2>
-      </div>
-      <p class="md:col-span-5 text-[15px] text-bone/65 prose-body reveal reveal-d2">
-        Niet als sponsor, maar met een functie en een contract. Wat we in de eerste klasse
-        en bij de nationale ploeg leren over belasting, herstel en terugkeer na blessure,
-        gebruiken we hier op de vloer bij jou.
-      </p>
-    </div>
-
-    <ul class="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-
-      <!-- Sporting Hasselt -->
-      <li class="partner-card frame-dark flex flex-col reveal">
-        <div class="bg-bone h-32 flex items-center justify-center p-6" data-imgwrap>
-          <img src="https://static.wixstatic.com/media/8cedec_f5d040f24ed5485ba38bae0312419876~mv2.png"
-               alt="Logo van Sporting Hasselt" class="partner-logo max-h-20 w-auto object-contain"
-               loading="lazy" decoding="async" onerror="imgFail(this,'07')">
-        </div>
-        <div class="p-5 md:p-6 flex-1">
-          <h3 class="display d-sm text-bone">Sporting Hasselt</h3>
-          <p class="eyebrow mt-3">Fysieke &amp; medische staf</p>
-          <p class="mt-4 text-[13px] leading-relaxed text-bone/65">
-            Vier van ons zijn of waren aan de club verbonden: Tuur als physical coach (2020–2025),
-            Milan als strength coach, Dries als hoofdkinesitherapeut en Rimke bij de Ladies.
-          </p>
-        </div>
-      </li>
-
-      <!-- KRC Genk Ladies -->
-      <li class="partner-card frame-dark flex flex-col reveal reveal-d1">
-        <div class="bg-bone h-32 flex items-center justify-center p-6" data-imgwrap>
-          <img src="https://static.wixstatic.com/media/c19dfb_a5d049eb6f2f4f0980a8dd9b1a275195~mv2.png"
-               alt="Logo van KRC Genk Ladies" class="partner-logo max-h-20 w-auto object-contain"
-               loading="lazy" decoding="async" onerror="imgFail(this,'07')">
-        </div>
-        <div class="p-5 md:p-6 flex-1">
-          <h3 class="display d-sm text-bone">KRC Genk Ladies</h3>
-          <p class="eyebrow mt-3">Physical coaching</p>
-          <p class="mt-4 text-[13px] leading-relaxed text-bone/65">
-            Milan Vandecaetsbeek is er physical coach sinds 2024 en volgt de fysieke opbouw
-            van de kern doorheen het seizoen.
-          </p>
-        </div>
-      </li>
-
-      <!-- Red Flames — LOGO NEEDED, typographic wordmark for now -->
-      <li class="partner-card frame-dark flex flex-col reveal reveal-d2">
-        <div class="bg-bone h-32 flex items-center justify-center p-6">
-          <span class="partner-wordmark display text-[clamp(1.5rem,4vw,2rem)] text-ink text-center leading-none">Red Flames</span>
-        </div>
-        <div class="p-5 md:p-6 flex-1">
-          <h3 class="display d-sm text-bone">Red Flames</h3>
-          <p class="eyebrow mt-3">Nationale ploeg — physical coaching</p>
-          <p class="mt-4 text-[13px] leading-relaxed text-bone/65">
-            Sinds 2025 staat Milan als physical coach bij de Belgische nationale vrouwenploeg.
-            Internationaal niveau, dezelfde principes.
-          </p>
-        </div>
-      </li>
-
-      <!-- OH Leuven — LOGO NEEDED, typographic wordmark for now -->
-      <li class="partner-card frame-dark flex flex-col reveal reveal-d3">
-        <div class="bg-bone h-32 flex items-center justify-center p-6">
-          <span class="partner-wordmark display text-[clamp(1.5rem,4vw,2rem)] text-ink text-center leading-none">OH Leuven</span>
-        </div>
-        <div class="p-5 md:p-6 flex-1">
-          <h3 class="display d-sm text-bone">OH Leuven</h3>
-          <p class="eyebrow mt-3">Physical coaching</p>
-          <p class="mt-4 text-[13px] leading-relaxed text-bone/65">
-            Tuur Vanderstukken is er physical coach sinds 2025, na vijf seizoenen
-            bij Sporting Hasselt.
-          </p>
-        </div>
-      </li>
-
-      <!-- Torpedo Hasselt -->
-      <li class="partner-card frame-dark flex flex-col reveal">
-        <div class="bg-bone h-32 flex items-center justify-center p-6" data-imgwrap>
-          <img src="https://static.wixstatic.com/media/b42414_c1f9187c6cc04d6bb2ce53a365c331b5~mv2.png"
-               alt="Logo van Torpedo Hasselt" class="partner-logo max-h-20 w-auto object-contain"
-               loading="lazy" decoding="async" onerror="imgFail(this,'07')">
-        </div>
-        <div class="p-5 md:p-6 flex-1">
-          <h3 class="display d-sm text-bone">Torpedo Hasselt</h3>
-          <p class="eyebrow mt-3">Clubkinesitherapie</p>
-          <p class="mt-4 text-[13px] leading-relaxed text-bone/65">
-            Thomas Casier is kinesitherapeut van de club en volgt de spelers
-            van blessure tot terugkeer.
-          </p>
-        </div>
-      </li>
-
-      <!-- 6D Sports Nutrition -->
-      <li class="partner-card frame-dark flex flex-col reveal reveal-d1">
-        <div class="bg-bone h-32 flex items-center justify-center p-6" data-imgwrap>
-          <img src="https://static.wixstatic.com/media/8cedec_c79d613aa9b04da18cea8b89fbca31a4~mv2.png"
-               alt="Logo van 6D Sports Nutrition" class="partner-logo max-h-20 w-auto object-contain"
-               loading="lazy" decoding="async" onerror="imgFail(this,'07')">
-        </div>
-        <div class="p-5 md:p-6 flex-1">
-          <h3 class="display d-sm text-bone">6D Sports Nutrition</h3>
-          <p class="eyebrow mt-3">Sportvoeding</p>
-          <p class="mt-4 text-[13px] leading-relaxed text-bone/65">
-            Onze partner voor sportvoeding en supplementatie, afgestemd op je
-            trainingsbelasting en je wedstrijdkalender.
-          </p>
-        </div>
-      </li>
-
-      <!-- Forward Hasselt -->
-      <li class="partner-card frame-dark flex flex-col reveal reveal-d2">
-        <div class="bg-bone h-32 flex items-center justify-center p-6" data-imgwrap>
-          <img src="https://static.wixstatic.com/media/c19dfb_7baa96e9eeaf47fcbd0806b819ff4636~mv2.png"
-               alt="Logo van Forward Hasselt" class="partner-logo max-h-20 w-auto object-contain"
-               loading="lazy" decoding="async" onerror="imgFail(this,'07')">
-        </div>
-        <div class="p-5 md:p-6 flex-1">
-          <h3 class="display d-sm text-bone">Forward Hasselt</h3>
-          <p class="eyebrow mt-3">Partner</p>
-          <p class="mt-4 text-[13px] leading-relaxed text-bone/65">
-            Samen zetten we in op sport en beweging in de regio Hasselt.
-          </p>
-          <a href="https://www.forwardhasselt.be/" target="_blank" rel="noopener noreferrer"
-             class="link-line mt-5 text-bone">Bekijk
-            <svg width="16" height="9" viewBox="0 0 16 9" fill="none" aria-hidden="true"><path d="M0 4.5h14M10.5 1L14 4.5 10.5 8" stroke="currentColor" stroke-width="1.3"/></svg>
-          </a>
-        </div>
-      </li>
-
-      <!-- Open invitation, fills the eighth cell -->
-      <li class="partner-card frame-dark flex flex-col justify-between p-5 md:p-6 reveal reveal-d3">
-        <div>
-          <p class="eyebrow">Club of federatie</p>
-          <h3 class="display d-sm text-bone mt-3">Samenwerken?</h3>
-          <p class="mt-4 text-[13px] leading-relaxed text-bone/65">
-            We begeleiden ploegen op vlak van fysieke opbouw, blessurepreventie
-            en return to play. Laat het ons weten.
-          </p>
-        </div>
-        <a href="#contact" class="link-line mt-8 text-bone">Contacteer ons
-          <svg width="16" height="9" viewBox="0 0 16 9" fill="none" aria-hidden="true"><path d="M0 4.5h14M10.5 1L14 4.5 10.5 8" stroke="currentColor" stroke-width="1.3"/></svg>
-        </a>
-      </li>
-
-    </ul>
-  </div>
-</section>
-
-<!-- ============================================================
-     SECTION 09 — BOOKING CTA
-     Full-bleed black-and-white photo, huge headline, two pills.
-     ============================================================ -->
-<section class="relative bg-ink grain overflow-hidden" aria-labelledby="cta-title">
-  <div class="grain-layer" aria-hidden="true"></div>
-
-  <div class="grain-pin absolute inset-0 z-0" data-imgwrap>
-    <img src="https://static.wixstatic.com/media/8cedec_5bd270f33c744e889c92226536ccfc62~mv2.jpg"
-         alt="Atleet in volle inspanning tijdens een trainingssessie bij Credo."
-         class="photo w-full h-full" loading="lazy" decoding="async"
-         onerror="imgFail(this,'08')">
-    <div class="absolute inset-0 bg-ink/75" aria-hidden="true"></div>
-  </div>
-
-  <div class="relative z-10 mx-auto max-w-[1500px] px-5 md:px-10 py-28 md:py-44">
-    <div class="frame-dark p-6 md:p-14">
-      <p class="eyebrow mb-10 reveal">Afspraak / 08</p>
-      <h2 id="cta-title" class="display d-hero text-bone reveal reveal-d1">
-        Klaar om terug<br>te komen?
-      </h2>
-      <p class="mt-8 text-[15px] md:text-base text-bone/75 prose-body reveal reveal-d2">
-        Boek online een eerste afspraak of stuur ons een bericht. We plannen een grondige intake in
-        en vertellen je eerlijk wat er nodig is — en hoelang het gaat duren.
-      </p>
-      <div class="mt-10 flex flex-wrap gap-3 reveal reveal-d3">
-        <a href="https://altagenda.crossuite.com/credokinesitherapie/step1" target="_blank" rel="noopener noreferrer"
-           class="btn btn-bone">Boek een afspraak</a>
-        <a href="#contact" class="btn btn-ghost">Contacteer ons</a>
-      </div>
-    </div>
-  </div>
-</section>
 
 </main>
 
@@ -1862,256 +750,7 @@
 }
 </script>
 
-<!-- ============================================================
-     JS — header state, mobile menu, reveal, parallax, count-up,
-     team tap toggles, newsletter success state.
-     No localStorage / sessionStorage anywhere.
-     ============================================================ -->
-<script>
-(function () {
-  'use strict';
-
-  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  /* ---------- Footer year ---------- */
-  var yearEl = document.getElementById('year');
-  if (yearEl) yearEl.textContent = String(new Date().getFullYear());
-
-  /* ---------- Header: transparent → solid ink ---------- */
-  var header = document.getElementById('site-header');
-  function onScrollHeader() {
-    if (!header) return;
-    header.classList.toggle('is-solid', window.scrollY > 40);
-  }
-  onScrollHeader();
-
-  /* ---------- Mobile menu ---------- */
-  var menuBtn   = document.getElementById('menu-btn');
-  var menu      = document.getElementById('mobile-menu');
-  var iconOpen  = document.getElementById('menu-icon-open');
-  var iconClose = document.getElementById('menu-icon-close');
-
-  function setMenu(open) {
-    if (!menu || !menuBtn) return;
-    menu.hidden = !open;
-    menuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
-    menuBtn.setAttribute('aria-label', open ? 'Menu sluiten' : 'Menu openen');
-    if (iconOpen)  iconOpen.classList.toggle('hidden', open);
-    if (iconClose) iconClose.classList.toggle('hidden', !open);
-    if (header && open) header.classList.add('is-solid');
-    else onScrollHeader();
-  }
-
-  if (menuBtn) {
-    menuBtn.addEventListener('click', function () {
-      setMenu(menu.hidden);
-    });
-  }
-  if (menu) {
-    menu.addEventListener('click', function (e) {
-      if (e.target.closest('a')) setMenu(false);
-    });
-  }
-  document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape' && menu && !menu.hidden) {
-      setMenu(false);
-      menuBtn.focus();
-    }
-  });
-  // Close the menu if the viewport grows past the lg breakpoint
-  window.addEventListener('resize', function () {
-    if (window.innerWidth >= 1024 && menu && !menu.hidden) setMenu(false);
-  });
-
-  /* ---------- Scroll reveal ---------- */
-  var revealEls = document.querySelectorAll('.reveal');
-  if (reduce || !('IntersectionObserver' in window)) {
-    revealEls.forEach(function (el) { el.classList.add('is-visible'); });
-  } else {
-    var revealObserver = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('is-visible');
-          revealObserver.unobserve(entry.target);
-        }
-      });
-    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
-    revealEls.forEach(function (el) { revealObserver.observe(el); });
-  }
-
-  /* ---------- Stat count-up ---------- */
-  var counters = document.querySelectorAll('[data-count]');
-  function runCount(el) {
-    var target = parseFloat(el.getAttribute('data-count')) || 0;
-    var suffix = el.getAttribute('data-suffix') || '';
-    if (reduce) { el.textContent = target + suffix; return; }
-    var duration = 1400;
-    var start = null;
-    function step(ts) {
-      if (start === null) start = ts;
-      var p = Math.min((ts - start) / duration, 1);
-      var eased = 1 - Math.pow(1 - p, 3);
-      el.textContent = Math.round(target * eased) + suffix;
-      if (p < 1) requestAnimationFrame(step);
-    }
-    requestAnimationFrame(step);
-  }
-  if (!('IntersectionObserver' in window)) {
-    counters.forEach(function (el) {
-      el.textContent = (el.getAttribute('data-count') || '') + (el.getAttribute('data-suffix') || '');
-    });
-  } else {
-    var countObserver = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting) {
-          runCount(entry.target);
-          countObserver.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.4 });
-    counters.forEach(function (el) { countObserver.observe(el); });
-  }
-
-  /* ---------- Hero video: autoplay loop, pause control, reduced motion ---------- */
-  var heroVideo  = document.getElementById('hero-video');
-  var vToggle    = document.getElementById('video-toggle');
-  var vPause     = document.getElementById('vt-pause');
-  var vPlay      = document.getElementById('vt-play');
-
-  function setVideoUI(playing) {
-    if (!vToggle) return;
-    vToggle.setAttribute('aria-label', playing ? 'Pauzeer de achtergrondvideo' : 'Speel de achtergrondvideo af');
-    if (vPause) vPause.classList.toggle('hidden', !playing);
-    if (vPlay)  vPlay.classList.toggle('hidden', playing);
-  }
-
-  if (heroVideo && vToggle) {
-    // The control only appears once we know there is real footage playing —
-    // with no video file the poster image shows and the button stays hidden.
-    heroVideo.addEventListener('playing', function () {
-      vToggle.hidden = false;
-      vToggle.classList.add('flex');
-      setVideoUI(true);
-    }, { once: true });
-
-    if (reduce) {
-      heroVideo.autoplay = false;
-      heroVideo.pause();
-    } else {
-      // Some browsers reject autoplay; ignore the rejection and keep the poster.
-      var pr = heroVideo.play();
-      if (pr && typeof pr.catch === 'function') pr.catch(function () {});
-    }
-
-    vToggle.addEventListener('click', function () {
-      if (heroVideo.paused) { heroVideo.play().catch(function () {}); setVideoUI(true); }
-      else { heroVideo.pause(); setVideoUI(false); }
-    });
-  }
-
-  /* ---------- Hero parallax (slow, transform only) ---------- */
-  var heroImg = heroVideo || document.getElementById('hero-img');
-  var ticking = false;
-  function parallax() {
-    if (!heroImg || reduce) return;
-    var y = window.scrollY;
-    if (y < window.innerHeight * 1.2) {
-      heroImg.style.transform = 'translate3d(0,' + (y * 0.16).toFixed(2) + 'px,0)';
-    }
-  }
-  function onScroll() {
-    if (ticking) return;
-    ticking = true;
-    requestAnimationFrame(function () {
-      onScrollHeader();
-      parallax();
-      ticking = false;
-    });
-  }
-  window.addEventListener('scroll', onScroll, { passive: true });
-  parallax();
-
-  /* ---------- Converging hairlines draw in with the stats ---------- */
-  var converge = document.querySelector('.converge');
-  if (converge) {
-    if (reduce || !('IntersectionObserver' in window)) {
-      converge.classList.add('is-drawn');
-    } else {
-      var cObs = new IntersectionObserver(function (entries) {
-        entries.forEach(function (entry) {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('is-drawn');
-            cObs.unobserve(entry.target);
-          }
-        });
-      }, { threshold: 0.3 });
-      cObs.observe(converge);
-    }
-  }
-
-  /* ---------- Photo-filled display type ---------- */
-  document.querySelectorAll('[data-fill]').forEach(function (el) {
-    var url = el.getAttribute('data-fill');
-    if (!url) return;
-    var pre = new Image();
-    pre.onload = function () {
-      el.style.setProperty('--credo-fill', 'url("' + url + '")');
-      el.classList.add('has-fill');
-    };
-    pre.src = url;
-  });
-
-  /* ---------- Team cards: tap to reveal on touch devices ---------- */
-  document.querySelectorAll('.team-toggle').forEach(function (btn) {
-    btn.addEventListener('click', function () {
-      var card = btn.closest('.team-card');
-      if (!card) return;
-      var open = card.classList.toggle('is-open');
-      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
-    });
-  });
-
-  /* ---------- Newsletter (front-end only, no storage) ---------- */
-  var form   = document.getElementById('newsletter-form');
-  var status = document.getElementById('newsletter-status');
-  if (form && status) {
-    form.addEventListener('submit', function (e) {
-      e.preventDefault();
-      var input = document.getElementById('newsletter-email');
-      var value = (input.value || '').trim();
-      var valid = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(value);
-      if (!valid) {
-        status.textContent = 'Vul een geldig e-mailadres in.';
-        status.className = 'mt-3 text-[13px] text-bone/70 min-h-[20px]';
-        input.setAttribute('aria-invalid', 'true');
-        input.focus();
-        return;
-      }
-      input.removeAttribute('aria-invalid');
-      status.textContent = 'Bedankt — je bent ingeschreven.';
-      status.className = 'mt-3 text-[13px] text-taupe2 min-h-[20px]';
-      form.reset();
-    });
-  }
-
-  /* ---------- Smooth anchor scrolling with header offset ---------- */
-  document.querySelectorAll('a[href^="#"]').forEach(function (a) {
-    a.addEventListener('click', function (e) {
-      var id = a.getAttribute('href');
-      if (!id || id === '#') return;
-      var target = document.querySelector(id);
-      if (!target) return;
-      e.preventDefault();
-      var top = target.getBoundingClientRect().top + window.scrollY - 72;
-      window.scrollTo({ top: top, behavior: reduce ? 'auto' : 'smooth' });
-      // move keyboard focus along with the view
-      target.setAttribute('tabindex', '-1');
-      target.focus({ preventScroll: true });
-    });
-  });
-
-})();
-</script>
+<script src="assets/js/credo.js" defer></script>
 
 </body>
 </html>

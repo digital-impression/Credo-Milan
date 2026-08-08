@@ -1,0 +1,310 @@
+  :root {
+    --ink:   #0D0D0D;
+    --bone:  #F4F1EA;
+    --taupe: #7C7466;        /* brand accent: dividers, dots, button hover */
+    /* Two tints of the accent for TEXT, so 11px eyebrows clear WCAG AA
+       (the base taupe lands at 4.2:1 on both surfaces — just under 4.5). */
+    --taupe-on-dark:  #8C8474;   /* 5.25:1 on ink  */
+    --taupe-on-light: #6E6757;   /* 4.98:1 on bone */
+    --header-h: 72px;
+  }
+
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  body {
+    background: var(--ink);
+    color: var(--bone);
+    font-family: 'Inter', Helvetica, Arial, sans-serif;
+    line-height: 1.7;
+    overflow-x: hidden;
+    /* room for the sticky mobile action bar */
+    padding-bottom: 64px;
+  }
+  @media (min-width: 768px) { body { padding-bottom: 0; } }
+
+  /* Anchor targets clear the fixed header */
+  section[id] { scroll-margin-top: var(--header-h); }
+
+  /* ---------- Typography primitives ---------- */
+  .display {
+    font-family: 'Anton', 'Arial Narrow', Impact, sans-serif;
+    font-weight: 400;
+    text-transform: uppercase;
+    line-height: 0.9;
+    letter-spacing: 0.005em;
+    /* 'anywhere' (not 'break-word') so a long word also shrinks the
+       min-content size — otherwise it widens its grid track at 320px. */
+    overflow-wrap: anywhere;
+  }
+  /* Grid/flex children must be allowed to shrink below their content width */
+  .grid > *, .flex > * { min-width: 0; }
+  .d-hero  { font-size: clamp(3.1rem, 13vw, 7rem); }
+  .d-xl    { font-size: clamp(2.6rem, 8.5vw, 5.5rem); }
+  .d-lg    { font-size: clamp(2.1rem, 6vw, 4rem); }
+  .d-md    { font-size: clamp(1.6rem, 4vw, 2.6rem); }
+  .d-sm    { font-size: clamp(1.15rem, 2.4vw, 1.6rem); }
+  .d-num   { font-size: clamp(3rem, 9vw, 6.5rem); }
+
+  /* CREDO wordmark filled with photography. Stays solid ink until JS has
+     confirmed the image decoded, so a failed fetch never yields blank text. */
+  .credo-word {
+    font-size: clamp(4rem, 20vw, 16rem);
+    line-height: 0.82;
+    color: var(--ink);
+  }
+  .credo-word.has-fill {
+    background-image: linear-gradient(rgba(13,13,13,.42), rgba(13,13,13,.42)), var(--credo-fill);
+    background-size: cover;
+    background-position: center 35%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    filter: grayscale(1) contrast(1.15);
+  }
+
+  .eyebrow {
+    font-size: 11px;
+    line-height: 1.4;
+    text-transform: uppercase;
+    letter-spacing: 0.25em;
+    color: var(--taupe-on-dark);
+    font-weight: 500;
+    overflow-wrap: anywhere;
+  }
+  .on-light .eyebrow { color: var(--taupe-on-light); }
+  .eyebrow-light { color: #8F8877; }
+
+  .prose-body { max-width: 62ch; }
+
+  /* ---------- Hairlines & frames ---------- */
+  .frame-dark  { border: 1px solid rgba(244,241,234,.18); }
+  .frame-light { border: 1px solid rgba(13,13,13,.18); }
+  .rule-dark   { border-top: 1px solid rgba(244,241,234,.16); }
+  .rule-light  { border-top: 1px solid rgba(13,13,13,.16); }
+
+  /* ---------- Film grain over dark sections ---------- */
+  .grain { position: relative; }
+  .grain > .grain-layer {
+    position: absolute; inset: 0; pointer-events: none; z-index: 2;
+    opacity: .055; mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  /* Lift ordinary content above the grain. This is more specific than
+     Tailwind's .absolute/.z-* utilities, so any child that is meant to be
+     pinned to the section box — a full-bleed video or photo layer, the video
+     control — must opt out with .grain-pin or it drops back into the flow. */
+  .grain > *:not(.grain-layer):not(.grain-pin) { position: relative; z-index: 3; }
+
+  /* ---------- Photography treatment ---------- */
+  .photo { filter: grayscale(1) contrast(1.08); display: block; width: 100%; height: 100%; object-fit: cover; }
+  .photo-soft { filter: grayscale(1) contrast(1.04) brightness(.92); }
+
+  /* ---------- Image failure fallback: flat ink block with the section number ---------- */
+  .img-failed { background: #0D0D0D; position: relative; min-height: 180px; }
+  .img-failed::after {
+    content: attr(data-fallback);
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Anton', Impact, sans-serif;
+    font-size: clamp(2rem, 6vw, 4.5rem);
+    letter-spacing: .06em;
+    color: rgba(244,241,234,.16);
+    border: 1px solid rgba(244,241,234,.10);
+  }
+
+  /* ---------- Buttons (pills — the only rounded element on the page) ---------- */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: .6rem;
+    border-radius: 999px;
+    padding: .85rem 1.6rem;
+    font-size: 12px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: .16em;
+    transition: background-color .25s ease, color .25s ease, border-color .25s ease;
+    text-align: center;
+  }
+  .btn-bone   { background: var(--bone); color: var(--ink); border: 1px solid var(--bone); }
+  .btn-bone:hover   { background: var(--taupe); border-color: var(--taupe); color: var(--bone); }
+  .btn-ink    { background: var(--ink); color: var(--bone); border: 1px solid var(--ink); }
+  .btn-ink:hover    { background: var(--taupe); border-color: var(--taupe); }
+  .btn-ghost  { background: transparent; color: var(--bone); border: 1px solid rgba(244,241,234,.45); }
+  .btn-ghost:hover  { background: var(--bone); color: var(--ink); border-color: var(--bone); }
+  .btn-ghost-dark { background: transparent; color: var(--ink); border: 1px solid rgba(13,13,13,.4); }
+  .btn-ghost-dark:hover { background: var(--ink); color: var(--bone); }
+
+  /* Text link with a hairline underline that slides */
+  .link-line {
+    display: inline-flex; align-items: center; gap: .55rem;
+    font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .18em;
+    padding-bottom: 4px; border-bottom: 1px solid currentColor;
+    transition: color .25s ease, gap .25s ease;
+  }
+  .link-line:hover { gap: 1rem; color: var(--taupe-on-dark); }
+
+  /* ---------- Focus states (visible everywhere) ---------- */
+  a:focus-visible, button:focus-visible, input:focus-visible, summary:focus-visible, [tabindex]:focus-visible {
+    outline: 2px solid #C9BFA6;
+    outline-offset: 3px;
+  }
+  .on-light a:focus-visible, .on-light button:focus-visible, .on-light input:focus-visible {
+    outline-color: #0D0D0D;
+  }
+  /* Visually hidden until focused — clip() rather than a negative offset, so it
+     never contributes to horizontal scroll width on small screens. */
+  .skip-link {
+    position: absolute; width: 1px; height: 1px; overflow: hidden;
+    clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap;
+  }
+  .skip-link:focus {
+    position: fixed; left: 12px; top: 12px; z-index: 100;
+    width: auto; height: auto; overflow: visible; clip: auto; clip-path: none;
+    background: var(--bone); color: var(--ink); padding: .75rem 1.25rem; font-size: 12px;
+    text-transform: uppercase; letter-spacing: .16em; font-weight: 600;
+  }
+
+  /* ---------- Vertical rotated label ---------- */
+  .vertical-label {
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    white-space: nowrap;
+  }
+
+  /* ---------- Scroll reveal ---------- */
+  .reveal { opacity: 0; transform: translateY(28px); transition: opacity .8s cubic-bezier(.22,.61,.36,1), transform .8s cubic-bezier(.22,.61,.36,1); }
+  .reveal.is-visible { opacity: 1; transform: none; }
+  /* Fly-in variant: comes in from the side instead of rising. Used where a
+     row of items should read as one sweep — the three values, the roster.
+     Declared after .reveal so it overrides that transform at equal weight. */
+  .reveal-fly { transform: translate3d(-46px, 0, 0); }
+  .reveal-fly.is-visible { transform: none; }
+  @media (prefers-reduced-motion: reduce) { .reveal-fly { transform: none !important; } }
+
+  .reveal-d1 { transition-delay: .08s; }
+  .reveal-d2 { transition-delay: .16s; }
+  .reveal-d3 { transition-delay: .24s; }
+  .reveal-d4 { transition-delay: .32s; }
+  .reveal-d5 { transition-delay: .40s; }
+
+  /* ---------- Header ---------- */
+  #site-header { transition: background-color .35s ease, border-color .35s ease; }
+  #site-header.is-solid { background: rgba(13,13,13,.96); border-bottom-color: rgba(244,241,234,.14); }
+  .nav-link { font-size: 11px; text-transform: uppercase; letter-spacing: .2em; font-weight: 500; transition: color .2s ease; }
+  .nav-link:hover { color: var(--taupe2); }
+
+  /* ---------- Team cards ---------- */
+  .team-card .team-photo { filter: grayscale(1) contrast(1.1); transition: filter .5s ease, transform .8s cubic-bezier(.22,.61,.36,1); }
+  .team-card:hover .team-photo,
+  .team-card:focus-within .team-photo,
+  .team-card.is-open .team-photo { filter: grayscale(0) contrast(1.02); transform: scale(1.03); }
+  .team-panel {
+    position: absolute; inset: 0; z-index: 4;
+    background: rgba(13,13,13,.9);
+    padding: 1.25rem;
+    display: flex; flex-direction: column; justify-content: flex-end;
+    opacity: 0; transition: opacity .35s ease;
+    pointer-events: none;
+    overflow: auto;
+  }
+  .team-card:hover .team-panel,
+  .team-card:focus-within .team-panel,
+  .team-card.is-open .team-panel { opacity: 1; }
+  .team-toggle { position: absolute; inset: 0; z-index: 5; width: 100%; height: 100%; background: transparent; border: 0; cursor: pointer; }
+  .team-toggle span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+  /* The credentials panel used to have no affordance — nothing on the card
+     said it was there. This badge is that cue, and it steps aside once the
+     panel is up. */
+  .team-cue {
+    position: absolute; z-index: 5; right: .85rem; top: .85rem;
+    display: flex; align-items: center; justify-content: center;
+    width: 2.1rem; height: 2.1rem;
+    background: rgba(13,13,13,.6); color: var(--bone);
+    border: 1px solid rgba(244,241,234,.4);
+    font-size: 16px; line-height: 1;
+    transition: opacity .3s ease, background-color .3s ease;
+  }
+  .team-card:hover .team-cue,
+  .team-card:focus-within .team-cue,
+  .team-card.is-open .team-cue { opacity: 0; }
+
+  /* Portrait carries the name rather than captioning it underneath — the
+     grid read as a contact sheet when the type sat outside the frame. */
+  .team-media { position: relative; overflow: hidden; aspect-ratio: 4 / 5; background: var(--ink); }
+  .team-scrim {
+    position: absolute; inset: 0; z-index: 2; pointer-events: none;
+    background: linear-gradient(to top,
+      rgba(13,13,13,.94) 0%, rgba(13,13,13,.72) 22%, rgba(13,13,13,.18) 48%, rgba(13,13,13,0) 68%);
+  }
+  .team-caption {
+    position: absolute; z-index: 6; inset-inline: 0; bottom: 0;
+    padding: 1.15rem 1.15rem 1.25rem;
+    pointer-events: none;                 /* clicks fall through to .team-toggle */
+  }
+  .team-name {
+    font-size: clamp(1.5rem, 2.6vw, 2.15rem);
+    line-height: .92; color: var(--bone);
+  }
+  .team-no {
+    position: absolute; z-index: 3; top: .9rem; left: 1.15rem;
+    font-size: 11px; letter-spacing: .22em; color: rgba(244,241,234,.75);
+  }
+  /* Keep the credentials clear of the name that stays visible below them. */
+  .team-panel { padding-bottom: 6.75rem; justify-content: flex-start; padding-top: 1.25rem; }
+
+  .team-chip {
+    display: inline-block;
+    border: 1px solid rgba(13,13,13,.22);
+    padding: .34rem .7rem;
+    font-size: 10px; letter-spacing: .16em; text-transform: uppercase;
+    color: rgba(13,13,13,.7);
+  }
+
+  /* ---------- Converging hairlines in the stats section ---------- */
+  .converge path {
+    fill: none;
+    stroke: rgba(244,241,234,.28);
+    stroke-width: 1;
+    vector-effect: non-scaling-stroke;
+    stroke-dasharray: 260;
+    stroke-dashoffset: 260;
+    transition: stroke-dashoffset 1.5s cubic-bezier(.22,.61,.36,1);
+  }
+  .converge.is-drawn path { stroke-dashoffset: 0; }
+  .converge path:nth-child(2) { transition-delay: .12s; }
+  .converge path:nth-child(3) { transition-delay: .24s; }
+  .converge path:nth-child(4) { transition-delay: .36s; }
+  @media (prefers-reduced-motion: reduce) {
+    .converge path { stroke-dashoffset: 0; transition: none; }
+  }
+
+  /* ---------- Step timeline ---------- */
+  .step-dot { width: 9px; height: 9px; background: var(--taupe); border-radius: 999px; }
+
+  /* ---------- Partner cards ----------
+     Logos sit on a bone tile so light and dark marks both read; they
+     return to full colour when the card is hovered or focused. */
+  .partner-logo { filter: grayscale(1) contrast(1.05); opacity: .72; transition: filter .35s ease, opacity .35s ease; }
+  .partner-card:hover .partner-logo,
+  .partner-card:focus-within .partner-logo { filter: none; opacity: 1; }
+  .partner-card { transition: border-color .35s ease, background-color .35s ease; }
+  .partner-card:hover, .partner-card:focus-within { border-color: rgba(244,241,234,.45); background: #141414; }
+  .partner-wordmark { letter-spacing: .01em; }
+  /* failed logo inside a bone tile: keep the fallback block tile-sized */
+  .partner-card .img-failed { min-height: 5rem; }
+  .partner-card .img-failed::after { font-size: 1.25rem; }
+
+  /* ---------- Accordion ---------- */
+  details > summary { list-style: none; cursor: pointer; }
+  details > summary::-webkit-details-marker { display: none; }
+  details[open] .acc-plus { transform: rotate(45deg); }
+  .acc-plus { transition: transform .3s ease; display: inline-block; }
+
+  /* ---------- Mobile menu ---------- */
+  #mobile-menu[hidden] { display: none; }
+
+  /* ---------- Reduced motion ---------- */
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
+    * { animation-duration: .001ms !important; transition-duration: .001ms !important; }
+    .team-card:hover .team-photo { transform: none; }
+  }
