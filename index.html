@@ -100,8 +100,12 @@
 
     <a href="rehab/" class="door group relative flex-1 min-h-[52svh] lg:min-h-0 overflow-hidden bg-ink"
        aria-label="Naar Credo Rehab — kinesitherapie en revalidatie">
-      <img src="assets/img/keuze-rehab.jpg" alt=""
-           class="door-photo absolute inset-0 w-full h-full object-cover" loading="eager" decoding="async">
+      <video class="door-photo absolute inset-0 w-full h-full object-cover"
+             poster="assets/img/keuze-rehab.jpg"
+             autoplay muted loop playsinline preload="metadata" aria-hidden="true" tabindex="-1">
+        <source src="assets/video/deur-rehab.webm" type="video/webm">
+        <source src="assets/video/deur-rehab.mp4" type="video/mp4">
+      </video>
       <span class="absolute inset-0 bg-ink/55 group-hover:bg-ink/35 transition-colors duration-500" aria-hidden="true"></span>
       <span class="absolute inset-0 bg-gradient-to-t from-ink via-ink/40 to-transparent" aria-hidden="true"></span>
 
@@ -120,8 +124,12 @@
 
     <a href="performance/" class="door group relative flex-1 min-h-[52svh] lg:min-h-0 overflow-hidden bg-ink"
        aria-label="Naar Credo Performance — sportscreening en krachttraining">
-      <img src="assets/img/keuze-performance.jpg" alt=""
-           class="door-photo absolute inset-0 w-full h-full object-cover" loading="eager" decoding="async">
+      <video class="door-photo absolute inset-0 w-full h-full object-cover"
+             poster="assets/img/keuze-performance.jpg"
+             autoplay muted loop playsinline preload="metadata" aria-hidden="true" tabindex="-1">
+        <source src="assets/video/deur-performance.webm" type="video/webm">
+        <source src="assets/video/deur-performance.mp4" type="video/mp4">
+      </video>
       <span class="absolute inset-0 bg-ink/55 group-hover:bg-ink/35 transition-colors duration-500" aria-hidden="true"></span>
       <span class="absolute inset-0 bg-gradient-to-t from-ink via-ink/40 to-transparent" aria-hidden="true"></span>
 
@@ -149,12 +157,23 @@
     <div class="frame-light p-6 md:p-10 lg:p-14">
 
       <p class="eyebrow mb-8 md:mb-10 reveal">Credo / 01</p>
-      <h2 class="display credo-word reveal" data-fill="assets/img/credo-wordmark-fill.jpg">Credo</h2>
+      <h2 class="display credo-word reveal">Credo</h2>
 
       <div class="mt-6 md:mt-8 flex flex-wrap items-baseline gap-x-8 gap-y-3 reveal reveal-d1">
         <p class="font-body text-[15px] md:text-lg text-ink/65 tracking-wide">[ˈkreeːdoː]</p>
         <p class="eyebrow">Latijns voor &lsquo;ik geloof&rsquo;</p>
       </div>
+
+      <!-- Wide band instead of a photo inside the letterforms. At this weight
+           the type swallows any image, so the photo gets its own space. -->
+      <figure class="mt-8 md:mt-10 reveal reveal-d1">
+        <div class="relative overflow-hidden aspect-[21/9] frame-light" data-imgwrap>
+          <img src="assets/img/band-home.jpg" alt="De oefenzaal van Credo met krachtrek, mosmuur en indoorpiste."
+               class="photo absolute inset-0" loading="lazy" decoding="async"
+               onerror="imgFail(this,'02')">
+        </div>
+        <figcaption class="eyebrow mt-4">Kapelstraat 89 — Diepenbeek</figcaption>
+      </figure>
 
       <div class="mt-10 md:mt-14 grid gap-10 lg:grid-cols-12 lg:gap-14">
         <div class="lg:col-span-7 reveal">
@@ -544,6 +563,46 @@
   </div>
 </section>
 
+
+<!-- ============================================================
+     UIT DE ZAAL
+     Geen echte Instagram-feed: die vraagt een Meta-app en een token die de
+     praktijk moet aanmaken, en zonder dat kan er niets live opgehaald worden.
+     Dit is een vaste strip uit hun eigen materiaal met een doorverwijzing.
+     Wordt de feed later gewenst, dan vervangt een embed dit blok één op één.
+     ============================================================ -->
+<section id="zaal" class="bg-ink grain py-20 md:py-28" aria-labelledby="zaal-title">
+  <div class="grain-layer" aria-hidden="true"></div>
+  <div class="mx-auto max-w-[1500px] px-5 md:px-10">
+
+    <div class="grid gap-6 md:grid-cols-12 md:items-end mb-10 md:mb-14">
+      <div class="md:col-span-7">
+        <p class="eyebrow mb-8 reveal">Uit de zaal / 03</p>
+        <h2 id="zaal-title" class="display d-xl text-bone reveal reveal-d1">Kapelstraat 89.</h2>
+      </div>
+      <p class="md:col-span-5 text-[15px] text-bone/65 prose-body reveal reveal-d2">
+        Eigen oefenzaal met indoorpiste, krachtrek en behandelruimtes. Geen fitnessketen,
+        geen wachtzaal vol machines — een plek waar aan één ding tegelijk gewerkt wordt.
+      </p>
+    </div>
+
+    <ul class="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
+      <li class="reveal reveal-fly"><div class="relative overflow-hidden aspect-square frame-dark" data-imgwrap>
+        <img src="assets/img/zaal1.jpg" alt="De indoorpiste van Credo langs de mosmuur." class="photo absolute inset-0" loading="lazy" decoding="async" onerror="imgFail(this,'Z1')"></div></li>
+      <li class="reveal reveal-fly reveal-d1"><div class="relative overflow-hidden aspect-square frame-dark" data-imgwrap>
+        <img src="assets/img/zaal2.jpg" alt="Krachtrek en vrije gewichten in de oefenzaal." class="photo absolute inset-0" loading="lazy" decoding="async" onerror="imgFail(this,'Z2')"></div></li>
+      <li class="reveal reveal-fly reveal-d2"><div class="relative overflow-hidden aspect-square frame-dark" data-imgwrap>
+        <img src="assets/img/zaal3.jpg" alt="Wedstrijdshirts van begeleide clubs aan de muur." class="photo absolute inset-0" loading="lazy" decoding="async" onerror="imgFail(this,'Z3')"></div></li>
+      <li class="reveal reveal-fly reveal-d3"><div class="relative overflow-hidden aspect-square frame-dark" data-imgwrap>
+        <img src="assets/img/zaal4.jpg" alt="Atlete traint onder begeleiding in de zaal." class="photo absolute inset-0" loading="lazy" decoding="async" onerror="imgFail(this,'Z4')"></div></li>
+    </ul>
+
+    <a href="https://www.instagram.com/credo_rehabandperformance/" target="_blank" rel="noopener noreferrer"
+       class="link-line mt-10 text-bone reveal">Volg ons op Instagram
+      <svg width="16" height="9" viewBox="0 0 16 9" fill="none" aria-hidden="true"><path d="M0 4.5h14M10.5 1L14 4.5 10.5 8" stroke="currentColor" stroke-width="1.3"/></svg>
+    </a>
+  </div>
+</section>
 
 </main>
 
