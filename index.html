@@ -171,14 +171,21 @@
     opacity: .055; mix-blend-mode: overlay;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
   }
-  .grain > *:not(.grain-layer) { position: relative; z-index: 3; }
+  /* Lifts section content above the grain overlay. Wrapped in :where() so it
+     carries zero specificity — otherwise it outranks Tailwind's `absolute`
+     and drags full-bleed background layers (hero, CTA) into the flow. */
+  :where(.grain) > :where(:not(.grain-layer)) { position: relative; z-index: 3; }
 
   /* ---------- Photography treatment ---------- */
   .photo { filter: grayscale(1) contrast(1.08); display: block; width: 100%; height: 100%; object-fit: cover; }
   .photo-soft { filter: grayscale(1) contrast(1.04) brightness(.92); }
 
   /* ---------- Image failure fallback: flat ink block with the section number ---------- */
-  .img-failed { background: #0D0D0D; position: relative; min-height: 180px; }
+  .img-failed { background: #0D0D0D; min-height: 180px; }
+  /* :where() keeps this at zero specificity so a wrapper that is already
+     positioned (absolute inset-0 on the hero and the CTA) keeps its own
+     position; only static wrappers get a containing block for the ::after. */
+  :where(.img-failed) { position: relative; }
   .img-failed::after {
     content: attr(data-fallback);
     position: absolute; inset: 0;
@@ -428,13 +435,10 @@
       <source src="assets/video/credo-hero.mp4" type="video/mp4">
     </video>
 
-    <!-- Shown only if the video element itself is unusable (very old browsers) -->
-    <img id="hero-img"
-         src="https://static.wixstatic.com/media/c19dfb_ac72d592336340389027ac51d66ed50df000.jpg"
-         alt="Kinesitherapeut van Credo begeleidt een atleet tijdens een revalidatiesessie in de oefenzaal."
-         class="photo w-full h-[118%] object-cover will-change-transform absolute inset-0 hidden"
-         fetchpriority="high" decoding="async"
-         onerror="imgFail(this,'01')">
+    <!-- No separate fallback <img>: the poster attribute above already covers
+         the still-image case, and a hidden img would mark the whole hero as
+         "failed" whenever the poster URL is unreachable, even with the video
+         playing fine. If both are unavailable the hero falls back to flat ink. -->
 
     <div class="absolute inset-0 bg-gradient-to-t from-ink via-ink/70 to-ink/40" aria-hidden="true"></div>
     <div class="absolute inset-0 bg-ink/25" aria-hidden="true"></div>
@@ -1846,13 +1850,13 @@
   }
 
   /* ---------- Hero parallax (slow, transform only) ---------- */
-  var heroImg = heroVideo || document.getElementById('hero-img');
+  var heroMedia = heroVideo;
   var ticking = false;
   function parallax() {
-    if (!heroImg || reduce) return;
+    if (!heroMedia || reduce) return;
     var y = window.scrollY;
     if (y < window.innerHeight * 1.2) {
-      heroImg.style.transform = 'translate3d(0,' + (y * 0.16).toFixed(2) + 'px,0)';
+      heroMedia.style.transform = 'translate3d(0,' + (y * 0.16).toFixed(2) + 'px,0)';
     }
   }
   function onScroll() {
