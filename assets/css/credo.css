@@ -55,14 +55,16 @@
     /* The veil used to sit at .42, which on letterforms this wide flattened
        any photo to grey blotches. It is a variable now, and the fills are
        pre-cropped tight so there is real tonal range inside the letters. */
-    background-image: linear-gradient(rgba(13,13,13,var(--credo-veil,.18)), rgba(13,13,13,var(--credo-veil,.18))), var(--credo-fill);
+    background-image: linear-gradient(rgba(13,13,13,var(--credo-veil,.10)), rgba(13,13,13,var(--credo-veil,.10))), var(--credo-fill);
     background-size: cover;
-    background-position: var(--credo-fill-pos, center 40%);
+    background-position: var(--credo-fill-pos, center 45%);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
     -webkit-text-fill-color: transparent;
-    filter: grayscale(1) contrast(1.15);
+    /* Pushed from 1.15: inside letterforms this heavy, a photo needs the extra
+       separation or it collapses to grey. Paired with the lighter veil above. */
+    filter: grayscale(1) contrast(1.28);
   }
 
   .eyebrow {
