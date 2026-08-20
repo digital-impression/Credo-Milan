@@ -205,6 +205,43 @@
     });
   });
 
+  /* ---------- Clips that only run while pointed at ----------
+     The chooser doors hold still until you hover or tab to them, so the page
+     opens on two photographs and the movement is the reward for choosing.
+     A device without hover never gets that cue, so there the clips just run. */
+  var hoverClips = document.querySelectorAll('[data-hover-play]');
+  if (hoverClips.length) {
+    var canHover = window.matchMedia('(hover: hover)').matches;
+
+    hoverClips.forEach(function (v) {
+      if (reduce) return;                      // stays on its poster frame
+
+      if (!canHover) {
+        v.autoplay = true;
+        var p = v.play();
+        if (p && typeof p.catch === 'function') p.catch(function () {});
+        return;
+      }
+
+      var host = v.closest('a') || v.parentElement;
+      if (!host) return;
+
+      function start() {
+        var pr = v.play();
+        if (pr && typeof pr.catch === 'function') pr.catch(function () {});
+      }
+      function stop() {
+        v.pause();
+        v.currentTime = 0;                     // next hover starts the clip over
+      }
+
+      host.addEventListener('mouseenter', start);
+      host.addEventListener('mouseleave', stop);
+      host.addEventListener('focus', start);
+      host.addEventListener('blur', stop);
+    });
+  }
+
   /* ---------- Lead forms ----------------------------------------------
      Set CREDO.formEndpoint in assets/js/credo-config.js and every form here
      posts to it as JSON. While it is empty the form hands the entry to the
