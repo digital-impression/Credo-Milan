@@ -19,6 +19,7 @@ permissions:
   contents: read
   pages: write
   id-token: write
+  actions: read
 
 # Let a running deploy finish rather than cancelling it mid-publish.
 concurrency:
@@ -34,7 +35,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # enablement: true laat de action Pages zelf aanzetten met de
+      # workflow-token, zodat een beheerder dat niet handmatig hoeft te doen.
       - uses: actions/configure-pages@v5
+        with:
+          enablement: true
 
       # The site is a static index.html plus assets/ — upload the repo as-is.
       - uses: actions/upload-pages-artifact@v3
