@@ -4,8 +4,10 @@
     --taupe: #7C7466;        /* brand accent: dividers, dots, button hover */
     /* Two tints of the accent for TEXT, so 11px eyebrows clear WCAG AA
        (the base taupe lands at 4.2:1 on both surfaces — just under 4.5). */
-    --taupe-on-dark:  #8C8474;   /* 5.25:1 on ink  */
-    --taupe-on-light: #6E6757;   /* 4.98:1 on bone */
+    /* Opgetrokken van 5.2:1 naar ruim 8:1. Op 11px met brede spatiering is de
+       AA-drempel te krap; die tekst moet je kunnen lezen zonder moeite. */
+    --taupe-on-dark:  #ADA595;   /* 8.3:1 op ink  */
+    --taupe-on-light: #56503F;   /* 8.1:1 op bone */
     --header-h: 72px;
   }
 
@@ -74,16 +76,18 @@
   }
 
   .eyebrow {
-    font-size: 11px;
-    line-height: 1.4;
+    /* Was 11px met .25em: samen maakte dat de regel dun, breed en moeilijk te
+       pakken. Iets groter, iets zwaarder, iets minder ver uit elkaar. */
+    font-size: 12px;
+    line-height: 1.5;
     text-transform: uppercase;
-    letter-spacing: 0.25em;
+    letter-spacing: 0.18em;
     color: var(--taupe-on-dark);
-    font-weight: 500;
+    font-weight: 600;
     overflow-wrap: anywhere;
   }
   .on-light .eyebrow { color: var(--taupe-on-light); }
-  .eyebrow-light { color: #8F8877; }
+  .eyebrow-light { color: #BDB6A6; }
 
   .prose-body { max-width: 62ch; }
 
@@ -549,6 +553,48 @@
     white-space: nowrap;
   }
 
+  /* ---------- De vloer: de etalage ---------- */
+  /* Drie of vier beelden over de volle breedte, met één dat meer plek krijgt.
+     Gelijke vakken naast elkaar lezen als een fotostrip; een ongelijke deling
+     leest als een etalage. Op een telefoon gaan ze onder elkaar. */
+  .etalage {
+    display: grid; gap: 2px; background: rgba(244,241,234,.15);
+    grid-template-columns: 1fr;
+  }
+  .et-item {
+    position: relative; margin: 0; overflow: hidden;
+    aspect-ratio: 4 / 3; background: var(--ink);
+  }
+  .et-item .photo {
+    width: 100%; height: 100%; object-fit: cover; display: block;
+    transition: transform 1.2s cubic-bezier(.22,.61,.36,1), filter .6s ease;
+  }
+  .et-cap {
+    position: absolute; left: 0; bottom: 0; z-index: 2;
+    padding: .6rem 1rem; color: var(--bone);
+    background: rgba(13,13,13,.72);
+    border-top: 1px solid rgba(244,241,234,.18);
+    border-right: 1px solid rgba(244,241,234,.18);
+  }
+  @media (min-width: 640px) {
+    .etalage    { grid-template-columns: repeat(2, 1fr); }
+    .et-item    { aspect-ratio: 3 / 4; }
+    .et-lead    { grid-column: span 2; aspect-ratio: 16 / 10; }
+  }
+  @media (min-width: 1024px) {
+    .et-3 { grid-template-columns: 1.55fr 1fr 1fr; }
+    .et-4 { grid-template-columns: 1.6fr 1fr 1fr 1fr; }
+    .etalage .et-item, .etalage .et-lead { grid-column: auto; aspect-ratio: auto; }
+    .etalage { height: clamp(430px, 64vh, 720px); }
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .et-item:hover .photo { transform: scale(1.06); filter: grayscale(1) contrast(1.14); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .et-item .photo { transition: none; }
+    .et-item:hover .photo { transform: none; }
+  }
+
   /* ---------- De vloer ---------- */
   /* Elke regel licht op wanneer je hem aanwijst: het register blijft rustig,
      maar je ziet welke regel je leest. */
@@ -576,7 +622,7 @@
     /* Twee knoppen naast elkaar worden 120px breed en breken hun label; onder
        elkaar over de volle breedte blijven ze leesbaar en raakbaar. */
     .btn-stack > .btn { width: 100%; }
-    .eyebrow { letter-spacing: .2em; }
+    .eyebrow { letter-spacing: .14em; }
   }
 
   /* Onder de vaste actiebalk hoort ruimte, anders valt de laatste regel eronder. */

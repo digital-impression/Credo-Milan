@@ -161,6 +161,19 @@
   </div>
 </section>
 
+<!-- Het lint hoort bij de opening, niet bij het afscheid: het herhaalt
+     waar de praktijk voor staat op het moment dat je binnenkomt. -->
+<div class="marq marq-rule border-y border-bone/15 py-4 bg-ink" data-marquee aria-hidden="true">
+    <ul class="marq-track marq-words">
+      <li>Motivatie</li><li>·</li><li>Passie</li><li>·</li><li>Empathie</li><li>·</li>
+      <li>Meten</li><li>·</li><li>Bouwen</li><li>·</li><li>Bewijzen</li><li>·</li>
+    </ul>
+    <ul class="marq-track marq-words">
+      <li>Motivatie</li><li>·</li><li>Passie</li><li>·</li><li>Empathie</li><li>·</li>
+      <li>Meten</li><li>·</li><li>Bouwen</li><li>·</li><li>Bewijzen</li><li>·</li>
+    </ul>
+  </div>
+
 <!-- ============================================================
      SECTIE 02 — CREDO
      ============================================================ -->
@@ -182,11 +195,8 @@
       <div class="mt-10 md:mt-14 grid gap-10 lg:grid-cols-12 lg:gap-14">
         <div class="lg:col-span-8 reveal">
 
-          <p class="text-[15px] text-ink/70 prose-body">
-            Een credo is geen slogan aan de muur. Het is de verklaring van waar je in gelooft, en waarnaar je elke dag handelt. Dit is de onze.
-          </p>
 
-          <blockquote class="mt-8 border-l-2 pl-6 md:pl-8" style="border-color: var(--taupe);">
+          <blockquote class="border-l-2 pl-6 md:pl-8" style="border-color: var(--taupe);">
             <p class="display d-md text-ink">
               Wij geloven dat je plafond een schatting is tot iemand het meet.
             </p>
@@ -203,8 +213,8 @@
       </div>
 
       <figure class="mt-12 md:mt-16 reveal reveal-d1">
-        <div class="relative overflow-hidden aspect-[16/10] sm:aspect-[21/9] frame-light" data-imgwrap>
-          <img src="../assets/img/performance/band.jpg" alt="Atleet duwt een sled over de indoorpiste van Credo."
+        <div class="relative overflow-hidden aspect-[16/10] sm:aspect-[16/9] frame-light" data-imgwrap>
+          <img src="../assets/img/performance/band.jpg" alt="Atlete versnelt over de indoorpiste langs de mosmuur met het Credo-logo."
                class="photo absolute inset-0" loading="lazy" decoding="async"
                onerror="imgFail(this,'02')">
         </div>
@@ -259,7 +269,7 @@
         </h2>
       </div>
       <p class="md:col-span-5 text-[15px] text-bone/65 prose-body reveal reveal-d2">
-        Geen losse trainingen, maar een opbouw met een nulmeting, een plan en een hertest. Voor wie zijn plafond nog niet gezien heeft, en voor wie er net onderuit gegaan is.
+        Vier soorten werk, geen vaste volgorde. De meesten starten met een screening, maar wie zijn cijfers al kent kan meteen in een blok stappen. Voor wie zijn plafond nog niet gezien heeft, en voor wie er net onderuit gegaan is.
       </p>
     </div>
   </div>
@@ -274,7 +284,7 @@
         </div>
         <div class="flex items-center py-14 lg:py-20 lg:pl-16 xl:pl-24 reveal reveal-d1">
           <div>
-            <p class="eyebrow mb-7">Aanbod 01</p>
+            <p class="eyebrow mb-7">Meten</p>
             <h3 class="display d-lg text-bone">Sportscreening<br>&amp; testing</h3>
             <p class="mt-7 text-[15px] text-bone/70 prose-body">
               Het startpunt van alles. We brengen kracht, mobiliteit, stabiliteit en explosiviteit in kaart, links tegen rechts, en leggen vast waar je vandaag staat.
@@ -300,7 +310,7 @@
       <div class="grid lg:grid-cols-2">
         <div class="flex items-center py-14 lg:py-20 lg:pr-16 xl:pr-24 order-2 lg:order-1 reveal">
           <div>
-            <p class="eyebrow mb-7">Aanbod 02</p>
+            <p class="eyebrow mb-7">Bouwen</p>
             <h3 class="display d-lg text-bone">Krachttraining<br>&amp; performance</h3>
             <p class="mt-7 text-[15px] text-bone/70 prose-body">
               Een programma op maat van jouw sport, jouw kalender en jouw testresultaten. Individueel of in kleine groep, in onze eigen zaal met indoorpiste.
@@ -336,7 +346,7 @@
         </div>
         <div class="flex items-center py-14 lg:py-20 lg:pl-16 xl:pl-24 reveal reveal-d1">
           <div>
-            <p class="eyebrow mb-7">Aanbod 03</p>
+            <p class="eyebrow mb-7">Terugkeer</p>
             <h3 class="display d-lg text-bone">Return to play</h3>
             <p class="mt-7 text-[15px] text-bone/70 prose-body">
               De brug tussen &lsquo;de kine zegt dat het weer mag&rsquo; en &lsquo;ik sta er weer volledig&rsquo;. Precies daar gaat het te vaak mis.
@@ -362,7 +372,7 @@
       <div class="grid lg:grid-cols-2">
         <div class="flex items-center py-14 lg:py-20 lg:pr-16 xl:pr-24 order-2 lg:order-1 reveal">
           <div>
-            <p class="eyebrow mb-7">Aanbod 04</p>
+            <p class="eyebrow mb-7">Voeding</p>
             <h3 class="display d-lg text-bone">Sportvoeding</h3>
             <p class="mt-7 text-[15px] text-bone/70 prose-body">
               Voeding is vaak de marge tussen winnen en verliezen. Wie hard traint en slecht tankt, laat recuperatie en vermogen liggen.
@@ -563,6 +573,175 @@
 </section>
 
 <!-- ============================================================
+     SECTION 08 — SAMENWERKINGEN
+     Every partner gets its own framed card: logo on a bone tile
+     (so any logo reads, in colour on hover) plus the concrete Credo
+     connection — who does what there. That is what makes the row
+     credible rather than decorative.
+
+     >>> LOGOS NEEDED <<<
+     Red Flames and OH Leuven have no logo in the supplied set, so those
+     two cards use a typographic wordmark. Drop the files in and swap the
+     .partner-wordmark block for an <img> like the others.
+     ============================================================ -->
+<section id="partners" class="bg-ink grain py-24 md:py-36" aria-labelledby="partners-title">
+  <div class="grain-layer" aria-hidden="true"></div>
+  <div class="mx-auto max-w-[1500px] px-5 md:px-10">
+
+    <div class="grid gap-6 md:grid-cols-12 md:items-end mb-14 md:mb-20">
+      <div class="md:col-span-7">
+        <p class="eyebrow mb-8 reveal">Partners / 05</p>
+        <h2 id="partners-title" class="display d-xl text-bone reveal reveal-d1">
+          Onze mensen<br>staan langs het veld.
+        </h2>
+      </div>
+      <p class="md:col-span-5 text-[15px] text-bone/65 prose-body reveal reveal-d2">
+        Niet als sponsor, maar met een functie en een contract. Wat we in de eerste klasse
+        en bij de nationale ploeg leren over belasting, herstel en terugkeer na blessure,
+        gebruiken we hier op de vloer bij jou.
+      </p>
+    </div>
+
+    <ul class="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+
+      <!-- Sporting Hasselt -->
+      <li class="partner-card frame-dark flex flex-col reveal">
+        <div class="bg-bone h-32 flex items-center justify-center p-6" data-imgwrap>
+          <img src="https://static.wixstatic.com/media/8cedec_f5d040f24ed5485ba38bae0312419876~mv2.png"
+               alt="Logo van Sporting Hasselt" class="partner-logo max-h-20 w-auto object-contain"
+               loading="lazy" decoding="async" onerror="imgFail(this,'07')">
+        </div>
+        <div class="p-5 md:p-6 flex-1">
+          <h3 class="display d-sm text-bone">Sporting Hasselt</h3>
+          <p class="eyebrow mt-3">Fysieke &amp; medische staf</p>
+          <p class="mt-4 text-[13px] leading-relaxed text-bone/65">
+            Vier van ons zijn of waren aan de club verbonden: Tuur als physical coach (2020–2025),
+            Milan als strength coach, Dries als hoofdkinesitherapeut en Rimke bij de Ladies.
+          </p>
+        </div>
+      </li>
+
+      <!-- KRC Genk Ladies -->
+      <li class="partner-card frame-dark flex flex-col reveal reveal-d1">
+        <div class="bg-bone h-32 flex items-center justify-center p-6" data-imgwrap>
+          <img src="https://static.wixstatic.com/media/c19dfb_a5d049eb6f2f4f0980a8dd9b1a275195~mv2.png"
+               alt="Logo van KRC Genk Ladies" class="partner-logo max-h-20 w-auto object-contain"
+               loading="lazy" decoding="async" onerror="imgFail(this,'07')">
+        </div>
+        <div class="p-5 md:p-6 flex-1">
+          <h3 class="display d-sm text-bone">KRC Genk Ladies</h3>
+          <p class="eyebrow mt-3">Physical coaching</p>
+          <p class="mt-4 text-[13px] leading-relaxed text-bone/65">
+            Milan Vandecaetsbeek is er physical coach sinds 2024 en volgt de fysieke opbouw
+            van de kern doorheen het seizoen.
+          </p>
+        </div>
+      </li>
+
+      <!-- Red Flames — LOGO NEEDED, typographic wordmark for now -->
+      <li class="partner-card frame-dark flex flex-col reveal reveal-d2">
+        <div class="bg-bone h-32 flex items-center justify-center p-6">
+          <span class="partner-wordmark display text-[clamp(1.5rem,4vw,2rem)] text-ink text-center leading-none">Red Flames</span>
+        </div>
+        <div class="p-5 md:p-6 flex-1">
+          <h3 class="display d-sm text-bone">Red Flames</h3>
+          <p class="eyebrow mt-3">Nationale ploeg &middot; physical coaching</p>
+          <p class="mt-4 text-[13px] leading-relaxed text-bone/65">
+            Sinds 2025 staat Milan als physical coach bij de Belgische nationale vrouwenploeg.
+            Wat daar werkt op het hoogste niveau, gebruikt hij hier ook.
+          </p>
+        </div>
+      </li>
+
+      <!-- OH Leuven — LOGO NEEDED, typographic wordmark for now -->
+      <li class="partner-card frame-dark flex flex-col reveal reveal-d3">
+        <div class="bg-bone h-32 flex items-center justify-center p-6">
+          <span class="partner-wordmark display text-[clamp(1.5rem,4vw,2rem)] text-ink text-center leading-none">OH Leuven</span>
+        </div>
+        <div class="p-5 md:p-6 flex-1">
+          <h3 class="display d-sm text-bone">OH Leuven</h3>
+          <p class="eyebrow mt-3">Physical coaching</p>
+          <p class="mt-4 text-[13px] leading-relaxed text-bone/65">
+            Tuur Vanderstukken is er physical coach sinds 2025, na vijf seizoenen
+            bij Sporting Hasselt.
+          </p>
+        </div>
+      </li>
+
+      <!-- Torpedo Hasselt -->
+      <li class="partner-card frame-dark flex flex-col reveal">
+        <div class="bg-bone h-32 flex items-center justify-center p-6" data-imgwrap>
+          <img src="https://static.wixstatic.com/media/b42414_c1f9187c6cc04d6bb2ce53a365c331b5~mv2.png"
+               alt="Logo van Torpedo Hasselt" class="partner-logo max-h-20 w-auto object-contain"
+               loading="lazy" decoding="async" onerror="imgFail(this,'07')">
+        </div>
+        <div class="p-5 md:p-6 flex-1">
+          <h3 class="display d-sm text-bone">Torpedo Hasselt</h3>
+          <p class="eyebrow mt-3">Clubkinesitherapie</p>
+          <p class="mt-4 text-[13px] leading-relaxed text-bone/65">
+            Thomas Casier is kinesitherapeut van de club en volgt de spelers
+            van blessure tot terugkeer.
+          </p>
+        </div>
+      </li>
+
+      <!-- 6D Sports Nutrition -->
+      <li class="partner-card frame-dark flex flex-col reveal reveal-d1">
+        <div class="bg-bone h-32 flex items-center justify-center p-6" data-imgwrap>
+          <img src="https://static.wixstatic.com/media/8cedec_c79d613aa9b04da18cea8b89fbca31a4~mv2.png"
+               alt="Logo van 6D Sports Nutrition" class="partner-logo max-h-20 w-auto object-contain"
+               loading="lazy" decoding="async" onerror="imgFail(this,'07')">
+        </div>
+        <div class="p-5 md:p-6 flex-1">
+          <h3 class="display d-sm text-bone">6D Sports Nutrition</h3>
+          <p class="eyebrow mt-3">Sportvoeding</p>
+          <p class="mt-4 text-[13px] leading-relaxed text-bone/65">
+            Onze partner voor sportvoeding en supplementatie, afgestemd op je
+            trainingsbelasting en je wedstrijdkalender.
+          </p>
+        </div>
+      </li>
+
+      <!-- Forward Hasselt -->
+      <li class="partner-card frame-dark flex flex-col reveal reveal-d2">
+        <div class="bg-bone h-32 flex items-center justify-center p-6" data-imgwrap>
+          <img src="https://static.wixstatic.com/media/c19dfb_7baa96e9eeaf47fcbd0806b819ff4636~mv2.png"
+               alt="Logo van Forward Hasselt" class="partner-logo max-h-20 w-auto object-contain"
+               loading="lazy" decoding="async" onerror="imgFail(this,'07')">
+        </div>
+        <div class="p-5 md:p-6 flex-1">
+          <h3 class="display d-sm text-bone">Forward Hasselt</h3>
+          <p class="eyebrow mt-3">Partner</p>
+          <p class="mt-4 text-[13px] leading-relaxed text-bone/65">
+            Samen zetten we in op sport en beweging in de regio Hasselt.
+          </p>
+          <a href="https://www.forwardhasselt.be/" target="_blank" rel="noopener noreferrer"
+             class="link-line mt-5 text-bone">Bekijk
+            <svg width="16" height="9" viewBox="0 0 16 9" fill="none" aria-hidden="true"><path d="M0 4.5h14M10.5 1L14 4.5 10.5 8" stroke="currentColor" stroke-width="1.3"/></svg>
+          </a>
+        </div>
+      </li>
+
+      <!-- Open invitation, fills the eighth cell -->
+      <li class="partner-card frame-dark flex flex-col justify-between p-5 md:p-6 reveal reveal-d3">
+        <div>
+          <p class="eyebrow">Club of federatie</p>
+          <h3 class="display d-sm text-bone mt-3">Samenwerken?</h3>
+          <p class="mt-4 text-[13px] leading-relaxed text-bone/65">
+            We begeleiden ploegen op vlak van fysieke opbouw, blessurepreventie
+            en return to play. Laat het ons weten.
+          </p>
+        </div>
+        <a href="#contact" class="link-line mt-8 text-bone">Contacteer ons
+          <svg width="16" height="9" viewBox="0 0 16 9" fill="none" aria-hidden="true"><path d="M0 4.5h14M10.5 1L14 4.5 10.5 8" stroke="currentColor" stroke-width="1.3"/></svg>
+        </a>
+      </li>
+
+    </ul>
+  </div>
+</section>
+
+<!-- ============================================================
      REVIEWS
      >>> TEKSTEN NOG IN TE VULLEN <<<
      De citaten hieronder zijn placeholders, geen echte reacties. Vul ze met echte
@@ -576,7 +755,7 @@
 
     <div class="grid gap-6 md:grid-cols-12 md:items-end mb-12 md:mb-16">
       <div class="md:col-span-7">
-        <p class="eyebrow mb-8 reveal">Ervaringen / 05</p>
+        <p class="eyebrow mb-8 reveal">Ervaringen / 06</p>
         <h2 id="reviews-title" class="display d-xl text-ink reveal reveal-d1">Wat atleten<br>ervan zeggen.</h2>
       </div>
       <p class="md:col-span-5 text-[15px] text-ink/70 prose-body reveal reveal-d2">
@@ -619,7 +798,7 @@
 
     <div class="grid gap-6 md:grid-cols-12 md:items-end mb-12 md:mb-16">
       <div class="md:col-span-7">
-        <p class="eyebrow mb-8 reveal">Team / 06</p>
+        <p class="eyebrow mb-8 reveal">Team / 07</p>
         <h2 class="display d-xl text-ink reveal reveal-d1">Zes masters.<br>Eén standaard.</h2>
       </div>
       <p class="md:col-span-5 text-[15px] text-ink/70 prose-body reveal reveal-d2">
@@ -817,30 +996,26 @@
   <div class="grain-layer" aria-hidden="true"></div>
 
   <div class="grain-pin relative z-[3]">
-    <div class="grid grid-cols-1 sm:grid-cols-3 gap-px bg-bone/15">
-      <figure class="relative">
-        <div class="relative overflow-hidden aspect-[16/10] sm:aspect-[3/4]" data-imgwrap>
-          <img src="../assets/img/studio-oefenzaal.jpg" alt="De oefenzaal van Credo met krachtrek, mosmuur en indoorpiste."
-               class="photo absolute inset-0" loading="lazy" decoding="async"
-               onerror="imgFail(this,'07')">
-        </div>
-        <figcaption class="eyebrow mt-3 px-5 md:px-0 text-bone/50">De oefenzaal</figcaption>
+    <div class="etalage et-4">
+      <figure class="et-item et-lead">
+        <img src="../assets/img/studio-inkom.jpg" alt="De mosmuur met het Credo-logo en de indoorpiste erachter." class="photo" loading="lazy" decoding="async"
+             onerror="imgFail(this,'V')">
+        <figcaption class="et-cap eyebrow">De inkom</figcaption>
       </figure>
-      <figure class="relative">
-        <div class="relative overflow-hidden aspect-[16/10] sm:aspect-[3/4]" data-imgwrap>
-          <img src="../assets/img/studio-inkom.jpg" alt="De inkomhal met de mosmuur en de indoorpiste erachter."
-               class="photo absolute inset-0" loading="lazy" decoding="async"
-               onerror="imgFail(this,'07')">
-        </div>
-        <figcaption class="eyebrow mt-3 px-5 md:px-0 text-bone/50">De inkom</figcaption>
+      <figure class="et-item ">
+        <img src="../assets/img/studio-piste.jpg" alt="Atleet versnelt over de piste in de achterste zaal." class="photo" loading="lazy" decoding="async"
+             onerror="imgFail(this,'V')">
+        <figcaption class="et-cap eyebrow">De piste</figcaption>
       </figure>
-      <figure class="relative">
-        <div class="relative overflow-hidden aspect-[16/10] sm:aspect-[3/4]" data-imgwrap>
-          <img src="../assets/img/studio-ijsbad.jpg" alt="Het ijsbad en de herstelruimte achteraan de praktijk."
-               class="photo absolute inset-0" loading="lazy" decoding="async"
-               onerror="imgFail(this,'07')">
-        </div>
-        <figcaption class="eyebrow mt-3 px-5 md:px-0 text-bone/50">IJsbad &amp; herstel</figcaption>
+      <figure class="et-item ">
+        <img src="../assets/img/studio-oefenzaal.jpg" alt="De oefenzaal met krachtrek, vrije gewichten en spiegelwand." class="photo" loading="lazy" decoding="async"
+             onerror="imgFail(this,'V')">
+        <figcaption class="et-cap eyebrow">De oefenzaal</figcaption>
+      </figure>
+      <figure class="et-item ">
+        <img src="../assets/img/studio-ijsbad.jpg" alt="Het ijsbad en de herstelruimte achteraan de praktijk." class="photo" loading="lazy" decoding="async"
+             onerror="imgFail(this,'V')">
+        <figcaption class="et-cap eyebrow">Herstel</figcaption>
       </figure>
     </div>
   </div>
@@ -849,7 +1024,7 @@
 
     <div class="grid gap-6 md:grid-cols-12 md:items-end mt-16 md:mt-24">
       <div class="md:col-span-7">
-        <p class="eyebrow mb-8 reveal">De vloer / 07</p>
+        <p class="eyebrow mb-8 reveal">De vloer / 08</p>
         <h2 id="studio-title" class="display d-xl text-bone reveal reveal-d1">Trainen op gevoel<br>houdt hier op.</h2>
       </div>
       <p class="md:col-span-5 text-[15px] text-bone/65 prose-body reveal reveal-d2">
@@ -885,174 +1060,7 @@
 </section>
 
 
-<!-- ============================================================
-     SECTION 08 — SAMENWERKINGEN
-     Every partner gets its own framed card: logo on a bone tile
-     (so any logo reads, in colour on hover) plus the concrete Credo
-     connection — who does what there. That is what makes the row
-     credible rather than decorative.
 
-     >>> LOGOS NEEDED <<<
-     Red Flames and OH Leuven have no logo in the supplied set, so those
-     two cards use a typographic wordmark. Drop the files in and swap the
-     .partner-wordmark block for an <img> like the others.
-     ============================================================ -->
-<section id="partners" class="bg-ink grain py-24 md:py-36" aria-labelledby="partners-title">
-  <div class="grain-layer" aria-hidden="true"></div>
-  <div class="mx-auto max-w-[1500px] px-5 md:px-10">
-
-    <div class="grid gap-6 md:grid-cols-12 md:items-end mb-14 md:mb-20">
-      <div class="md:col-span-7">
-        <p class="eyebrow mb-8 reveal">Partners / 08</p>
-        <h2 id="partners-title" class="display d-xl text-bone reveal reveal-d1">
-          Onze mensen<br>staan langs het veld.
-        </h2>
-      </div>
-      <p class="md:col-span-5 text-[15px] text-bone/65 prose-body reveal reveal-d2">
-        Niet als sponsor, maar met een functie en een contract. Wat we in de eerste klasse
-        en bij de nationale ploeg leren over belasting, herstel en terugkeer na blessure,
-        gebruiken we hier op de vloer bij jou.
-      </p>
-    </div>
-
-    <ul class="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-
-      <!-- Sporting Hasselt -->
-      <li class="partner-card frame-dark flex flex-col reveal">
-        <div class="bg-bone h-32 flex items-center justify-center p-6" data-imgwrap>
-          <img src="https://static.wixstatic.com/media/8cedec_f5d040f24ed5485ba38bae0312419876~mv2.png"
-               alt="Logo van Sporting Hasselt" class="partner-logo max-h-20 w-auto object-contain"
-               loading="lazy" decoding="async" onerror="imgFail(this,'07')">
-        </div>
-        <div class="p-5 md:p-6 flex-1">
-          <h3 class="display d-sm text-bone">Sporting Hasselt</h3>
-          <p class="eyebrow mt-3">Fysieke &amp; medische staf</p>
-          <p class="mt-4 text-[13px] leading-relaxed text-bone/65">
-            Vier van ons zijn of waren aan de club verbonden: Tuur als physical coach (2020–2025),
-            Milan als strength coach, Dries als hoofdkinesitherapeut en Rimke bij de Ladies.
-          </p>
-        </div>
-      </li>
-
-      <!-- KRC Genk Ladies -->
-      <li class="partner-card frame-dark flex flex-col reveal reveal-d1">
-        <div class="bg-bone h-32 flex items-center justify-center p-6" data-imgwrap>
-          <img src="https://static.wixstatic.com/media/c19dfb_a5d049eb6f2f4f0980a8dd9b1a275195~mv2.png"
-               alt="Logo van KRC Genk Ladies" class="partner-logo max-h-20 w-auto object-contain"
-               loading="lazy" decoding="async" onerror="imgFail(this,'07')">
-        </div>
-        <div class="p-5 md:p-6 flex-1">
-          <h3 class="display d-sm text-bone">KRC Genk Ladies</h3>
-          <p class="eyebrow mt-3">Physical coaching</p>
-          <p class="mt-4 text-[13px] leading-relaxed text-bone/65">
-            Milan Vandecaetsbeek is er physical coach sinds 2024 en volgt de fysieke opbouw
-            van de kern doorheen het seizoen.
-          </p>
-        </div>
-      </li>
-
-      <!-- Red Flames — LOGO NEEDED, typographic wordmark for now -->
-      <li class="partner-card frame-dark flex flex-col reveal reveal-d2">
-        <div class="bg-bone h-32 flex items-center justify-center p-6">
-          <span class="partner-wordmark display text-[clamp(1.5rem,4vw,2rem)] text-ink text-center leading-none">Red Flames</span>
-        </div>
-        <div class="p-5 md:p-6 flex-1">
-          <h3 class="display d-sm text-bone">Red Flames</h3>
-          <p class="eyebrow mt-3">Nationale ploeg &middot; physical coaching</p>
-          <p class="mt-4 text-[13px] leading-relaxed text-bone/65">
-            Sinds 2025 staat Milan als physical coach bij de Belgische nationale vrouwenploeg.
-            Wat daar werkt op het hoogste niveau, gebruikt hij hier ook.
-          </p>
-        </div>
-      </li>
-
-      <!-- OH Leuven — LOGO NEEDED, typographic wordmark for now -->
-      <li class="partner-card frame-dark flex flex-col reveal reveal-d3">
-        <div class="bg-bone h-32 flex items-center justify-center p-6">
-          <span class="partner-wordmark display text-[clamp(1.5rem,4vw,2rem)] text-ink text-center leading-none">OH Leuven</span>
-        </div>
-        <div class="p-5 md:p-6 flex-1">
-          <h3 class="display d-sm text-bone">OH Leuven</h3>
-          <p class="eyebrow mt-3">Physical coaching</p>
-          <p class="mt-4 text-[13px] leading-relaxed text-bone/65">
-            Tuur Vanderstukken is er physical coach sinds 2025, na vijf seizoenen
-            bij Sporting Hasselt.
-          </p>
-        </div>
-      </li>
-
-      <!-- Torpedo Hasselt -->
-      <li class="partner-card frame-dark flex flex-col reveal">
-        <div class="bg-bone h-32 flex items-center justify-center p-6" data-imgwrap>
-          <img src="https://static.wixstatic.com/media/b42414_c1f9187c6cc04d6bb2ce53a365c331b5~mv2.png"
-               alt="Logo van Torpedo Hasselt" class="partner-logo max-h-20 w-auto object-contain"
-               loading="lazy" decoding="async" onerror="imgFail(this,'07')">
-        </div>
-        <div class="p-5 md:p-6 flex-1">
-          <h3 class="display d-sm text-bone">Torpedo Hasselt</h3>
-          <p class="eyebrow mt-3">Clubkinesitherapie</p>
-          <p class="mt-4 text-[13px] leading-relaxed text-bone/65">
-            Thomas Casier is kinesitherapeut van de club en volgt de spelers
-            van blessure tot terugkeer.
-          </p>
-        </div>
-      </li>
-
-      <!-- 6D Sports Nutrition -->
-      <li class="partner-card frame-dark flex flex-col reveal reveal-d1">
-        <div class="bg-bone h-32 flex items-center justify-center p-6" data-imgwrap>
-          <img src="https://static.wixstatic.com/media/8cedec_c79d613aa9b04da18cea8b89fbca31a4~mv2.png"
-               alt="Logo van 6D Sports Nutrition" class="partner-logo max-h-20 w-auto object-contain"
-               loading="lazy" decoding="async" onerror="imgFail(this,'07')">
-        </div>
-        <div class="p-5 md:p-6 flex-1">
-          <h3 class="display d-sm text-bone">6D Sports Nutrition</h3>
-          <p class="eyebrow mt-3">Sportvoeding</p>
-          <p class="mt-4 text-[13px] leading-relaxed text-bone/65">
-            Onze partner voor sportvoeding en supplementatie, afgestemd op je
-            trainingsbelasting en je wedstrijdkalender.
-          </p>
-        </div>
-      </li>
-
-      <!-- Forward Hasselt -->
-      <li class="partner-card frame-dark flex flex-col reveal reveal-d2">
-        <div class="bg-bone h-32 flex items-center justify-center p-6" data-imgwrap>
-          <img src="https://static.wixstatic.com/media/c19dfb_7baa96e9eeaf47fcbd0806b819ff4636~mv2.png"
-               alt="Logo van Forward Hasselt" class="partner-logo max-h-20 w-auto object-contain"
-               loading="lazy" decoding="async" onerror="imgFail(this,'07')">
-        </div>
-        <div class="p-5 md:p-6 flex-1">
-          <h3 class="display d-sm text-bone">Forward Hasselt</h3>
-          <p class="eyebrow mt-3">Partner</p>
-          <p class="mt-4 text-[13px] leading-relaxed text-bone/65">
-            Samen zetten we in op sport en beweging in de regio Hasselt.
-          </p>
-          <a href="https://www.forwardhasselt.be/" target="_blank" rel="noopener noreferrer"
-             class="link-line mt-5 text-bone">Bekijk
-            <svg width="16" height="9" viewBox="0 0 16 9" fill="none" aria-hidden="true"><path d="M0 4.5h14M10.5 1L14 4.5 10.5 8" stroke="currentColor" stroke-width="1.3"/></svg>
-          </a>
-        </div>
-      </li>
-
-      <!-- Open invitation, fills the eighth cell -->
-      <li class="partner-card frame-dark flex flex-col justify-between p-5 md:p-6 reveal reveal-d3">
-        <div>
-          <p class="eyebrow">Club of federatie</p>
-          <h3 class="display d-sm text-bone mt-3">Samenwerken?</h3>
-          <p class="mt-4 text-[13px] leading-relaxed text-bone/65">
-            We begeleiden ploegen op vlak van fysieke opbouw, blessurepreventie
-            en return to play. Laat het ons weten.
-          </p>
-        </div>
-        <a href="#contact" class="link-line mt-8 text-bone">Contacteer ons
-          <svg width="16" height="9" viewBox="0 0 16 9" fill="none" aria-hidden="true"><path d="M0 4.5h14M10.5 1L14 4.5 10.5 8" stroke="currentColor" stroke-width="1.3"/></svg>
-        </a>
-      </li>
-
-    </ul>
-  </div>
-</section>
 
 
 <!-- ============================================================
@@ -1062,115 +1070,114 @@
      als [TE BEVESTIGEN] en is bewust niet ingevuld: een verkeerd tarief op een
      zorgsite kost meer vertrouwen dan een ontbrekend tarief.
      ============================================================ -->
-<section id="praktisch" class="bg-ink grain py-24 md:py-32" aria-labelledby="faq-title">
-  <div class="grain-layer" aria-hidden="true"></div>
+<section id="praktisch" class="bg-bone text-ink on-light py-24 md:py-32" aria-labelledby="faq-title">
   <div class="mx-auto max-w-[1500px] px-5 md:px-10">
 
     <div class="grid gap-6 md:grid-cols-12 md:items-end mb-12 md:mb-16">
       <div class="md:col-span-7">
         <p class="eyebrow mb-8 reveal">Praktisch / 09</p>
-        <h2 id="faq-title" class="display d-xl text-bone reveal reveal-d1">Voor je belt.</h2>
+        <h2 id="faq-title" class="display d-xl text-ink reveal reveal-d1">Voor je belt.</h2>
       </div>
-      <p class="md:col-span-5 text-[15px] text-bone/65 prose-body reveal reveal-d2">
+      <p class="md:col-span-5 text-[15px] text-ink/65 prose-body reveal reveal-d2">
         Wat een screening kost, hoe vaak je komt, en hoe dit naast je clubtraining past.
-        Staat je vraag er niet bij? Bel <a href="tel:+32480628545" class="link-line text-bone">+32 480 62 85 45</a>.
+        Staat je vraag er niet bij? Bel <a href="tel:+32480628545" class="link-line text-ink">+32 480 62 85 45</a>.
       </p>
     </div>
 
     <div class="grid gap-10 lg:grid-cols-12 lg:gap-16">
 
       <div class="lg:col-span-7">
-        <details class="faq frame-dark reveal">
+        <details class="faq frame-light reveal">
           <summary class="flex items-center justify-between gap-6 p-5 md:p-6">
-            <span class="display d-sm text-bone">Wat kost een screening?</span>
+            <span class="display d-sm text-ink">Wat kost een screening?</span>
             <span class="acc-plus text-2xl leading-none text-taupe" aria-hidden="true">+</span>
           </summary>
-          <div class="px-5 md:px-6 pb-6 border-t border-bone/15 pt-5">
-            <p class="text-[15px] text-bone/70 prose-body">
+          <div class="px-5 md:px-6 pb-6 border-t border-ink/15 pt-5">
+            <p class="text-[15px] text-ink/70 prose-body">
               [TE BEVESTIGEN: prijs van de screening, en of dat bedrag in mindering gaat wanneer je daarna een traject start. Dit is de eerste vraag die een atleet stelt; hoe concreter het antwoord, hoe lager de drempel.]
             </p>
           </div>
         </details>
 
-        <details class="faq frame-dark mt-3 reveal">
+        <details class="faq frame-light mt-3 reveal">
           <summary class="flex items-center justify-between gap-6 p-5 md:p-6">
-            <span class="display d-sm text-bone">Hoe vaak per week train ik hier?</span>
+            <span class="display d-sm text-ink">Hoe vaak per week train ik hier?</span>
             <span class="acc-plus text-2xl leading-none text-taupe" aria-hidden="true">+</span>
           </summary>
-          <div class="px-5 md:px-6 pb-6 border-t border-bone/15 pt-5">
-            <p class="text-[15px] text-bone/70 prose-body">
+          <div class="px-5 md:px-6 pb-6 border-t border-ink/15 pt-5">
+            <p class="text-[15px] text-ink/70 prose-body">
               Meestal één tot twee begeleide sessies per week, aangevuld met werk dat je zelf uitvoert. Meer is niet altijd beter: het schema wordt gebouwd rond je clubtrainingen en je wedstrijdkalender, niet ernaast.
             </p>
           </div>
         </details>
 
-        <details class="faq frame-dark mt-3 reveal">
+        <details class="faq frame-light mt-3 reveal">
           <summary class="flex items-center justify-between gap-6 p-5 md:p-6">
-            <span class="display d-sm text-bone">Kan dit naast mijn clubtraining?</span>
+            <span class="display d-sm text-ink">Kan dit naast mijn clubtraining?</span>
             <span class="acc-plus text-2xl leading-none text-taupe" aria-hidden="true">+</span>
           </summary>
-          <div class="px-5 md:px-6 pb-6 border-t border-bone/15 pt-5">
-            <p class="text-[15px] text-bone/70 prose-body">
+          <div class="px-5 md:px-6 pb-6 border-t border-ink/15 pt-5">
+            <p class="text-[15px] text-ink/70 prose-body">
               Dat is precies waarvoor het bedoeld is. We vragen bij de intake je weekschema op en leggen de zware sessies zo dat ze je wedstrijd niet in de weg zitten. Speel je bij een club met een eigen fysieke staf, dan stemmen we in overleg af.
             </p>
           </div>
         </details>
 
-        <details class="faq frame-dark mt-3 reveal">
+        <details class="faq frame-light mt-3 reveal">
           <summary class="flex items-center justify-between gap-6 p-5 md:p-6">
-            <span class="display d-sm text-bone">Vanaf welke leeftijd kan ik starten?</span>
+            <span class="display d-sm text-ink">Vanaf welke leeftijd kan ik starten?</span>
             <span class="acc-plus text-2xl leading-none text-taupe" aria-hidden="true">+</span>
           </summary>
-          <div class="px-5 md:px-6 pb-6 border-t border-bone/15 pt-5">
-            <p class="text-[15px] text-bone/70 prose-body">
+          <div class="px-5 md:px-6 pb-6 border-t border-ink/15 pt-5">
+            <p class="text-[15px] text-ink/70 prose-body">
               Vanaf ongeveer twaalf jaar, met een programma dat past bij de groeifase. Bij jonge atleten ligt de klemtoon op techniek, coördinatie en belastbaarheid; zwaarder werk komt pas als de basis staat. [TE BEVESTIGEN: hanteren jullie een harde ondergrens?]
             </p>
           </div>
         </details>
 
-        <details class="faq frame-dark mt-3 reveal">
+        <details class="faq frame-light mt-3 reveal">
           <summary class="flex items-center justify-between gap-6 p-5 md:p-6">
-            <span class="display d-sm text-bone">Moet ik al &lsquo;goed&rsquo; zijn om te starten?</span>
+            <span class="display d-sm text-ink">Moet ik al &lsquo;goed&rsquo; zijn om te starten?</span>
             <span class="acc-plus text-2xl leading-none text-taupe" aria-hidden="true">+</span>
           </summary>
-          <div class="px-5 md:px-6 pb-6 border-t border-bone/15 pt-5">
-            <p class="text-[15px] text-bone/70 prose-body">
+          <div class="px-5 md:px-6 pb-6 border-t border-ink/15 pt-5">
+            <p class="text-[15px] text-ink/70 prose-body">
               Nee. De screening bestaat net om vast te leggen waar je vandaag staat. Dat is het startpunt, geen toelatingsexamen. Wie nooit gestructureerd kracht getraind heeft, boekt meestal de snelste winst.
             </p>
           </div>
         </details>
 
-        <details class="faq frame-dark mt-3 reveal">
+        <details class="faq frame-light mt-3 reveal">
           <summary class="flex items-center justify-between gap-6 p-5 md:p-6">
-            <span class="display d-sm text-bone">Hoelang duurt een traject?</span>
+            <span class="display d-sm text-ink">Hoelang duurt een traject?</span>
             <span class="acc-plus text-2xl leading-none text-taupe" aria-hidden="true">+</span>
           </summary>
-          <div class="px-5 md:px-6 pb-6 border-t border-bone/15 pt-5">
-            <p class="text-[15px] text-bone/70 prose-body">
+          <div class="px-5 md:px-6 pb-6 border-t border-ink/15 pt-5">
+            <p class="text-[15px] text-ink/70 prose-body">
               We werken in blokken van zes weken: nulmeting, opbouw, hertest. Na elk blok zie je precies wat er veranderd is en beslis je of je verlengt. Voor een concreet doel, zoals een seizoensstart of een terugkeer na blessure, spreken we op voorhand een einddatum af.
             </p>
           </div>
         </details>
 
-        <details class="faq frame-dark mt-3 reveal">
+        <details class="faq frame-light mt-3 reveal">
           <summary class="flex items-center justify-between gap-6 p-5 md:p-6">
-            <span class="display d-sm text-bone">Krijg ik mijn cijfers mee?</span>
+            <span class="display d-sm text-ink">Krijg ik mijn cijfers mee?</span>
             <span class="acc-plus text-2xl leading-none text-taupe" aria-hidden="true">+</span>
           </summary>
-          <div class="px-5 md:px-6 pb-6 border-t border-bone/15 pt-5">
-            <p class="text-[15px] text-bone/70 prose-body">
+          <div class="px-5 md:px-6 pb-6 border-t border-ink/15 pt-5">
+            <p class="text-[15px] text-ink/70 prose-body">
               Ja. Na de screening en na elke hertest krijg je je resultaten op papier: kracht, sprong, sprint en het verschil tussen links en rechts. Ook als je daarna zelfstandig verder traint of bij een andere coach.
             </p>
           </div>
         </details>
 
-        <details class="faq frame-dark mt-3 reveal">
+        <details class="faq frame-light mt-3 reveal">
           <summary class="flex items-center justify-between gap-6 p-5 md:p-6">
-            <span class="display d-sm text-bone">Wordt dit terugbetaald?</span>
+            <span class="display d-sm text-ink">Wordt dit terugbetaald?</span>
             <span class="acc-plus text-2xl leading-none text-taupe" aria-hidden="true">+</span>
           </summary>
-          <div class="px-5 md:px-6 pb-6 border-t border-bone/15 pt-5">
-            <p class="text-[15px] text-bone/70 prose-body">
+          <div class="px-5 md:px-6 pb-6 border-t border-ink/15 pt-5">
+            <p class="text-[15px] text-ink/70 prose-body">
               [TE BEVESTIGEN: performance-trajecten vallen doorgaans niet onder kinesitherapie met voorschrift. Vermeld hier of er een tussenkomst is via de mutualiteit of via de club.]
             </p>
           </div>
@@ -1178,32 +1185,32 @@
       </div>
 
       <div class="lg:col-span-5">
-        <div class="frame-dark p-6 md:p-8 reveal reveal-d1">
-          <p class="eyebrow mb-6 text-bone/50">Praktisch</p>
+        <div class="frame-light p-6 md:p-8 reveal reveal-d1">
+          <p class="eyebrow mb-6 text-ink/50">Praktisch</p>
           <dl class="space-y-5 text-[15px]">
             <div>
-              <dt class="eyebrow text-bone/50">Adres</dt>
-              <dd class="mt-1 text-bone/85">Kapelstraat 89<br>3590 Diepenbeek</dd>
+              <dt class="eyebrow text-ink/50">Adres</dt>
+              <dd class="mt-1 text-ink/85">Kapelstraat 89<br>3590 Diepenbeek</dd>
             </div>
             <div>
-              <dt class="eyebrow text-bone/50">Telefoon</dt>
-              <dd class="mt-1"><a href="tel:+32480628545" class="link-line text-bone">+32 480 62 85 45</a></dd>
+              <dt class="eyebrow text-ink/50">Telefoon</dt>
+              <dd class="mt-1"><a href="tel:+32480628545" class="link-line text-ink">+32 480 62 85 45</a></dd>
             </div>
             <div>
-              <dt class="eyebrow text-bone/50">E-mail</dt>
-              <dd class="mt-1"><a href="mailto:info@credokinesitherapie.be" class="link-line text-bone">info@credokinesitherapie.be</a></dd>
+              <dt class="eyebrow text-ink/50">E-mail</dt>
+              <dd class="mt-1"><a href="mailto:info@credokinesitherapie.be" class="link-line text-ink">info@credokinesitherapie.be</a></dd>
             </div>
             <div>
-              <dt class="eyebrow text-bone/50">Openingsuren</dt>
-              <dd class="mt-1 text-bone/60">[TE BEVESTIGEN]</dd>
+              <dt class="eyebrow text-ink/50">Openingsuren</dt>
+              <dd class="mt-1 text-ink/60">[TE BEVESTIGEN]</dd>
             </div>
             <div>
-              <dt class="eyebrow text-bone/50">Parking</dt>
-              <dd class="mt-1 text-bone/60">[TE BEVESTIGEN]</dd>
+              <dt class="eyebrow text-ink/50">Parking</dt>
+              <dd class="mt-1 text-ink/60">[TE BEVESTIGEN]</dd>
             </div>
           </dl>
           <a href="https://altagenda.crossuite.com/credokinesitherapie/step1" target="_blank" rel="noopener noreferrer"
-             class="btn btn-bone mt-8 w-full justify-center">Boek een afspraak</a>
+             class="btn btn-ink mt-8 w-full justify-center">Boek een afspraak</a>
         </div>
       </div>
 
@@ -1301,16 +1308,6 @@
      ============================================================ -->
 <footer id="contact" class="bg-ink text-bone">
 
-  <div class="marq marq-rule border-y border-bone/15 py-4" data-marquee aria-hidden="true">
-    <ul class="marq-track marq-words">
-      <li>Motivatie</li><li>·</li><li>Passie</li><li>·</li><li>Empathie</li><li>·</li>
-      <li>Meten</li><li>·</li><li>Bouwen</li><li>·</li><li>Bewijzen</li><li>·</li>
-    </ul>
-    <ul class="marq-track marq-words">
-      <li>Motivatie</li><li>·</li><li>Passie</li><li>·</li><li>Empathie</li><li>·</li>
-      <li>Meten</li><li>·</li><li>Bouwen</li><li>·</li><li>Bewijzen</li><li>·</li>
-    </ul>
-  </div>
 
   <div class="mx-auto max-w-[1500px] px-5 md:px-10 pt-16 md:pt-24 pb-10">
 

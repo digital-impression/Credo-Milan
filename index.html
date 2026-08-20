@@ -93,7 +93,22 @@
     position: relative; z-index: 2; width: 100%;
     padding: .9rem clamp(1rem, 3vw, 2.5rem) clamp(1rem, 3vw, 2.5rem);
   }
-  .door-frame { display: block; padding: clamp(.95rem, 2.4vw, 2.25rem); }
+  .door-frame {
+    display: flex; flex-direction: column; align-items: flex-start;
+    padding: clamp(.95rem, 2.4vw, 2.25rem);
+  }
+  /* Dezelfde maat voor beide woorden en een vaste hoogte voor de tekst eronder:
+     anders staan de twee kaders op verschillende hoogte omdat ze onderaan
+     uitgelijnd zijn en verschillend hoog uitvallen. */
+  .door-titel {
+    display: block;
+    font-size: clamp(1.9rem, 5vw, 4.6rem);
+    white-space: nowrap;
+  }
+  @media (min-width: 1024px) { .door-copy { min-height: 4.9em; } }
+
+  /* De balk staat vast en dekt de bovenkant af, dus de deuren beginnen eronder. */
+  .keuze { padding-top: var(--header-h); }
   .door-cta { pointer-events: none; }          /* the whole door is the link */
   .door-cta svg { transition: transform .4s cubic-bezier(.22,.61,.36,1); }
   .door:hover .door-cta svg { transform: translateX(5px); }
@@ -119,17 +134,24 @@
 <!-- ============================================================
      HEADER — no section nav here; the homepage has one job.
      ============================================================ -->
-<header id="site-header" class="fixed top-0 inset-x-0 z-50 border-b border-transparent">
+<header id="site-header" class="fixed top-0 inset-x-0 z-50 bg-ink border-b border-bone/15">
   <div class="mx-auto max-w-[1500px] px-5 md:px-10">
-    <div class="flex items-center justify-between h-[72px]">
-      <span class="flex items-center gap-3 shrink-0">
+    <div class="flex items-center justify-between h-[72px] gap-4">
+
+      <a href="#top" class="flex items-center gap-3 shrink-0">
         <span class="display text-[19px] md:text-[22px] tracking-[0.02em] text-bone">CREDO</span>
         <span class="hidden sm:inline-block h-4 w-px bg-bone/25" aria-hidden="true"></span>
         <span class="hidden sm:inline eyebrow eyebrow-light">Rehab &amp; Performance</span>
-      </span>
+      </a>
 
-      <div class="flex items-center gap-3">
-        <a href="tel:+32480628545" class="nav-link text-bone hidden sm:inline">+32 480 62 85 45</a>
+      <nav class="hidden md:flex items-center gap-8" aria-label="Hoofdnavigatie">
+        <a href="rehab/" class="nav-link text-bone">Revalidatie</a>
+        <a href="performance/" class="nav-link text-bone">Performance</a>
+        <a href="tel:+32480628545" class="nav-link text-bone">+32 480 62 85 45</a>
+      </nav>
+
+      <div class="flex items-center gap-3 shrink-0">
+        <a href="tel:+32480628545" class="nav-link text-bone md:hidden">Bel</a>
         <a href="https://altagenda.crossuite.com/credokinesitherapie/step1" target="_blank" rel="noopener noreferrer"
            class="btn btn-bone !py-[10px] !px-5 !text-[11px]">Boek een afspraak</a>
       </div>
@@ -161,9 +183,9 @@
           <span class="eyebrow block text-bone/60">Ik heb een klacht of blessure</span>
 
           <span class="display block mt-3 md:mt-8 text-bone leading-[0.86]
-                       text-[clamp(2.15rem,7vw,6rem)] whitespace-nowrap">Rehab</span>
+                       door-titel">Rehab</span>
 
-          <span class="block mt-3 md:mt-8 max-w-[36ch] text-[15px] text-bone/75 prose-body">Pijn, een blessure of een operatie achter de rug. We zoeken de oorzaak, halen de pijn eruit en bouwen je op tot bewegen weer vanzelf gaat.</span>
+          <span class="door-copy block mt-3 md:mt-8 max-w-[36ch] text-[15px] text-bone/75 prose-body">Pijn, een blessure of een operatie achter de rug. We zoeken de oorzaak, halen de pijn eruit en bouwen je op tot bewegen weer vanzelf gaat.</span>
 
           <span class="btn btn-bone mt-5 md:mt-10 door-cta">Naar revalidatie
             <svg width="16" height="9" viewBox="0 0 16 9" fill="none" aria-hidden="true">
@@ -190,9 +212,9 @@
           <span class="eyebrow block text-bone/60">Ik wil beter presteren</span>
 
           <span class="display block mt-3 md:mt-8 text-bone leading-[0.86]
-                       text-[clamp(1.75rem,5.4vw,4.6rem)] whitespace-nowrap">Performance</span>
+                       door-titel">Performance</span>
 
-          <span class="block mt-3 md:mt-8 max-w-[36ch] text-[15px] text-bone/75 prose-body">Niet geblesseerd, wel op zoek naar meer. Screening, cijfers en een programma van coaches die wekelijks bij profclubs op het veld staan.</span>
+          <span class="door-copy block mt-3 md:mt-8 max-w-[36ch] text-[15px] text-bone/75 prose-body">Niet geblesseerd, wel op zoek naar meer. Screening, cijfers en een programma van coaches die wekelijks bij profclubs op het veld staan.</span>
 
           <span class="btn btn-bone mt-5 md:mt-10 door-cta">Naar performance
             <svg width="16" height="9" viewBox="0 0 16 9" fill="none" aria-hidden="true">
