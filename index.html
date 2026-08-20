@@ -42,32 +42,26 @@
     .doors:hover .door { flex-grow: .82; }
     .doors .door:hover { flex-grow: 1.36; }
   }
-  /* No sled and no treatment in the two clips that exist, so the doors move by
-     animating the photograph itself: the rehab side pushes in on the knee, the
-     performance side tracks the sled across. Both sit still until pointed at. */
+  /* Neither clip in the supplied material contains a sled or a treatment. The
+     performance door is therefore a clip rendered from the sled photograph, the
+     frame travelling across the push and easing back so the loop closes. The
+     rehab door moves the photograph itself, barely — a slow, shallow push into
+     the knee. Both stay still until pointed at. */
   .door-photo { filter: grayscale(1) contrast(1.12); transform: scale(1.03);
                 transition: filter .6s ease; will-change: transform; }
   .door:hover .door-photo, .door:focus-visible .door-photo { filter: grayscale(0) contrast(1.02); }
 
-  .door-push { animation: door-push 9s ease-in-out infinite alternate; animation-play-state: paused; }
-  .door-pan  { animation: door-pan  7s ease-in-out infinite alternate; animation-play-state: paused;
-               object-position: 22% 60%; }
-  .door:hover .door-push, .door:focus-visible .door-push,
-  .door:hover .door-pan,  .door:focus-visible .door-pan { animation-play-state: running; }
+  .door-push { animation: door-push 20s ease-in-out infinite alternate; animation-play-state: paused; }
+  .door:hover .door-push, .door:focus-visible .door-push { animation-play-state: running; }
 
-  @keyframes door-push { from { transform: scale(1.03); } to { transform: scale(1.20); } }
-  /* bottom-left to the right, which is the direction the sled actually travels */
-  @keyframes door-pan {
-    from { transform: scale(1.16) translate3d(-7%,  5%, 0); }
-    to   { transform: scale(1.16) translate3d( 7%, -2%, 0); }
-  }
+  @keyframes door-push { from { transform: scale(1.03); } to { transform: scale(1.085); } }
 
-  /* Touch has no hover to give, so there the photographs simply move. */
+  /* Touch has no hover to give, so there the photograph simply moves. */
   @media (hover: none) {
-    .door-push, .door-pan { animation-play-state: running; }
+    .door-push { animation-play-state: running; }
   }
   @media (prefers-reduced-motion: reduce) {
-    .door-push, .door-pan { animation: none !important; }
+    .door-push { animation: none !important; }
   }
   .door + .door { border-top: 1px solid rgba(244,241,234,.2); }
   @media (min-width: 1024px) { .door + .door { border-top: 0; border-left: 1px solid rgba(244,241,234,.2); } }
@@ -147,9 +141,12 @@
 
     <a href="performance/" class="door group relative flex-1 min-h-[52svh] lg:min-h-0 overflow-hidden bg-ink"
        aria-label="Naar Credo Performance — sportscreening en krachttraining">
-      <img src="assets/img/keuze-performance.jpg" alt="Atleet duwt een sled over de indoorpiste van Credo."
-           class="door-photo door-pan absolute inset-0 w-full h-full object-cover"
-           loading="eager" decoding="async">
+      <video class="door-photo absolute inset-0 w-full h-full object-cover"
+             poster="assets/img/keuze-performance.jpg"
+             muted loop playsinline preload="metadata" data-hover-play aria-hidden="true" tabindex="-1">
+        <source src="assets/video/deur-performance.webm" type="video/webm">
+        <source src="assets/video/deur-performance.mp4" type="video/mp4">
+      </video>
       <span class="absolute inset-0 bg-ink/55 group-hover:bg-ink/35 transition-colors duration-500" aria-hidden="true"></span>
       <span class="absolute inset-0 bg-gradient-to-t from-ink via-ink/40 to-transparent" aria-hidden="true"></span>
 
