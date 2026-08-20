@@ -516,3 +516,12 @@
     user-select: none;
   }
   @supports not (-webkit-text-stroke: 1px red) { .footmark { color: rgba(244,241,234,.12); } }
+  /* Clubs without a logo file of their own, set as a wordmark so the strip
+     keeps one rhythm. Replace with the real crest once the club supplies it. */
+  .marq-word {
+    font-family: 'Anton', 'Arial Narrow', Impact, sans-serif;
+    text-transform: uppercase; letter-spacing: .06em;
+    font-size: clamp(1.05rem, 1.7vw, 1.5rem);
+    color: rgba(244,241,234,.72);
+    white-space: nowrap;
+  }
