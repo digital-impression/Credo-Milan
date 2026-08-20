@@ -205,6 +205,45 @@
     });
   });
 
+  /* ---------- Team deck ----------
+     Marks the document so the stylesheet can collapse the six panels into one
+     stage, then wires the strip as a tablist. The class goes on only once this
+     runs, so a visitor without JS keeps all six panels. */
+  document.querySelectorAll('[data-team-deck]').forEach(function (deck) {
+    var panels = deck.querySelectorAll('.team-panelx');
+    var thumbs = deck.querySelectorAll('.team-thumb');
+    if (panels.length < 2 || panels.length !== thumbs.length) return;
+
+    document.documentElement.classList.add('js');
+    panels.forEach(function (p, i) { if (i) p.hidden = true; });
+
+    function select(i, moveFocus) {
+      panels.forEach(function (p, k) {
+        p.hidden = k !== i;
+        p.classList.toggle('is-active', k === i);
+      });
+      thumbs.forEach(function (t, k) {
+        var on = k === i;
+        t.classList.toggle('is-active', on);
+        t.setAttribute('aria-selected', on ? 'true' : 'false');
+        t.tabIndex = on ? 0 : -1;
+      });
+      if (moveFocus) thumbs[i].focus();
+    }
+
+    thumbs.forEach(function (t, i) {
+      t.addEventListener('click', function () { select(i); });
+      t.addEventListener('keydown', function (e) {
+        var d = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+        if (!d) return;
+        e.preventDefault();
+        select((i + d + thumbs.length) % thumbs.length, true);
+      });
+    });
+
+    select(0);
+  });
+
   /* ---------- Clips that only run while pointed at ----------
      The chooser doors hold still until you hover or tab to them, so the page
      opens on two photographs and the movement is the reward for choosing.

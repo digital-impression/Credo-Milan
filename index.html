@@ -74,6 +74,8 @@
       </a>
 
       <div class="flex items-center gap-3">
+        <a href="#praktisch" class="nav-link text-bone hidden lg:inline">Praktisch</a>
+        <a href="#team" class="nav-link text-bone hidden lg:inline">Team</a>
         <a href="tel:+32480628545" class="nav-link text-bone hidden sm:inline">+32 480 62 85 45</a>
         <a href="https://altagenda.crossuite.com/credokinesitherapie/step1" target="_blank" rel="noopener noreferrer"
            class="btn btn-bone !py-[10px] !px-5 !text-[11px]">Boek een afspraak</a>
@@ -225,81 +227,72 @@
 </section>
 
 <!-- ============================================================
-     SECTION 05 — TEAM
-     Six portraits, grayscale → colour + credentials on hover/tap.
-     NOTE: photo-to-name mapping is UNCONFIRMED — images are assigned
-     in the order supplied. Swap the src per card where marked.
+     SECTIE — TEAM
+     Eén portret tegelijk, met de naam er groot achterlangs. De strip eronder
+     wisselt van persoon; zonder JS staan alle zes gewoon onder elkaar.
      ============================================================ -->
-<section id="team" class="bg-bone text-ink on-light py-24 md:py-36">
+<section id="team" class="bg-bone text-ink on-light py-24 md:py-36 overflow-hidden">
   <div class="mx-auto max-w-[1500px] px-5 md:px-10">
 
-    <div class="grid gap-6 md:grid-cols-12 md:items-end mb-14 md:mb-20">
+    <div class="grid gap-6 md:grid-cols-12 md:items-end mb-12 md:mb-16">
       <div class="md:col-span-7">
         <p class="eyebrow mb-8 reveal">Team / 04</p>
         <h2 class="display d-xl text-ink reveal reveal-d1">Zes masters.<br>Eén standaard.</h2>
       </div>
       <p class="md:col-span-5 text-[15px] text-ink/70 prose-body reveal reveal-d2">
-        Iedereen hier heeft een master revalidatiewetenschappen en kinesitherapie. Verschillende van ons
-        staan wekelijks op het veld als physical of strength coach bij profclubs. Die ervaring komt
-        rechtstreeks in jouw behandeling terecht.
+        Iedereen hier heeft een master revalidatiewetenschappen en kinesitherapie. Verschillende van ons staan wekelijks op het veld als physical of strength coach bij profclubs. Die ervaring komt rechtstreeks in jouw behandeling terecht.
       </p>
     </div>
 
-    <div class="grid gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
+    <div class="team-deck reveal" data-team-deck>
+      <div class="team-panelx is-active" id="tp-thomas" role="tabpanel"
+           aria-labelledby="tt-thomas">
+        <div class="team-stage">
+          <p class="team-marquee" aria-hidden="true"><span>Thomas Casier &nbsp;·&nbsp; Thomas Casier &nbsp;·&nbsp; Thomas Casier &nbsp;·&nbsp; Thomas Casier &nbsp;·&nbsp;</span><span>Thomas Casier &nbsp;·&nbsp; Thomas Casier &nbsp;·&nbsp; Thomas Casier &nbsp;·&nbsp; Thomas Casier &nbsp;·&nbsp;</span></p>
+          <div class="team-shot frame-light" data-imgwrap>
+            <img src="assets/img/team/thomas.jpg" alt="Portret van Thomas Casier, kinesist en zaakvoerder bij Credo."
+                 class="photo team-photo" loading="lazy" decoding="async" onerror="imgFail(this,'T1')">
+          </div>
+        </div>
 
-      <article class="team-card reveal reveal-fly">
-        <div class="team-media frame-light" data-imgwrap>
-          <img src="assets/img/team/thomas.jpg"
-               alt="Portret van Thomas Casier, kinesist en zaakvoerder bij Credo."
-               class="photo team-photo absolute inset-0" loading="lazy" decoding="async"
-               onerror="imgFail(this,'T1')">
-
-          <span class="team-scrim" aria-hidden="true"></span>
-          <span class="team-no" aria-hidden="true">01</span>
-
-          <div class="team-panel" id="cred-thomas">
-            <p class="eyebrow eyebrow-light mb-3">Credentials</p>
-            <ul class="text-[13px] leading-relaxed text-bone/85 space-y-1.5">
+        <div class="mt-8 grid gap-8 md:grid-cols-12 md:items-start">
+          <div class="md:col-span-5">
+            <p class="eyebrow text-ink/45">01 — Kinesist — Zaakvoerder</p>
+            <h3 class="display mt-3 text-[clamp(1.9rem,4.4vw,3.2rem)] leading-[0.92] text-ink">
+              <span class="block">Thomas</span><span class="block">Casier</span>
+            </h3>
+          </div>
+          <div class="md:col-span-7 md:border-l md:border-ink/15 md:pl-10">
+            <p class="eyebrow mb-4 text-ink/45">Credentials</p>
+            <ul class="text-[14px] leading-relaxed text-ink/75 space-y-1.5">
               <li>Master revalidatiewetenschappen &amp; kinesitherapie</li>
               <li>Master manuele therapie</li>
               <li>Specialisatie sportvoeding</li>
               <li>Kinesitherapeut Torpedo Hasselt</li>
             </ul>
           </div>
-
-          <button class="team-toggle" type="button" aria-expanded="false" aria-controls="cred-thomas">
-            <span>Toon credentials van Thomas Casier</span>
-          </button>
-          <span class="team-cue" aria-hidden="true">+</span>
-
-          <div class="team-caption">
-            <p class="eyebrow text-bone/65">Kinesist — Zaakvoerder</p>
-            <h3 class="display team-name mt-2">
-              <span class="block">Thomas</span><span class="block">Casier</span>
-            </h3>
+        </div>
+      </div>
+      <div class="team-panelx" id="tp-milan" role="tabpanel"
+           aria-labelledby="tt-milan" hidden>
+        <div class="team-stage">
+          <p class="team-marquee" aria-hidden="true"><span>Milan Vandecaetsbeek &nbsp;·&nbsp; Milan Vandecaetsbeek &nbsp;·&nbsp; Milan Vandecaetsbeek &nbsp;·&nbsp; Milan Vandecaetsbeek &nbsp;·&nbsp;</span><span>Milan Vandecaetsbeek &nbsp;·&nbsp; Milan Vandecaetsbeek &nbsp;·&nbsp; Milan Vandecaetsbeek &nbsp;·&nbsp; Milan Vandecaetsbeek &nbsp;·&nbsp;</span></p>
+          <div class="team-shot frame-light" data-imgwrap>
+            <img src="assets/img/team/milan.jpg" alt="Portret van Milan Vandecaetsbeek, kinesist en zaakvoerder bij Credo."
+                 class="photo team-photo" loading="lazy" decoding="async" onerror="imgFail(this,'T2')">
           </div>
         </div>
 
-        <ul class="mt-4 flex flex-wrap gap-2">
-          <li class="team-chip">Manuele therapie</li>
-          <li class="team-chip">Sportvoeding</li>
-          <li class="team-chip">Torpedo Hasselt</li>
-        </ul>
-      </article>
-
-      <article class="team-card reveal reveal-fly reveal-d1">
-        <div class="team-media frame-light" data-imgwrap>
-          <img src="assets/img/team/milan.jpg"
-               alt="Portret van Milan Vandecaetsbeek, kinesist en zaakvoerder bij Credo."
-               class="photo team-photo absolute inset-0" loading="lazy" decoding="async"
-               onerror="imgFail(this,'T2')">
-
-          <span class="team-scrim" aria-hidden="true"></span>
-          <span class="team-no" aria-hidden="true">02</span>
-
-          <div class="team-panel" id="cred-milan">
-            <p class="eyebrow eyebrow-light mb-3">Credentials</p>
-            <ul class="text-[13px] leading-relaxed text-bone/85 space-y-1.5">
+        <div class="mt-8 grid gap-8 md:grid-cols-12 md:items-start">
+          <div class="md:col-span-5">
+            <p class="eyebrow text-ink/45">02 — Kinesist — Zaakvoerder</p>
+            <h3 class="display mt-3 text-[clamp(1.9rem,4.4vw,3.2rem)] leading-[0.92] text-ink">
+              <span class="block">Milan</span><span class="block">Vandecaetsbeek</span>
+            </h3>
+          </div>
+          <div class="md:col-span-7 md:border-l md:border-ink/15 md:pl-10">
+            <p class="eyebrow mb-4 text-ink/45">Credentials</p>
+            <ul class="text-[14px] leading-relaxed text-ink/75 space-y-1.5">
               <li>Master revalidatiewetenschappen &amp; kinesitherapie</li>
               <li>Specialisatie sportletsels</li>
               <li>Physical Coach KRC Genk Ladies (2024–heden)</li>
@@ -307,40 +300,28 @@
               <li>Strength Coach Sporting Hasselt (2025–heden)</li>
             </ul>
           </div>
-
-          <button class="team-toggle" type="button" aria-expanded="false" aria-controls="cred-milan">
-            <span>Toon credentials van Milan Vandecaetsbeek</span>
-          </button>
-          <span class="team-cue" aria-hidden="true">+</span>
-
-          <div class="team-caption">
-            <p class="eyebrow text-bone/65">Kinesist — Zaakvoerder</p>
-            <h3 class="display team-name mt-2">
-              <span class="block">Milan</span><span class="block">Vandecaetsbeek</span>
-            </h3>
+        </div>
+      </div>
+      <div class="team-panelx" id="tp-tuur" role="tabpanel"
+           aria-labelledby="tt-tuur" hidden>
+        <div class="team-stage">
+          <p class="team-marquee" aria-hidden="true"><span>Tuur Vanderstukken &nbsp;·&nbsp; Tuur Vanderstukken &nbsp;·&nbsp; Tuur Vanderstukken &nbsp;·&nbsp; Tuur Vanderstukken &nbsp;·&nbsp;</span><span>Tuur Vanderstukken &nbsp;·&nbsp; Tuur Vanderstukken &nbsp;·&nbsp; Tuur Vanderstukken &nbsp;·&nbsp; Tuur Vanderstukken &nbsp;·&nbsp;</span></p>
+          <div class="team-shot frame-light" data-imgwrap>
+            <img src="assets/img/team/tuur.jpg" alt="Portret van Tuur Vanderstukken, kinesist en zaakvoerder bij Credo."
+                 class="photo team-photo" loading="lazy" decoding="async" onerror="imgFail(this,'T3')">
           </div>
         </div>
 
-        <ul class="mt-4 flex flex-wrap gap-2">
-          <li class="team-chip">Red Flames</li>
-          <li class="team-chip">KRC Genk Ladies</li>
-          <li class="team-chip">Sportletsels</li>
-        </ul>
-      </article>
-
-      <article class="team-card reveal reveal-fly reveal-d2">
-        <div class="team-media frame-light" data-imgwrap>
-          <img src="assets/img/team/tuur.jpg"
-               alt="Portret van Tuur Vanderstukken, kinesist en zaakvoerder bij Credo."
-               class="photo team-photo absolute inset-0" loading="lazy" decoding="async"
-               onerror="imgFail(this,'T3')">
-
-          <span class="team-scrim" aria-hidden="true"></span>
-          <span class="team-no" aria-hidden="true">03</span>
-
-          <div class="team-panel" id="cred-tuur">
-            <p class="eyebrow eyebrow-light mb-3">Credentials</p>
-            <ul class="text-[13px] leading-relaxed text-bone/85 space-y-1.5">
+        <div class="mt-8 grid gap-8 md:grid-cols-12 md:items-start">
+          <div class="md:col-span-5">
+            <p class="eyebrow text-ink/45">03 — Kinesist — Zaakvoerder</p>
+            <h3 class="display mt-3 text-[clamp(1.9rem,4.4vw,3.2rem)] leading-[0.92] text-ink">
+              <span class="block">Tuur</span><span class="block">Vanderstukken</span>
+            </h3>
+          </div>
+          <div class="md:col-span-7 md:border-l md:border-ink/15 md:pl-10">
+            <p class="eyebrow mb-4 text-ink/45">Credentials</p>
+            <ul class="text-[14px] leading-relaxed text-ink/75 space-y-1.5">
               <li>Master revalidatiewetenschappen &amp; kinesitherapie</li>
               <li>Specialisatie sportletsels</li>
               <li>Dry needling</li>
@@ -349,219 +330,141 @@
               <li>Physical Coach OH Leuven (2025–heden)</li>
             </ul>
           </div>
-
-          <button class="team-toggle" type="button" aria-expanded="false" aria-controls="cred-tuur">
-            <span>Toon credentials van Tuur Vanderstukken</span>
-          </button>
-          <span class="team-cue" aria-hidden="true">+</span>
-
-          <div class="team-caption">
-            <p class="eyebrow text-bone/65">Kinesist — Zaakvoerder</p>
-            <h3 class="display team-name mt-2">
-              <span class="block">Tuur</span><span class="block">Vanderstukken</span>
-            </h3>
+        </div>
+      </div>
+      <div class="team-panelx" id="tp-rimke" role="tabpanel"
+           aria-labelledby="tt-rimke" hidden>
+        <div class="team-stage">
+          <p class="team-marquee" aria-hidden="true"><span>Rimke Eurlings &nbsp;·&nbsp; Rimke Eurlings &nbsp;·&nbsp; Rimke Eurlings &nbsp;·&nbsp; Rimke Eurlings &nbsp;·&nbsp;</span><span>Rimke Eurlings &nbsp;·&nbsp; Rimke Eurlings &nbsp;·&nbsp; Rimke Eurlings &nbsp;·&nbsp; Rimke Eurlings &nbsp;·&nbsp;</span></p>
+          <div class="team-shot frame-light" data-imgwrap>
+            <img src="assets/img/team/rimke.jpg" alt="Portret van Rimke Eurlings, kinesist bij Credo."
+                 class="photo team-photo" loading="lazy" decoding="async" onerror="imgFail(this,'T4')">
           </div>
         </div>
 
-        <ul class="mt-4 flex flex-wrap gap-2">
-          <li class="team-chip">OH Leuven</li>
-          <li class="team-chip">Dry needling</li>
-          <li class="team-chip">BFR</li>
-        </ul>
-      </article>
-
-      <article class="team-card reveal reveal-fly reveal-d1">
-        <div class="team-media frame-light" data-imgwrap>
-          <img src="assets/img/team/rimke.jpg"
-               alt="Portret van Rimke Eurlings, kinesist bij Credo."
-               class="photo team-photo absolute inset-0" loading="lazy" decoding="async"
-               onerror="imgFail(this,'T4')">
-
-          <span class="team-scrim" aria-hidden="true"></span>
-          <span class="team-no" aria-hidden="true">04</span>
-
-          <div class="team-panel" id="cred-rimke">
-            <p class="eyebrow eyebrow-light mb-3">Credentials</p>
-            <ul class="text-[13px] leading-relaxed text-bone/85 space-y-1.5">
+        <div class="mt-8 grid gap-8 md:grid-cols-12 md:items-start">
+          <div class="md:col-span-5">
+            <p class="eyebrow text-ink/45">04 — Kinesist</p>
+            <h3 class="display mt-3 text-[clamp(1.9rem,4.4vw,3.2rem)] leading-[0.92] text-ink">
+              <span class="block">Rimke</span><span class="block">Eurlings</span>
+            </h3>
+          </div>
+          <div class="md:col-span-7 md:border-l md:border-ink/15 md:pl-10">
+            <p class="eyebrow mb-4 text-ink/45">Credentials</p>
+            <ul class="text-[14px] leading-relaxed text-ink/75 space-y-1.5">
               <li>Master revalidatiewetenschappen &amp; kinesitherapie</li>
               <li>Specialisatie sportletsels</li>
               <li>Coach Sporting Hasselt Ladies</li>
               <li>Praktijkassistent UHasselt</li>
             </ul>
           </div>
-
-          <button class="team-toggle" type="button" aria-expanded="false" aria-controls="cred-rimke">
-            <span>Toon credentials van Rimke Eurlings</span>
-          </button>
-          <span class="team-cue" aria-hidden="true">+</span>
-
-          <div class="team-caption">
-            <p class="eyebrow text-bone/65">Kinesist</p>
-            <h3 class="display team-name mt-2">
-              <span class="block">Rimke</span><span class="block">Eurlings</span>
-            </h3>
+        </div>
+      </div>
+      <div class="team-panelx" id="tp-philippe" role="tabpanel"
+           aria-labelledby="tt-philippe" hidden>
+        <div class="team-stage">
+          <p class="team-marquee" aria-hidden="true"><span>Philippe Valvekens &nbsp;·&nbsp; Philippe Valvekens &nbsp;·&nbsp; Philippe Valvekens &nbsp;·&nbsp; Philippe Valvekens &nbsp;·&nbsp;</span><span>Philippe Valvekens &nbsp;·&nbsp; Philippe Valvekens &nbsp;·&nbsp; Philippe Valvekens &nbsp;·&nbsp; Philippe Valvekens &nbsp;·&nbsp;</span></p>
+          <div class="team-shot frame-light" data-imgwrap>
+            <img src="assets/img/team/philippe.jpg" alt="Portret van Philippe Valvekens, kinesist bij Credo."
+                 class="photo team-photo" loading="lazy" decoding="async" onerror="imgFail(this,'T5')">
           </div>
         </div>
 
-        <ul class="mt-4 flex flex-wrap gap-2">
-          <li class="team-chip">Sporting Hasselt Ladies</li>
-          <li class="team-chip">UHasselt</li>
-          <li class="team-chip">Sportletsels</li>
-        </ul>
-      </article>
-
-      <article class="team-card reveal reveal-fly reveal-d2">
-        <div class="team-media frame-light" data-imgwrap>
-          <img src="assets/img/team/philippe.jpg"
-               alt="Portret van Philippe Valvekens, kinesist bij Credo."
-               class="photo team-photo absolute inset-0" loading="lazy" decoding="async"
-               onerror="imgFail(this,'T5')">
-
-          <span class="team-scrim" aria-hidden="true"></span>
-          <span class="team-no" aria-hidden="true">05</span>
-
-          <div class="team-panel" id="cred-philippe">
-            <p class="eyebrow eyebrow-light mb-3">Credentials</p>
-            <ul class="text-[13px] leading-relaxed text-bone/85 space-y-1.5">
+        <div class="mt-8 grid gap-8 md:grid-cols-12 md:items-start">
+          <div class="md:col-span-5">
+            <p class="eyebrow text-ink/45">05 — Kinesist</p>
+            <h3 class="display mt-3 text-[clamp(1.9rem,4.4vw,3.2rem)] leading-[0.92] text-ink">
+              <span class="block">Philippe</span><span class="block">Valvekens</span>
+            </h3>
+          </div>
+          <div class="md:col-span-7 md:border-l md:border-ink/15 md:pl-10">
+            <p class="eyebrow mb-4 text-ink/45">Credentials</p>
+            <ul class="text-[14px] leading-relaxed text-ink/75 space-y-1.5">
               <li>Master revalidatiewetenschappen &amp; kinesitherapie</li>
               <li>Specialisatie sportletsels</li>
             </ul>
           </div>
-
-          <button class="team-toggle" type="button" aria-expanded="false" aria-controls="cred-philippe">
-            <span>Toon credentials van Philippe Valvekens</span>
-          </button>
-          <span class="team-cue" aria-hidden="true">+</span>
-
-          <div class="team-caption">
-            <p class="eyebrow text-bone/65">Kinesist</p>
-            <h3 class="display team-name mt-2">
-              <span class="block">Philippe</span><span class="block">Valvekens</span>
-            </h3>
+        </div>
+      </div>
+      <div class="team-panelx" id="tp-dries" role="tabpanel"
+           aria-labelledby="tt-dries" hidden>
+        <div class="team-stage">
+          <p class="team-marquee" aria-hidden="true"><span>Dries Verschueren &nbsp;·&nbsp; Dries Verschueren &nbsp;·&nbsp; Dries Verschueren &nbsp;·&nbsp; Dries Verschueren &nbsp;·&nbsp;</span><span>Dries Verschueren &nbsp;·&nbsp; Dries Verschueren &nbsp;·&nbsp; Dries Verschueren &nbsp;·&nbsp; Dries Verschueren &nbsp;·&nbsp;</span></p>
+          <div class="team-shot frame-light" data-imgwrap>
+            <img src="assets/img/team/dries.jpg" alt="Portret van Dries Verschueren, kinesist bij Credo."
+                 class="photo team-photo" loading="lazy" decoding="async" onerror="imgFail(this,'T6')">
           </div>
         </div>
 
-        <ul class="mt-4 flex flex-wrap gap-2">
-          <li class="team-chip">Sportletsels</li>
-        </ul>
-      </article>
-
-      <article class="team-card reveal reveal-fly reveal-d3">
-        <div class="team-media frame-light" data-imgwrap>
-          <img src="assets/img/team/dries.jpg"
-               alt="Portret van Dries Verschueren, kinesist bij Credo."
-               class="photo team-photo absolute inset-0" loading="lazy" decoding="async"
-               onerror="imgFail(this,'T6')">
-
-          <span class="team-scrim" aria-hidden="true"></span>
-          <span class="team-no" aria-hidden="true">06</span>
-
-          <div class="team-panel" id="cred-dries">
-            <p class="eyebrow eyebrow-light mb-3">Credentials</p>
-            <ul class="text-[13px] leading-relaxed text-bone/85 space-y-1.5">
+        <div class="mt-8 grid gap-8 md:grid-cols-12 md:items-start">
+          <div class="md:col-span-5">
+            <p class="eyebrow text-ink/45">06 — Kinesist</p>
+            <h3 class="display mt-3 text-[clamp(1.9rem,4.4vw,3.2rem)] leading-[0.92] text-ink">
+              <span class="block">Dries</span><span class="block">Verschueren</span>
+            </h3>
+          </div>
+          <div class="md:col-span-7 md:border-l md:border-ink/15 md:pl-10">
+            <p class="eyebrow mb-4 text-ink/45">Credentials</p>
+            <ul class="text-[14px] leading-relaxed text-ink/75 space-y-1.5">
               <li>Master revalidatiewetenschappen &amp; kinesitherapie</li>
               <li>Specialisatie sportletsels</li>
               <li>Hoofdkinesitherapeut Sporting Hasselt (2025–heden)</li>
             </ul>
           </div>
-
-          <button class="team-toggle" type="button" aria-expanded="false" aria-controls="cred-dries">
-            <span>Toon credentials van Dries Verschueren</span>
-          </button>
-          <span class="team-cue" aria-hidden="true">+</span>
-
-          <div class="team-caption">
-            <p class="eyebrow text-bone/65">Kinesist</p>
-            <h3 class="display team-name mt-2">
-              <span class="block">Dries</span><span class="block">Verschueren</span>
-            </h3>
-          </div>
         </div>
-
-        <ul class="mt-4 flex flex-wrap gap-2">
-          <li class="team-chip">Sporting Hasselt</li>
-          <li class="team-chip">Sportletsels</li>
-        </ul>
-      </article>
-
-    </div>
-
-    <!-- Expandable full credential list (also the accessible/print fallback for the hover panels) -->
-    <details class="mt-16 frame-light reveal">
-      <summary class="flex items-center justify-between gap-6 p-6 md:p-8">
-        <span class="display d-sm text-ink">Alle credentials</span>
-        <span class="acc-plus text-2xl leading-none text-taupe" aria-hidden="true">+</span>
-      </summary>
-      <div class="px-6 md:px-8 pb-8 grid gap-10 md:grid-cols-2 lg:grid-cols-3 border-t border-ink/15 pt-8">
-
-        <div>
-          <h3 class="display d-sm text-ink">Thomas Casier</h3>
-          <p class="eyebrow mt-2 mb-4">Kinesist — Zaakvoerder</p>
-          <ul class="text-[14px] text-ink/70 space-y-1.5 list-none">
-            <li>Master revalidatiewetenschappen &amp; kinesitherapie</li>
-            <li>Master manuele therapie</li>
-            <li>Specialisatie sportvoeding</li>
-            <li>Kinesitherapeut Torpedo Hasselt</li>
-          </ul>
-        </div>
-
-        <div>
-          <h3 class="display d-sm text-ink">Milan Vandecaetsbeek</h3>
-          <p class="eyebrow mt-2 mb-4">Kinesist — Zaakvoerder</p>
-          <ul class="text-[14px] text-ink/70 space-y-1.5 list-none">
-            <li>Master revalidatiewetenschappen &amp; kinesitherapie</li>
-            <li>Specialisatie sportletsels</li>
-            <li>Physical Coach KRC Genk Ladies (2024–heden)</li>
-            <li>Physical Coach Red Flames (2025–heden)</li>
-            <li>Strength Coach Sporting Hasselt (2025–heden)</li>
-          </ul>
-        </div>
-
-        <div>
-          <h3 class="display d-sm text-ink">Tuur Vanderstukken</h3>
-          <p class="eyebrow mt-2 mb-4">Kinesist — Zaakvoerder</p>
-          <ul class="text-[14px] text-ink/70 space-y-1.5 list-none">
-            <li>Master revalidatiewetenschappen &amp; kinesitherapie</li>
-            <li>Specialisatie sportletsels</li>
-            <li>Dry needling</li>
-            <li>Blood flow restriction training</li>
-            <li>Physical Coach Sporting Hasselt (2020–2025)</li>
-            <li>Physical Coach OH Leuven (2025–heden)</li>
-          </ul>
-        </div>
-
-        <div>
-          <h3 class="display d-sm text-ink">Rimke Eurlings</h3>
-          <p class="eyebrow mt-2 mb-4">Kinesist</p>
-          <ul class="text-[14px] text-ink/70 space-y-1.5 list-none">
-            <li>Master revalidatiewetenschappen &amp; kinesitherapie</li>
-            <li>Specialisatie sportletsels</li>
-            <li>Coach Sporting Hasselt Ladies</li>
-            <li>Praktijkassistent UHasselt</li>
-          </ul>
-        </div>
-
-        <div>
-          <h3 class="display d-sm text-ink">Philippe Valvekens</h3>
-          <p class="eyebrow mt-2 mb-4">Kinesist</p>
-          <ul class="text-[14px] text-ink/70 space-y-1.5 list-none">
-            <li>Master revalidatiewetenschappen &amp; kinesitherapie</li>
-            <li>Specialisatie sportletsels</li>
-          </ul>
-        </div>
-
-        <div>
-          <h3 class="display d-sm text-ink">Dries Verschueren</h3>
-          <p class="eyebrow mt-2 mb-4">Kinesist</p>
-          <ul class="text-[14px] text-ink/70 space-y-1.5 list-none">
-            <li>Master revalidatiewetenschappen &amp; kinesitherapie</li>
-            <li>Specialisatie sportletsels</li>
-            <li>Hoofdkinesitherapeut Sporting Hasselt (2025–heden)</li>
-          </ul>
-        </div>
-
       </div>
-    </details>
+
+      <ul class="team-strip" role="tablist" aria-label="Kies een teamlid">
+        <li>
+          <button type="button" class="team-thumb is-active" id="tt-thomas" role="tab"
+                  aria-controls="tp-thomas" aria-selected="true"
+                  tabindex="0">
+            <img src="assets/img/team/thomas.jpg" alt="" class="photo" loading="lazy" decoding="async">
+            <span class="sr-only">Thomas Casier — Kinesist — Zaakvoerder</span>
+          </button>
+        </li>
+        <li>
+          <button type="button" class="team-thumb" id="tt-milan" role="tab"
+                  aria-controls="tp-milan" aria-selected="false"
+                  tabindex="-1">
+            <img src="assets/img/team/milan.jpg" alt="" class="photo" loading="lazy" decoding="async">
+            <span class="sr-only">Milan Vandecaetsbeek — Kinesist — Zaakvoerder</span>
+          </button>
+        </li>
+        <li>
+          <button type="button" class="team-thumb" id="tt-tuur" role="tab"
+                  aria-controls="tp-tuur" aria-selected="false"
+                  tabindex="-1">
+            <img src="assets/img/team/tuur.jpg" alt="" class="photo" loading="lazy" decoding="async">
+            <span class="sr-only">Tuur Vanderstukken — Kinesist — Zaakvoerder</span>
+          </button>
+        </li>
+        <li>
+          <button type="button" class="team-thumb" id="tt-rimke" role="tab"
+                  aria-controls="tp-rimke" aria-selected="false"
+                  tabindex="-1">
+            <img src="assets/img/team/rimke.jpg" alt="" class="photo" loading="lazy" decoding="async">
+            <span class="sr-only">Rimke Eurlings — Kinesist</span>
+          </button>
+        </li>
+        <li>
+          <button type="button" class="team-thumb" id="tt-philippe" role="tab"
+                  aria-controls="tp-philippe" aria-selected="false"
+                  tabindex="-1">
+            <img src="assets/img/team/philippe.jpg" alt="" class="photo" loading="lazy" decoding="async">
+            <span class="sr-only">Philippe Valvekens — Kinesist</span>
+          </button>
+        </li>
+        <li>
+          <button type="button" class="team-thumb" id="tt-dries" role="tab"
+                  aria-controls="tp-dries" aria-selected="false"
+                  tabindex="-1">
+            <img src="assets/img/team/dries.jpg" alt="" class="photo" loading="lazy" decoding="async">
+            <span class="sr-only">Dries Verschueren — Kinesist</span>
+          </button>
+        </li>
+      </ul>
+    </div>
   </div>
 </section>
 
@@ -606,6 +509,347 @@
   </div>
 </section>
 
+<section id="partners" class="bg-ink grain py-24 md:py-36" aria-labelledby="partners-title">
+  <div class="grain-layer" aria-hidden="true"></div>
+  <div class="mx-auto max-w-[1500px] px-5 md:px-10">
+
+    <div class="grid gap-6 md:grid-cols-12 md:items-end mb-14 md:mb-20">
+      <div class="md:col-span-7">
+        <p class="eyebrow mb-8 reveal">Partners / 04</p>
+        <h2 id="partners-title" class="display d-xl text-bone reveal reveal-d1">
+          Onze mensen<br>staan langs het veld.
+        </h2>
+      </div>
+      <p class="md:col-span-5 text-[15px] text-bone/65 prose-body reveal reveal-d2">
+        Niet als sponsor, maar met een functie en een contract. Wat we in de eerste klasse
+        en bij de nationale ploeg leren over belasting, herstel en terugkeer na blessure,
+        gebruiken we hier op de vloer bij jou.
+      </p>
+    </div>
+
+    <ul class="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+
+      <!-- Sporting Hasselt -->
+      <li class="partner-card frame-dark flex flex-col reveal">
+        <div class="bg-bone h-32 flex items-center justify-center p-6" data-imgwrap>
+          <img src="https://static.wixstatic.com/media/8cedec_f5d040f24ed5485ba38bae0312419876~mv2.png"
+               alt="Logo van Sporting Hasselt" class="partner-logo max-h-20 w-auto object-contain"
+               loading="lazy" decoding="async" onerror="imgFail(this,'07')">
+        </div>
+        <div class="p-5 md:p-6 flex-1">
+          <h3 class="display d-sm text-bone">Sporting Hasselt</h3>
+          <p class="eyebrow mt-3">Fysieke &amp; medische staf</p>
+          <p class="mt-4 text-[13px] leading-relaxed text-bone/65">
+            Vier van ons zijn of waren aan de club verbonden: Tuur als physical coach (2020–2025),
+            Milan als strength coach, Dries als hoofdkinesitherapeut en Rimke bij de Ladies.
+          </p>
+        </div>
+      </li>
+
+      <!-- KRC Genk Ladies -->
+      <li class="partner-card frame-dark flex flex-col reveal reveal-d1">
+        <div class="bg-bone h-32 flex items-center justify-center p-6" data-imgwrap>
+          <img src="https://static.wixstatic.com/media/c19dfb_a5d049eb6f2f4f0980a8dd9b1a275195~mv2.png"
+               alt="Logo van KRC Genk Ladies" class="partner-logo max-h-20 w-auto object-contain"
+               loading="lazy" decoding="async" onerror="imgFail(this,'07')">
+        </div>
+        <div class="p-5 md:p-6 flex-1">
+          <h3 class="display d-sm text-bone">KRC Genk Ladies</h3>
+          <p class="eyebrow mt-3">Physical coaching</p>
+          <p class="mt-4 text-[13px] leading-relaxed text-bone/65">
+            Milan Vandecaetsbeek is er physical coach sinds 2024 en volgt de fysieke opbouw
+            van de kern doorheen het seizoen.
+          </p>
+        </div>
+      </li>
+
+      <!-- Red Flames — LOGO NEEDED, typographic wordmark for now -->
+      <li class="partner-card frame-dark flex flex-col reveal reveal-d2">
+        <div class="bg-bone h-32 flex items-center justify-center p-6">
+          <span class="partner-wordmark display text-[clamp(1.5rem,4vw,2rem)] text-ink text-center leading-none">Red Flames</span>
+        </div>
+        <div class="p-5 md:p-6 flex-1">
+          <h3 class="display d-sm text-bone">Red Flames</h3>
+          <p class="eyebrow mt-3">Nationale ploeg — physical coaching</p>
+          <p class="mt-4 text-[13px] leading-relaxed text-bone/65">
+            Sinds 2025 staat Milan als physical coach bij de Belgische nationale vrouwenploeg.
+            Internationaal niveau, dezelfde principes.
+          </p>
+        </div>
+      </li>
+
+      <!-- OH Leuven — LOGO NEEDED, typographic wordmark for now -->
+      <li class="partner-card frame-dark flex flex-col reveal reveal-d3">
+        <div class="bg-bone h-32 flex items-center justify-center p-6">
+          <span class="partner-wordmark display text-[clamp(1.5rem,4vw,2rem)] text-ink text-center leading-none">OH Leuven</span>
+        </div>
+        <div class="p-5 md:p-6 flex-1">
+          <h3 class="display d-sm text-bone">OH Leuven</h3>
+          <p class="eyebrow mt-3">Physical coaching</p>
+          <p class="mt-4 text-[13px] leading-relaxed text-bone/65">
+            Tuur Vanderstukken is er physical coach sinds 2025, na vijf seizoenen
+            bij Sporting Hasselt.
+          </p>
+        </div>
+      </li>
+
+      <!-- Torpedo Hasselt -->
+      <li class="partner-card frame-dark flex flex-col reveal">
+        <div class="bg-bone h-32 flex items-center justify-center p-6" data-imgwrap>
+          <img src="https://static.wixstatic.com/media/b42414_c1f9187c6cc04d6bb2ce53a365c331b5~mv2.png"
+               alt="Logo van Torpedo Hasselt" class="partner-logo max-h-20 w-auto object-contain"
+               loading="lazy" decoding="async" onerror="imgFail(this,'07')">
+        </div>
+        <div class="p-5 md:p-6 flex-1">
+          <h3 class="display d-sm text-bone">Torpedo Hasselt</h3>
+          <p class="eyebrow mt-3">Clubkinesitherapie</p>
+          <p class="mt-4 text-[13px] leading-relaxed text-bone/65">
+            Thomas Casier is kinesitherapeut van de club en volgt de spelers
+            van blessure tot terugkeer.
+          </p>
+        </div>
+      </li>
+
+      <!-- 6D Sports Nutrition -->
+      <li class="partner-card frame-dark flex flex-col reveal reveal-d1">
+        <div class="bg-bone h-32 flex items-center justify-center p-6" data-imgwrap>
+          <img src="https://static.wixstatic.com/media/8cedec_c79d613aa9b04da18cea8b89fbca31a4~mv2.png"
+               alt="Logo van 6D Sports Nutrition" class="partner-logo max-h-20 w-auto object-contain"
+               loading="lazy" decoding="async" onerror="imgFail(this,'07')">
+        </div>
+        <div class="p-5 md:p-6 flex-1">
+          <h3 class="display d-sm text-bone">6D Sports Nutrition</h3>
+          <p class="eyebrow mt-3">Sportvoeding</p>
+          <p class="mt-4 text-[13px] leading-relaxed text-bone/65">
+            Onze partner voor sportvoeding en supplementatie, afgestemd op je
+            trainingsbelasting en je wedstrijdkalender.
+          </p>
+        </div>
+      </li>
+
+      <!-- Forward Hasselt -->
+      <li class="partner-card frame-dark flex flex-col reveal reveal-d2">
+        <div class="bg-bone h-32 flex items-center justify-center p-6" data-imgwrap>
+          <img src="https://static.wixstatic.com/media/c19dfb_7baa96e9eeaf47fcbd0806b819ff4636~mv2.png"
+               alt="Logo van Forward Hasselt" class="partner-logo max-h-20 w-auto object-contain"
+               loading="lazy" decoding="async" onerror="imgFail(this,'07')">
+        </div>
+        <div class="p-5 md:p-6 flex-1">
+          <h3 class="display d-sm text-bone">Forward Hasselt</h3>
+          <p class="eyebrow mt-3">Partner</p>
+          <p class="mt-4 text-[13px] leading-relaxed text-bone/65">
+            Samen zetten we in op sport en beweging in de regio Hasselt.
+          </p>
+          <a href="https://www.forwardhasselt.be/" target="_blank" rel="noopener noreferrer"
+             class="link-line mt-5 text-bone">Bekijk
+            <svg width="16" height="9" viewBox="0 0 16 9" fill="none" aria-hidden="true"><path d="M0 4.5h14M10.5 1L14 4.5 10.5 8" stroke="currentColor" stroke-width="1.3"/></svg>
+          </a>
+        </div>
+      </li>
+
+      <!-- Open invitation, fills the eighth cell -->
+      <li class="partner-card frame-dark flex flex-col justify-between p-5 md:p-6 reveal reveal-d3">
+        <div>
+          <p class="eyebrow">Club of federatie</p>
+          <h3 class="display d-sm text-bone mt-3">Samenwerken?</h3>
+          <p class="mt-4 text-[13px] leading-relaxed text-bone/65">
+            We begeleiden ploegen op vlak van fysieke opbouw, blessurepreventie
+            en return to play. Laat het ons weten.
+          </p>
+        </div>
+        <a href="#contact" class="link-line mt-8 text-bone">Contacteer ons
+          <svg width="16" height="9" viewBox="0 0 16 9" fill="none" aria-hidden="true"><path d="M0 4.5h14M10.5 1L14 4.5 10.5 8" stroke="currentColor" stroke-width="1.3"/></svg>
+        </a>
+      </li>
+
+    </ul>
+  </div>
+</section>
+
+<!-- ============================================================
+     REVIEWS
+     >>> TEKSTEN NOG IN TE VULLEN <<<
+     De citaten hieronder zijn placeholders, geen echte patiëntreacties. Vul ze
+     met echte Google-reviews (naam + eerste letter achternaam volstaat) voor
+     dit live gaat. Verzonnen reviews zijn misleidend en in België ook verboden
+     onder de wet marktpraktijken.
+     ============================================================ -->
+<section id="reviews" class="bg-bone text-ink on-light py-24 md:py-32" aria-labelledby="reviews-title">
+  <div class="mx-auto max-w-[1500px] px-5 md:px-10">
+
+    <div class="grid gap-6 md:grid-cols-12 md:items-end mb-12 md:mb-16">
+      <div class="md:col-span-7">
+        <p class="eyebrow mb-8 reveal">Ervaringen / 05</p>
+        <h2 id="reviews-title" class="display d-xl text-ink reveal reveal-d1">Wat patiënten<br>ervan zeggen.</h2>
+      </div>
+      <p class="md:col-span-5 text-[15px] text-ink/70 prose-body reveal reveal-d2">
+        Reacties van mensen die hier een traject hebben doorlopen.
+      </p>
+    </div>
+
+    <ul class="grid gap-6 md:grid-cols-3">
+      <li class="frame-light p-6 md:p-8 reveal reveal-fly">
+        <p class="display text-[clamp(1.2rem,2vw,1.6rem)] leading-[1.15] text-ink">
+          [Review 01 — citaat van de patiënt]
+        </p>
+        <p class="eyebrow mt-6 text-ink/45">[Naam] — [behandeling]</p>
+      </li>
+      <li class="frame-light p-6 md:p-8 reveal reveal-fly reveal-d2">
+        <p class="display text-[clamp(1.2rem,2vw,1.6rem)] leading-[1.15] text-ink">
+          [Review 02 — citaat van de patiënt]
+        </p>
+        <p class="eyebrow mt-6 text-ink/45">[Naam] — [behandeling]</p>
+      </li>
+      <li class="frame-light p-6 md:p-8 reveal reveal-fly reveal-d4">
+        <p class="display text-[clamp(1.2rem,2vw,1.6rem)] leading-[1.15] text-ink">
+          [Review 03 — citaat van de patiënt]
+        </p>
+        <p class="eyebrow mt-6 text-ink/45">[Naam] — [behandeling]</p>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============================================================
+     PRAKTISCH & VEELGESTELDE VRAGEN
+     Antwoorden die uit de site zelf volgen staan ingevuld. Alles wat de
+     praktijk moet bevestigen — tarieven, terugbetaling, openingsuren — staat
+     als [TE BEVESTIGEN] en is bewust niet ingevuld: een verkeerd tarief op een
+     zorgsite kost meer vertrouwen dan een ontbrekend tarief.
+     ============================================================ -->
+<section id="praktisch" class="bg-ink grain py-24 md:py-32" aria-labelledby="faq-title">
+  <div class="grain-layer" aria-hidden="true"></div>
+  <div class="mx-auto max-w-[1500px] px-5 md:px-10">
+
+    <div class="grid gap-6 md:grid-cols-12 md:items-end mb-12 md:mb-16">
+      <div class="md:col-span-7">
+        <p class="eyebrow mb-8 reveal">Praktisch / 06</p>
+        <h2 id="faq-title" class="display d-xl text-bone reveal reveal-d1">Voor je belt.</h2>
+      </div>
+      <p class="md:col-span-5 text-[15px] text-bone/65 prose-body reveal reveal-d2">
+        De vragen die het vaakst gesteld worden. Staat het antwoord er niet bij?
+        Bel <a href="tel:+32480628545" class="link-line text-bone">+32 480 62 85 45</a>.
+      </p>
+    </div>
+
+    <div class="grid gap-10 lg:grid-cols-12 lg:gap-16">
+
+      <div class="lg:col-span-7">
+        <details class="faq frame-dark reveal">
+          <summary class="flex items-center justify-between gap-6 p-5 md:p-6">
+            <span class="display d-sm text-bone">Heb ik een voorschrift nodig?</span>
+            <span class="acc-plus text-2xl leading-none text-taupe" aria-hidden="true">+</span>
+          </summary>
+          <div class="px-5 md:px-6 pb-6 border-t border-bone/15 pt-5">
+            <p class="text-[15px] text-bone/70 prose-body">
+              Je kan bij ons terecht zonder voorschrift. Wil je terugbetaling van je mutualiteit,
+              dan heb je wel een voorschrift van je arts of specialist nodig. [TE BEVESTIGEN]
+            </p>
+          </div>
+        </details>
+
+        <details class="faq frame-dark mt-3 reveal">
+          <summary class="flex items-center justify-between gap-6 p-5 md:p-6">
+            <span class="display d-sm text-bone">Wat kost een sessie?</span>
+            <span class="acc-plus text-2xl leading-none text-taupe" aria-hidden="true">+</span>
+          </summary>
+          <div class="px-5 md:px-6 pb-6 border-t border-bone/15 pt-5">
+            <p class="text-[15px] text-bone/70 prose-body">
+              [TE BEVESTIGEN — tarief per sessie, tarief screening, en of jullie
+              geconventioneerd zijn. Dit is de vraag die het vaakst gesteld wordt;
+              hoe concreter het antwoord, hoe minder drempel.]
+            </p>
+          </div>
+        </details>
+
+        <details class="faq frame-dark mt-3 reveal">
+          <summary class="flex items-center justify-between gap-6 p-5 md:p-6">
+            <span class="display d-sm text-bone">Krijg ik het terugbetaald?</span>
+            <span class="acc-plus text-2xl leading-none text-taupe" aria-hidden="true">+</span>
+          </summary>
+          <div class="px-5 md:px-6 pb-6 border-t border-bone/15 pt-5">
+            <p class="text-[15px] text-bone/70 prose-body">
+              [TE BEVESTIGEN — terugbetaling mutualiteit met voorschrift, en of
+              performance-trajecten daar wel of niet onder vallen.]
+            </p>
+          </div>
+        </details>
+
+        <details class="faq frame-dark mt-3 reveal">
+          <summary class="flex items-center justify-between gap-6 p-5 md:p-6">
+            <span class="display d-sm text-bone">Hoelang duurt een traject?</span>
+            <span class="acc-plus text-2xl leading-none text-taupe" aria-hidden="true">+</span>
+          </summary>
+          <div class="px-5 md:px-6 pb-6 border-t border-bone/15 pt-5">
+            <p class="text-[15px] text-bone/70 prose-body">
+              Dat hangt af van je klacht en je doel. We werken in vijf stappen — afspraak,
+              onderzoek, plan, opbouw en een eindpunt — en spreken die doelen bij de intake
+              samen af, zodat je weet waar je naartoe werkt in plaats van te blijven komen.
+            </p>
+          </div>
+        </details>
+
+        <details class="faq frame-dark mt-3 reveal">
+          <summary class="flex items-center justify-between gap-6 p-5 md:p-6">
+            <span class="display d-sm text-bone">Moet ik sportief zijn om hier te komen?</span>
+            <span class="acc-plus text-2xl leading-none text-taupe" aria-hidden="true">+</span>
+          </summary>
+          <div class="px-5 md:px-6 pb-6 border-t border-bone/15 pt-5">
+            <p class="text-[15px] text-bone/70 prose-body">
+              Nee. Dat we met profclubs werken betekent alleen dat we weten hoe belasting
+              opgebouwd wordt. Dezelfde aanpak geldt voor een pijnlijke schouder of een knie
+              die na een operatie weer moet meedoen.
+            </p>
+          </div>
+        </details>
+
+        <details class="faq frame-dark mt-3 reveal">
+          <summary class="flex items-center justify-between gap-6 p-5 md:p-6">
+            <span class="display d-sm text-bone">Wat breng ik mee?</span>
+            <span class="acc-plus text-2xl leading-none text-taupe" aria-hidden="true">+</span>
+          </summary>
+          <div class="px-5 md:px-6 pb-6 border-t border-bone/15 pt-5">
+            <p class="text-[15px] text-bone/70 prose-body">
+              Sportkledij en schoenen waar je in kan bewegen, en je voorschrift of
+              beeldvorming als je die hebt.
+            </p>
+          </div>
+        </details>
+      </div>
+
+      <div class="lg:col-span-5">
+        <div class="frame-dark p-6 md:p-8 reveal reveal-d1">
+          <p class="eyebrow mb-6 text-bone/50">Praktisch</p>
+          <dl class="space-y-5 text-[15px]">
+            <div>
+              <dt class="eyebrow text-bone/50">Adres</dt>
+              <dd class="mt-1 text-bone/85">Kapelstraat 89<br>3590 Diepenbeek</dd>
+            </div>
+            <div>
+              <dt class="eyebrow text-bone/50">Telefoon</dt>
+              <dd class="mt-1"><a href="tel:+32480628545" class="link-line text-bone">+32 480 62 85 45</a></dd>
+            </div>
+            <div>
+              <dt class="eyebrow text-bone/50">E-mail</dt>
+              <dd class="mt-1"><a href="mailto:info@credokinesitherapie.be" class="link-line text-bone">info@credokinesitherapie.be</a></dd>
+            </div>
+            <div>
+              <dt class="eyebrow text-bone/50">Openingsuren</dt>
+              <dd class="mt-1 text-bone/60">[TE BEVESTIGEN]</dd>
+            </div>
+            <div>
+              <dt class="eyebrow text-bone/50">Parking</dt>
+              <dd class="mt-1 text-bone/60">[TE BEVESTIGEN]</dd>
+            </div>
+          </dl>
+          <a href="https://altagenda.crossuite.com/credokinesitherapie/step1" target="_blank" rel="noopener noreferrer"
+             class="btn btn-bone mt-8 w-full justify-center">Boek een afspraak</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
 </main>
 
 <!-- ============================================================
