@@ -205,43 +205,39 @@
     });
   });
 
-  /* ---------- Team deck ----------
-     Marks the document so the stylesheet can collapse the six panels into one
-     stage, then wires the strip as a tablist. The class goes on only once this
-     runs, so a visitor without JS keeps all six panels. */
-  document.querySelectorAll('[data-team-deck]').forEach(function (deck) {
-    var panels = deck.querySelectorAll('.team-panelx');
-    var thumbs = deck.querySelectorAll('.team-thumb');
-    if (panels.length < 2 || panels.length !== thumbs.length) return;
+  /* ---------- Team rail ----------
+     The rail scrolls on its own with overflow, so this only adds the arrows
+     and the credentials toggle. Nothing here is required to read the roster. */
+  document.querySelectorAll('[data-team-rail]').forEach(function (rail) {
+    var nav  = rail.parentElement.querySelector('.team-rail-nav');
+    var prev = nav && nav.querySelector('[data-rail-prev]');
+    var next = nav && nav.querySelector('[data-rail-next]');
 
-    document.documentElement.classList.add('js');
-    panels.forEach(function (p, i) { if (i) p.hidden = true; });
-
-    function select(i, moveFocus) {
-      panels.forEach(function (p, k) {
-        p.hidden = k !== i;
-        p.classList.toggle('is-active', k === i);
-      });
-      thumbs.forEach(function (t, k) {
-        var on = k === i;
-        t.classList.toggle('is-active', on);
-        t.setAttribute('aria-selected', on ? 'true' : 'false');
-        t.tabIndex = on ? 0 : -1;
-      });
-      if (moveFocus) thumbs[i].focus();
+    if (prev && next) {
+      function step() {
+        var card = rail.querySelector('.team-cardx');
+        return card ? card.getBoundingClientRect().width + 20 : 300;
+      }
+      function sync() {
+        var max = rail.scrollWidth - rail.clientWidth - 2;
+        prev.disabled = rail.scrollLeft <= 2;
+        next.disabled = rail.scrollLeft >= max;
+      }
+      prev.addEventListener('click', function () { rail.scrollBy({ left: -step() * 2, behavior: reduce ? 'auto' : 'smooth' }); });
+      next.addEventListener('click', function () { rail.scrollBy({ left:  step() * 2, behavior: reduce ? 'auto' : 'smooth' }); });
+      rail.addEventListener('scroll', sync, { passive: true });
+      window.addEventListener('resize', sync);
+      sync();
     }
 
-    thumbs.forEach(function (t, i) {
-      t.addEventListener('click', function () { select(i); });
-      t.addEventListener('keydown', function (e) {
-        var d = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
-        if (!d) return;
-        e.preventDefault();
-        select((i + d + thumbs.length) % thumbs.length, true);
+    rail.querySelectorAll('[data-team-toggle]').forEach(function (btn) {
+      var card = btn.closest('[data-team-card]');
+      btn.addEventListener('click', function () {
+        var open = card.classList.toggle('is-open');
+        btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+        btn.firstElementChild.textContent = open ? 'sluit' : 'info';
       });
     });
-
-    select(0);
   });
 
   /* ---------- Clips that only run while pointed at ----------
