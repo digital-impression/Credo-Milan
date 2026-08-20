@@ -42,7 +42,7 @@
   <div class="mx-auto max-w-[1500px] px-5 md:px-10">
     <div class="flex items-center justify-between h-[72px]">
 
-      <a href="../" class="flex items-center gap-3 shrink-0" aria-label="Credo Rehab en Performance — naar boven">
+      <a href="../" class="flex items-center gap-3 shrink-0" aria-label="Credo Rehab en Performance, naar boven">
         <span class="display text-[19px] md:text-[22px] tracking-[0.02em] text-bone">CREDO</span>
         <span class="hidden sm:inline-block h-4 w-px bg-bone/25" aria-hidden="true"></span>
         <span class="hidden sm:inline eyebrow eyebrow-light">Rehab &amp; Performance</span>
@@ -103,27 +103,43 @@
 <section class="relative min-h-[100svh] flex items-end overflow-hidden grain bg-ink" aria-labelledby="hero-title">
   <div class="grain-layer" aria-hidden="true"></div>
 
-  <!-- Geen bewegend beeld van een behandeling in het aangeleverde materiaal,
-       dus draagt deze hero een foto van de praktijk met een trage drift in
-       plaats van geleende trainingsbeelden. De .drift zit op de wrapper zodat
-       de parallax hieronder zijn eigen transform houdt. -->
+  <!-- Uit het aangeleverde materiaal is dit het fragment dat het dichtst bij
+       revalidatie ligt: trage, gecontroleerde oefening op het platform, geen
+       sprint en geen sprong. Vertraagd en heen-en-terug gemonteerd, zodat de
+       lus geen zichtbare naad heeft. -->
   <div class="grain-pin absolute inset-0 z-0 overflow-hidden">
-    <div class="absolute inset-0 drift">
-      <img id="hero-img"
-           src="../assets/img/rehab/hero-still.jpg"
-           alt="Knie met operatielitteken, ondersteund tijdens een behandeling."
-           class="photo w-full h-[118%] object-cover object-[52%_center] md:object-center will-change-transform"
-           fetchpriority="high" decoding="async" onerror="imgFail(this,'01')">
-    </div>
+    <video id="hero-video"
+           class="photo w-full h-[118%] object-cover object-[54%_center] md:object-center will-change-transform"
+           poster="../assets/img/rehab/hero-still.jpg"
+           autoplay muted loop playsinline preload="auto" aria-hidden="true" tabindex="-1">
+      <source src="../assets/video/hero-rehab.webm" type="video/webm">
+      <source src="../assets/video/hero-rehab.mp4" type="video/mp4">
+    </video>
+
+    <img id="hero-img" src="../assets/img/rehab/hero-still.jpg"
+         alt="Gecontroleerde oefening op het platform in de oefenzaal van Credo."
+         class="photo w-full h-[118%] object-cover object-[54%_center] md:object-center will-change-transform absolute inset-0 hidden"
+         fetchpriority="high" decoding="async" onerror="imgFail(this,'01')">
 
     <div class="absolute inset-0 bg-gradient-to-t from-ink via-ink/40 to-transparent" aria-hidden="true"></div>
     <div class="hidden md:block absolute inset-0 bg-gradient-to-r from-ink/70 via-ink/15 to-transparent" aria-hidden="true"></div>
     <div class="absolute inset-x-0 top-0 h-44 bg-gradient-to-b from-ink/65 to-transparent" aria-hidden="true"></div>
   </div>
 
+  <button id="video-toggle" type="button" hidden
+          class="grain-pin absolute z-20 bottom-5 right-5 md:bottom-8 md:right-10 w-11 h-11 frame-dark bg-ink/60 backdrop-blur-sm text-bone items-center justify-center hover:bg-bone hover:text-ink transition-colors"
+          aria-label="Pauzeer de achtergrondvideo">
+    <svg id="vt-pause" width="12" height="14" viewBox="0 0 12 14" aria-hidden="true" fill="currentColor">
+      <rect x="0" y="0" width="4" height="14"></rect><rect x="8" y="0" width="4" height="14"></rect>
+    </svg>
+    <svg id="vt-play" class="hidden" width="12" height="14" viewBox="0 0 12 14" aria-hidden="true" fill="currentColor">
+      <path d="M0 0l12 7-12 7z"></path>
+    </svg>
+  </button>
+
   <div class="relative z-10 w-full mx-auto max-w-[1500px] px-5 md:px-10 pt-32 pb-16 md:pb-20">
     <div class="frame-dark p-6 md:p-10 lg:p-12">
-      <p class="eyebrow mb-8 md:mb-12">Kinesitherapie &amp; revalidatie — Diepenbeek</p>
+      <p class="eyebrow mb-8 md:mb-12">Kinesitherapie &amp; revalidatie in Diepenbeek</p>
 
       <h1 id="hero-title" class="display d-hero text-bone">
         Herstel.<br>
@@ -135,7 +151,7 @@
           Pijn bij het trappenlopen. Een schouder die niet meer meewil. Herstel na een operatie. We zoeken eerst uit waar het vandaan komt, halen de pijn eruit en bouwen je op tot bewegen weer vanzelf gaat. Zes masters kinesitherapie, in een eigen praktijk in Diepenbeek.
         </p>
 
-        <div class="md:col-span-6 lg:col-span-7 flex flex-wrap gap-3 md:justify-end">
+        <div class="md:col-span-6 lg:col-span-7 btn-stack flex flex-wrap gap-3 md:justify-end">
           <a href="#aanvraag" class="btn btn-bone">Vraag een terugbelmoment</a>
           <a href="#traject" class="btn btn-ghost">Bekijk het traject</a>
         </div>
@@ -143,7 +159,7 @@
     </div>
 
     <div class="mt-6 hidden md:flex items-center justify-between eyebrow text-bone/60">
-      <span>Kapelstraat 89 — 3590 Diepenbeek</span>
+      <span>Kapelstraat 89 &middot; 3590 Diepenbeek</span>
       <span>Motivatie · Passie · Empathie</span>
       <span>Scroll</span>
     </div>
@@ -159,27 +175,18 @@
     <div class="frame-light p-6 md:p-10 lg:p-14">
       <p class="eyebrow mb-8 md:mb-10 reveal">Credo / 01</p>
 
-      <h2 class="display credo-word reveal">Credo</h2>
+      <h2 class="display credo-word reveal" data-fill="../assets/img/credo-fill-rehab.jpg">Credo</h2>
 
       <div class="mt-6 md:mt-8 flex flex-wrap items-baseline gap-x-8 gap-y-3 reveal reveal-d1">
-        <p class="font-body text-[15px] md:text-lg text-ink/65 tracking-wide">[ˈkreeːdoː]</p>
+        <p class="font-body text-[15px] md:text-lg text-ink/65 tracking-wide">[&#712;kree&#720;do&#720;]</p>
         <p class="eyebrow">Latijns voor &lsquo;ik geloof&rsquo;</p>
       </div>
 
-      <!-- Wide band instead of a photo inside the letterforms. At this weight
-           the type swallows any image, so the photo gets its own space. -->
-      <figure class="mt-8 md:mt-10 reveal reveal-d1">
-        <div class="relative overflow-hidden aspect-[21/9] frame-light" data-imgwrap>
-          <img src="../assets/img/rehab/band.jpg" alt="Kinesist werkt geknield aan het onderbeen van een patiënt."
-               class="photo absolute inset-0" loading="lazy" decoding="async"
-               onerror="imgFail(this,'02')">
-        </div>
-        <figcaption class="eyebrow mt-4">Motivatie · Passie · Empathie</figcaption>
-      </figure>
-
+      <!-- Volgorde: eerst het woord, dan waar het voor staat, en pas daarna het
+           beeld. De tekst moet gelezen zijn voor de foto het overneemt. -->
       <div class="mt-10 md:mt-14 grid gap-10 lg:grid-cols-12 lg:gap-14">
-
         <div class="lg:col-span-8 reveal">
+
           <p class="text-[15px] text-ink/70 prose-body">
             Een credo is geen slogan aan de muur. Het is de verklaring van waar je in gelooft, en waarnaar je elke dag handelt. Dit is de onze.
           </p>
@@ -194,11 +201,20 @@
           </blockquote>
 
           <p class="mt-8 text-[15px] text-ink/70 prose-body">
-            Daarom staan er drie woorden onder alles wat hier gebeurt — onder elke behandeling, elke oefening en elk schema.
+            Daarom staan er drie woorden onder alles wat hier gebeurt. Onder elke behandeling, elke oefening en elk schema.
           </p>
+        
         </div>
-
       </div>
+
+      <figure class="mt-12 md:mt-16 reveal reveal-d1">
+        <div class="relative overflow-hidden aspect-[16/10] sm:aspect-[21/9] frame-light" data-imgwrap>
+          <img src="../assets/img/rehab/band.jpg" alt="Kinesist werkt geknield aan het onderbeen van een pati&euml;nt."
+               class="photo absolute inset-0" loading="lazy" decoding="async"
+               onerror="imgFail(this,'02')">
+        </div>
+        <figcaption class="eyebrow mt-4">Motivatie &middot; Passie &middot; Empathie</figcaption>
+      </figure>
 
       <hr class="rule-light my-12 md:my-16 border-0" aria-hidden="true">
 
@@ -208,7 +224,7 @@
           <p class="eyebrow mb-4 text-ink/45">Waarde 01</p>
           <h3 class="display text-[clamp(2.7rem,7vw,4.6rem)] leading-[0.88] text-ink">Motivatie</h3>
           <p class="mt-5 text-[15px] text-ink/70 prose-body">
-            Jouw doel wordt ons doel, en dat mag alles zijn: weer een dag kunnen tuinieren, de kleinkinderen optillen, pijnvrij naar het werk fietsen. We zetten het scherp, we meten het, en we blijven duwen — ook op de dagen dat jij dat even niet doet.
+            Jouw doel wordt ons doel, en dat mag alles zijn: weer een dag kunnen tuinieren, de kleinkinderen optillen, pijnvrij naar het werk fietsen. We zetten het scherp, we meten het, en we blijven duwen. Ook op de dagen dat jij dat even niet doet.
           </p>
         </div>
 
@@ -216,7 +232,7 @@
           <p class="eyebrow mb-4 text-ink/45">Waarde 02</p>
           <h3 class="display text-[clamp(2.7rem,7vw,4.6rem)] leading-[0.88] text-ink">Passie</h3>
           <p class="mt-5 text-[15px] text-ink/70 prose-body">
-            We doen dit niet half. Van de eerste anamnese tot de laatste controle staat er iemand naast je die jouw herstel even serieus neemt als jij — of dat nu om een marathon gaat of om zonder pijn de trap af.
+            We doen dit niet half. Van de eerste anamnese tot de laatste controle staat er iemand naast je die jouw herstel even serieus neemt als jij. Of dat nu om een marathon gaat of om zonder pijn de trap af.
           </p>
         </div>
 
@@ -224,7 +240,7 @@
           <p class="eyebrow mb-4 text-ink/45">Waarde 03</p>
           <h3 class="display text-[clamp(2.7rem,7vw,4.6rem)] leading-[0.88] text-ink">Empathie</h3>
           <p class="mt-5 text-[15px] text-ink/70 prose-body">
-            Een klacht is meer dan weefsel. Maandenlang niet kunnen slapen van een schouder doet iets met een mens. Wij luisteren eerst en behandelen daarna — want wat een letsel met je hoofd doet, bepaalt mee hoe snel je lichaam terugkomt.
+            Een klacht is meer dan weefsel. Maandenlang niet kunnen slapen van een schouder doet iets met een mens. Wij luisteren eerst en behandelen daarna, want wat een letsel met je hoofd doet bepaalt mee hoe snel je lichaam terugkomt.
           </p>
         </div>
 
@@ -288,10 +304,10 @@
             <p class="eyebrow mb-7">Dienst 02</p>
             <h3 class="display d-lg text-bone">Oefentherapie</h3>
             <p class="mt-7 text-[15px] text-bone/70 prose-body">
-              Als beweging in pilvorm bestond, was het wereldwijd het meest voorgeschreven medicijn. Bij ons is het de basis, geen bijzaak — en we doseren het als een medicijn.
+              Als beweging in pilvorm bestond, was het wereldwijd het meest voorgeschreven medicijn. Bij ons is het de basis, geen bijzaak. En we doseren het als een medicijn.
             </p>
             <p class="mt-4 text-[15px] text-bone/70 prose-body">
-              Je krijgt een schema dat meegroeit met je belastbaarheid — opgebouwd rond jouw letsel en jouw dagelijkse belasting, niet een fotokopie van het schema van de vorige patiënt.
+              Je krijgt een schema dat meegroeit met je belastbaarheid, opgebouwd rond jouw letsel en jouw dagelijkse belasting. Geen fotokopie van het schema van de vorige patiënt.
             </p>
             <a href="#traject"
                class="link-line mt-10 text-bone">Bekijk het traject
@@ -355,7 +371,7 @@
         <h2 id="traject-title" class="display d-xl text-bone reveal reveal-d1">Zo werkt het</h2>
       </div>
       <p class="md:col-span-5 text-[15px] text-bone/65 prose-body reveal reveal-d2">
-        Vijf stappen van eerste afspraak tot klachtenvrij bewegen. Geen eindeloze reeks behandelingen — een traject met een begin, een opbouw en een eindpunt.
+        Vijf stappen van eerste afspraak tot klachtenvrij bewegen. Geen eindeloze reeks behandelingen, maar een traject met een begin, een opbouw en een eindpunt.
       </p>
     </div>
 
@@ -463,21 +479,21 @@
           <span class="display text-[clamp(2.4rem,5vw,3.4rem)] leading-none text-bone/45 whitespace-nowrap">[·]</span>
           <span class="min-w-0">
             <span class="eyebrow block">Patiënten begeleid</span>
-            <span class="block mt-2 text-[13px] leading-relaxed text-bone/60">[TE BEVESTIGEN — alle leeftijden, niet alleen sporters]</span>
+            <span class="block mt-2 text-[13px] leading-relaxed text-bone/60">[TE BEVESTIGEN: alle leeftijden, niet alleen sporters]</span>
           </span>
         </li>
         <li class="grid grid-cols-[5rem_1fr] md:grid-cols-[9rem_1fr] gap-x-4 items-baseline border-b border-bone/15 py-6 reveal reveal-d1">
           <span class="display text-[clamp(2.4rem,5vw,3.4rem)] leading-none text-bone/45 whitespace-nowrap">[·]</span>
           <span class="min-w-0">
             <span class="eyebrow block">Jaar ervaring, samen</span>
-            <span class="block mt-2 text-[13px] leading-relaxed text-bone/60">[TE BEVESTIGEN — gecombineerd over de zes kinesisten]</span>
+            <span class="block mt-2 text-[13px] leading-relaxed text-bone/60">[TE BEVESTIGEN: gecombineerd over de zes kinesisten]</span>
           </span>
         </li>
         <li class="grid grid-cols-[5rem_1fr] md:grid-cols-[9rem_1fr] gap-x-4 items-baseline border-b border-bone/15 py-6 reveal reveal-d2">
           <span class="display text-[clamp(2.4rem,5vw,3.4rem)] leading-none text-bone/45 whitespace-nowrap">[·]</span>
           <span class="min-w-0">
             <span class="eyebrow block">Jongste tot oudste patiënt</span>
-            <span class="block mt-2 text-[13px] leading-relaxed text-bone/60">[TE BEVESTIGEN — bijv. van 16 tot 78 jaar]</span>
+            <span class="block mt-2 text-[13px] leading-relaxed text-bone/60">[TE BEVESTIGEN: bijvoorbeeld van 16 tot 78 jaar]</span>
           </span>
         </li>
         <li class="grid grid-cols-[5rem_1fr] md:grid-cols-[9rem_1fr] gap-x-4 items-baseline border-b border-bone/15 py-6 reveal reveal-d3">
@@ -505,8 +521,8 @@
         </div>
 
         <p class="mt-8 md:mt-10 pt-8 md:pt-10 border-t border-bone/20 display leading-[1.02] text-bone text-[clamp(1.5rem,3.2vw,2.5rem)] max-w-[22ch]">
-          Dezelfde aanpak waarmee we profvoetballers terugbrengen naar de eerste klasse, gebruiken we voor jouw rug, knie of schouder.
-          <span class="text-taupe2"></span>
+          Dat jij weer doet wat je deed voor die rug, die knie of die schouder ertussen kwam.
+          <span class="text-taupe2">En dat je daarna niet meer bij ons hoeft te zijn.</span>
         </p>
       </div>
 
@@ -538,21 +554,21 @@
     <ul class="grid gap-6 md:grid-cols-3">
       <li class="frame-light p-6 md:p-8 reveal reveal-fly">
         <p class="display text-[clamp(1.2rem,2vw,1.6rem)] leading-[1.15] text-ink">
-          [Review 01 — citaat van de patiënt]
+          [Review 01: citaat van de patiënt]
         </p>
-        <p class="eyebrow mt-6 text-ink/45">[Naam] — [behandeling]</p>
+        <p class="eyebrow mt-6 text-ink/45">[Naam] &middot; [behandeling]</p>
       </li>
       <li class="frame-light p-6 md:p-8 reveal reveal-fly reveal-d2">
         <p class="display text-[clamp(1.2rem,2vw,1.6rem)] leading-[1.15] text-ink">
-          [Review 02 — citaat van de patiënt]
+          [Review 02: citaat van de patiënt]
         </p>
-        <p class="eyebrow mt-6 text-ink/45">[Naam] — [behandeling]</p>
+        <p class="eyebrow mt-6 text-ink/45">[Naam] &middot; [behandeling]</p>
       </li>
       <li class="frame-light p-6 md:p-8 reveal reveal-fly reveal-d4">
         <p class="display text-[clamp(1.2rem,2vw,1.6rem)] leading-[1.15] text-ink">
-          [Review 03 — citaat van de patiënt]
+          [Review 03: citaat van de patiënt]
         </p>
-        <p class="eyebrow mt-6 text-ink/45">[Naam] — [behandeling]</p>
+        <p class="eyebrow mt-6 text-ink/45">[Naam] &middot; [behandeling]</p>
       </li>
     </ul>
   </div>
@@ -573,7 +589,7 @@
         <h2 class="display d-xl text-ink reveal reveal-d1">Zes masters.<br>Eén standaard.</h2>
       </div>
       <p class="md:col-span-5 text-[15px] text-ink/70 prose-body reveal reveal-d2">
-        Iedereen hier heeft een master revalidatiewetenschappen en kinesitherapie. Verschillende van ons staan wekelijks op het veld als physical of strength coach bij profclubs. Die ervaring komt rechtstreeks in jouw behandeling terecht.
+        Iedereen hier heeft een master revalidatiewetenschappen en kinesitherapie, en daarnaast een eigen specialisatie: manuele therapie, dry needling, blood flow restriction. Je wordt hier dus altijd gezien door iemand die jouw klacht al vaker heeft opgelost.
       </p>
     </div>
 
@@ -603,7 +619,7 @@
 
           <p class="team-index mt-4 uppercase">01</p>
           <h3 class="display mt-2 text-[clamp(1.25rem,2.2vw,1.7rem)] leading-[0.95] text-ink">Thomas Casier</h3>
-          <p class="eyebrow mt-2 text-ink/55">Kinesist — Zaakvoerder</p>
+          <p class="eyebrow mt-2 text-ink/55">Kinesist &amp; zaakvoerder</p>
         </li>
         <li class="team-cardx" data-team-card>
           <div class="team-figure" data-imgwrap>
@@ -631,7 +647,7 @@
 
           <p class="team-index mt-4 uppercase">02</p>
           <h3 class="display mt-2 text-[clamp(1.25rem,2.2vw,1.7rem)] leading-[0.95] text-ink">Milan Vandecaetsbeek</h3>
-          <p class="eyebrow mt-2 text-ink/55">Kinesist — Zaakvoerder</p>
+          <p class="eyebrow mt-2 text-ink/55">Kinesist &amp; zaakvoerder</p>
         </li>
         <li class="team-cardx" data-team-card>
           <div class="team-figure" data-imgwrap>
@@ -660,7 +676,7 @@
 
           <p class="team-index mt-4 uppercase">03</p>
           <h3 class="display mt-2 text-[clamp(1.25rem,2.2vw,1.7rem)] leading-[0.95] text-ink">Tuur Vanderstukken</h3>
-          <p class="eyebrow mt-2 text-ink/55">Kinesist — Zaakvoerder</p>
+          <p class="eyebrow mt-2 text-ink/55">Kinesist &amp; zaakvoerder</p>
         </li>
         <li class="team-cardx" data-team-card>
           <div class="team-figure" data-imgwrap>
@@ -757,115 +773,80 @@
 
 
 <!-- ============================================================
-     SECTION 07 — DE VLOER (studio)
-     Opinionated positioning block: what you do and don't find here,
-     followed by the three facility images.
+     DE VLOER
+     Het beeld gaat over de volle breedte en komt eerst, want dit is de enige
+     sectie die over de plek zelf gaat. Daaronder staat de tegenstelling als
+     een register: vier regels, telkens wat je hier krijgt en waar je het niet
+     voor hoeft te ruilen.
      ============================================================ -->
-<section id="studio" class="bg-bone text-ink on-light py-24 md:py-36 relative">
-  <div class="mx-auto max-w-[1500px] px-5 md:px-10">
-    <div class="flex gap-6 md:gap-12">
+<section id="studio" class="bg-ink grain py-20 md:py-28 overflow-hidden" aria-labelledby="studio-title">
+  <div class="grain-layer" aria-hidden="true"></div>
 
-      <!-- Vertical rotated label -->
-      <div class="hidden md:flex shrink-0 items-start pt-2">
-        <p class="vertical-label eyebrow tracking-[0.32em]">De vloer / Kapelstraat 89</p>
-      </div>
-
-      <div class="flex-1 min-w-0">
-        <div class="grid gap-6 md:grid-cols-12 md:items-end mb-14 md:mb-20">
-          <div class="md:col-span-7">
-            <p class="eyebrow mb-8 reveal">De vloer / 07</p>
-            <h2 class="display d-xl text-ink reveal reveal-d1">Je komt hier<br>om te werken.</h2>
-          </div>
-          <p class="md:col-span-5 text-[15px] text-ink/70 prose-body reveal reveal-d2">
-            Een behandeltafel alleen brengt je niet terug naar je leven. Daarom staat bij ons de oefenzaal
-            in het midden en niet de wachtzaal. Je wordt getest, je krijgt gewicht in handen,
-            en je gaat buiten met werk voor de week erna.
-          </p>
+  <div class="grain-pin relative z-[3]">
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-px bg-bone/15">
+      <figure class="relative">
+        <div class="relative overflow-hidden aspect-[16/10] sm:aspect-[3/4]" data-imgwrap>
+          <img src="../assets/img/studio-oefenzaal.jpg" alt="De oefenzaal van Credo met krachtrek, mosmuur en indoorpiste."
+               class="photo absolute inset-0" loading="lazy" decoding="async"
+               onerror="imgFail(this,'07')">
         </div>
-
-        <!-- What this practice is, and what it deliberately is not -->
-        <div class="grid md:grid-cols-2 border-t border-ink/15 mb-14 md:mb-20">
-
-          <div class="border-b md:border-r border-ink/15 py-10 md:py-12 md:pr-10 reveal">
-            <p class="eyebrow mb-8">Wat je hier vindt</p>
-            <ul class="space-y-5">
-              <li class="flex gap-4 text-[15px] text-ink/80">
-                <span class="display text-ink shrink-0 leading-none pt-[2px]" aria-hidden="true">/</span>
-                Een volledig uitgeruste oefenzaal met vrije gewichten, waar je écht mag belasten.
-              </li>
-              <li class="flex gap-4 text-[15px] text-ink/80">
-                <span class="display text-ink shrink-0 leading-none pt-[2px]" aria-hidden="true">/</span>
-                Een ijsbad en een aparte plek om te recupereren, voor wie dat in zijn plan past.
-              </li>
-              <li class="flex gap-4 text-[15px] text-ink/80">
-                <span class="display text-ink shrink-0 leading-none pt-[2px]" aria-hidden="true">/</span>
-                Kinesisten die wekelijks zelf langs het veld staan bij een profclub — die norm nemen ze mee naar hier.
-              </li>
-              <li class="flex gap-4 text-[15px] text-ink/80">
-                <span class="display text-ink shrink-0 leading-none pt-[2px]" aria-hidden="true">/</span>
-                Een traject met testmomenten, cijfers en een einddatum.
-              </li>
-            </ul>
-          </div>
-
-          <div class="border-b border-ink/15 py-10 md:py-12 md:pl-10 reveal reveal-d1">
-            <p class="eyebrow mb-8">Wat je hier niet vindt</p>
-            <ul class="space-y-5">
-              <li class="flex gap-4 text-[15px] text-ink/65">
-                <span class="display shrink-0 leading-none pt-[2px]" style="color: var(--taupe);" aria-hidden="true">&times;</span>
-                Tien minuten massage en tot volgende week.
-              </li>
-              <li class="flex gap-4 text-[15px] text-ink/65">
-                <span class="display shrink-0 leading-none pt-[2px]" style="color: var(--taupe);" aria-hidden="true">&times;</span>
-                Een blaadje met oefeningen dat je thuis nooit meer bovenhaalt.
-              </li>
-              <li class="flex gap-4 text-[15px] text-ink/65">
-                <span class="display shrink-0 leading-none pt-[2px]" style="color: var(--taupe);" aria-hidden="true">&times;</span>
-                Een wachtzaal als belangrijkste ruimte van het gebouw.
-              </li>
-              <li class="flex gap-4 text-[15px] text-ink/65">
-                <span class="display shrink-0 leading-none pt-[2px]" style="color: var(--taupe);" aria-hidden="true">&times;</span>
-                Vage beloftes over &lsquo;het wat rustiger aan doen&rsquo;.
-              </li>
-            </ul>
-          </div>
+        <figcaption class="eyebrow mt-3 px-5 md:px-0 text-bone/50">De oefenzaal</figcaption>
+      </figure>
+      <figure class="relative">
+        <div class="relative overflow-hidden aspect-[16/10] sm:aspect-[3/4]" data-imgwrap>
+          <img src="../assets/img/studio-inkom.jpg" alt="De inkomhal met de mosmuur en de indoorpiste erachter."
+               class="photo absolute inset-0" loading="lazy" decoding="async"
+               onerror="imgFail(this,'07')">
         </div>
-
-        <div class="grid gap-4 md:gap-6 md:grid-cols-12 md:grid-rows-2">
-
-          <figure class="md:col-span-7 md:row-span-2 flex flex-col reveal">
-            <div class="relative overflow-hidden frame-light aspect-[16/11] md:aspect-auto md:flex-1 md:min-h-[420px]" data-imgwrap>
-              <img src="../assets/img/studio-oefenzaal.jpg"
-                   alt="De oefenzaal van Credo met krachtrek, mosmuur en indoorpiste."
-                   class="photo absolute inset-0" loading="lazy" decoding="async"
-                   onerror="imgFail(this,'06')">
-            </div>
-            <figcaption class="eyebrow mt-4">Oefenzaal</figcaption>
-          </figure>
-
-          <figure class="md:col-span-5 flex flex-col reveal reveal-d1">
-            <div class="relative overflow-hidden frame-light aspect-[16/11] md:aspect-auto md:flex-1 md:min-h-[200px]" data-imgwrap>
-                <img src="../assets/img/studio-inkom.jpg"
-                     alt="De inkomhal van de praktijk in de Kapelstraat in Diepenbeek."
-                     class="photo absolute inset-0" loading="lazy" decoding="async"
-                     onerror="imgFail(this,'06')">
-              </div>
-              <figcaption class="eyebrow mt-4">Inkomhal</figcaption>
-            </figure>
-
-            <figure class="md:col-span-5 flex flex-col reveal reveal-d2">
-              <div class="relative overflow-hidden frame-light aspect-[16/11] md:aspect-auto md:flex-1 md:min-h-[200px]" data-imgwrap>
-                <img src="../assets/img/studio-ijsbad.jpg"
-                     alt="Het ijsbad en de relaxatieruimte voor herstel na inspanning."
-                     class="photo absolute inset-0" loading="lazy" decoding="async"
-                     onerror="imgFail(this,'06')">
-              </div>
-              <figcaption class="eyebrow mt-4">IJsbad &amp; relaxatie</figcaption>
-          </figure>
-
+        <figcaption class="eyebrow mt-3 px-5 md:px-0 text-bone/50">De inkom</figcaption>
+      </figure>
+      <figure class="relative">
+        <div class="relative overflow-hidden aspect-[16/10] sm:aspect-[3/4]" data-imgwrap>
+          <img src="../assets/img/studio-ijsbad.jpg" alt="Het ijsbad en de rustruimte achteraan de praktijk."
+               class="photo absolute inset-0" loading="lazy" decoding="async"
+               onerror="imgFail(this,'07')">
         </div>
-      </div>
+        <figcaption class="eyebrow mt-3 px-5 md:px-0 text-bone/50">IJsbad &amp; rust</figcaption>
+      </figure>
     </div>
+  </div>
+
+  <div class="mx-auto max-w-[1500px] px-5 md:px-10">
+
+    <div class="grid gap-6 md:grid-cols-12 md:items-end mt-16 md:mt-24">
+      <div class="md:col-span-7">
+        <p class="eyebrow mb-8 reveal">De vloer / 07</p>
+        <h2 id="studio-title" class="display d-xl text-bone reveal reveal-d1">De oefenzaal staat<br>in het midden.</h2>
+      </div>
+      <p class="md:col-span-5 text-[15px] text-bone/65 prose-body reveal reveal-d2">
+        In de meeste praktijken is de wachtzaal de grootste ruimte. Bij ons is dat de zaal waar je oefent. Je wordt onderzocht, je krijgt gewicht in je handen zodra dat kan, en je gaat naar huis met werk voor de week erna.
+      </p>
+    </div>
+
+    <ol class="mt-14 md:mt-20 border-t border-bone/15">
+        <li class="vloer-regel grid md:grid-cols-12 gap-x-8 gap-y-2 items-baseline border-b border-bone/15 py-7 md:py-9 reveal">
+          <p class="eyebrow md:col-span-1 text-bone/35">01</p>
+          <h3 class="md:col-span-6 display text-[clamp(1.25rem,2.5vw,2rem)] leading-[1.06] text-bone">Een zaal om in te oefenen, geen wachtzaal om in te zitten.</h3>
+          <p class="md:col-span-5 text-[15px] text-bone/55 prose-body">Niet: tien minuten massage en tot volgende week.</p>
+        </li>
+        <li class="vloer-regel grid md:grid-cols-12 gap-x-8 gap-y-2 items-baseline border-b border-bone/15 py-7 md:py-9 reveal">
+          <p class="eyebrow md:col-span-1 text-bone/35">02</p>
+          <h3 class="md:col-span-6 display text-[clamp(1.25rem,2.5vw,2rem)] leading-[1.06] text-bone">Gewicht in je handen, zodra je lichaam het aankan.</h3>
+          <p class="md:col-span-5 text-[15px] text-bone/55 prose-body">Niet: een blaadje oefeningen dat thuis in de lade blijft liggen.</p>
+        </li>
+        <li class="vloer-regel grid md:grid-cols-12 gap-x-8 gap-y-2 items-baseline border-b border-bone/15 py-7 md:py-9 reveal">
+          <p class="eyebrow md:col-span-1 text-bone/35">03</p>
+          <h3 class="md:col-span-6 display text-[clamp(1.25rem,2.5vw,2rem)] leading-[1.06] text-bone">Testmomenten, cijfers en een afgesproken einddatum.</h3>
+          <p class="md:col-span-5 text-[15px] text-bone/55 prose-body">Niet: blijven komen tot het ooit vanzelf overgaat.</p>
+        </li>
+        <li class="vloer-regel grid md:grid-cols-12 gap-x-8 gap-y-2 items-baseline border-b border-bone/15 py-7 md:py-9 reveal">
+          <p class="eyebrow md:col-span-1 text-bone/35">04</p>
+          <h3 class="md:col-span-6 display text-[clamp(1.25rem,2.5vw,2rem)] leading-[1.06] text-bone">Een ijsbad en een rustige plek om te herstellen.</h3>
+          <p class="md:col-span-5 text-[15px] text-bone/55 prose-body">Niet: vage raad over het wat rustiger aan doen.</p>
+        </li>
+    </ol>
+
+    <p class="eyebrow mt-10 text-bone/40 reveal">Kapelstraat 89 &middot; 3590 Diepenbeek</p>
   </div>
 </section>
 
@@ -879,12 +860,7 @@
      ============================================================ -->
 <section id="partners" class="bg-ink border-y border-bone/15 py-10 md:py-12 overflow-hidden"
          aria-labelledby="partners-title">
-  <div class="mx-auto max-w-[1500px] px-5 md:px-10 mb-7 md:mb-9">
-    <h2 id="partners-title" class="text-[15px] md:text-base text-bone/70 prose-body max-w-[62ch] reveal">
-      Onze kinesisten staan wekelijks langs het veld in de eerste klasse.
-      <span class="text-bone">Die kennis van belasting en herstel krijg jij ook.</span>
-    </h2>
-  </div>
+  <h2 id="partners-title" class="sr-only">Clubs en partners waarmee Credo samenwerkt</h2>
 
   <div class="marq" data-marquee>
     <ul class="marq-track">
@@ -984,7 +960,7 @@
           </summary>
           <div class="px-5 md:px-6 pb-6 border-t border-bone/15 pt-5">
             <p class="text-[15px] text-bone/70 prose-body">
-              [TE BEVESTIGEN — tarief per sessie, tarief screening, en of jullie
+              [TE BEVESTIGEN: tarief per sessie, tarief screening, en of jullie
               geconventioneerd zijn. Dit is de vraag die het vaakst gesteld wordt;
               hoe concreter het antwoord, hoe minder drempel.]
             </p>
@@ -998,7 +974,7 @@
           </summary>
           <div class="px-5 md:px-6 pb-6 border-t border-bone/15 pt-5">
             <p class="text-[15px] text-bone/70 prose-body">
-              [TE BEVESTIGEN — terugbetaling mutualiteit met voorschrift, en of
+              [TE BEVESTIGEN: terugbetaling mutualiteit met voorschrift, en of
               performance-trajecten daar wel of niet onder vallen.]
             </p>
           </div>
@@ -1011,8 +987,8 @@
           </summary>
           <div class="px-5 md:px-6 pb-6 border-t border-bone/15 pt-5">
             <p class="text-[15px] text-bone/70 prose-body">
-              Dat hangt af van je klacht en je doel. We werken in vijf stappen — afspraak,
-              onderzoek, plan, opbouw en een eindpunt — en spreken die doelen bij de intake
+              Dat hangt af van je klacht en je doel. We werken in vijf stappen: afspraak,
+              onderzoek, plan, opbouw en een eindpunt. Die doelen spreken we bij de intake
               samen af, zodat je weet waar je naartoe werkt in plaats van te blijven komen.
             </p>
           </div>
@@ -1032,13 +1008,13 @@
 
         <details class="faq frame-dark mt-3 reveal">
           <summary class="flex items-center justify-between gap-6 p-5 md:p-6">
-            <span class="display d-sm text-bone">Ik ben geopereerd — wanneer kan ik starten?</span>
+            <span class="display d-sm text-bone">Ik ben geopereerd. Wanneer kan ik starten?</span>
             <span class="acc-plus text-2xl leading-none text-taupe" aria-hidden="true">+</span>
           </summary>
           <div class="px-5 md:px-6 pb-6 border-t border-bone/15 pt-5">
             <p class="text-[15px] text-bone/70 prose-body">
               Meestal vroeger dan mensen denken. Wat mag en wanneer, hangt af van wat er precies gebeurd is
-              en van het protocol van je chirurg — breng dat verslag mee naar de intake. Ook als er nog niets
+              en van het protocol van je chirurg. Breng dat verslag mee naar de intake. Ook als er nog niets
               belast mag worden, valt er al te werken aan beweeglijkheid en aan de rest van je lichaam.
               [TE BEVESTIGEN met de praktijk]
             </p>
@@ -1052,7 +1028,7 @@
           </summary>
           <div class="px-5 md:px-6 pb-6 border-t border-bone/15 pt-5">
             <p class="text-[15px] text-bone/70 prose-body">
-              Vaak wel. Een klacht die lang aansleept is zelden alleen het weefsel dat pijn doet — meestal
+              Vaak wel. Een klacht die lang aansleept is zelden alleen het weefsel dat pijn doet. Meestal
               is er onderweg iets in je beweging veranderd waardoor het blijft terugkomen. Dat is precies
               wat we in het onderzoek zoeken. We beloven je geen wonder, maar we zeggen je na de intake
               eerlijk wat er nog te winnen valt.
@@ -1134,10 +1110,10 @@
           Klaar om terug<br>te komen?
         </h2>
         <p class="mt-8 text-[15px] md:text-base text-bone/75 prose-body reveal reveal-d2">
-          Boek meteen online als je weet wat je wil. Twijfel je of dit iets voor jouw klacht is? Laat je nummer achter — we bellen je terug en zeggen je eerlijk wat er nodig is, ook als dat betekent dat je bij ons niets moet komen doen.
+          Boek meteen online als je weet wat je wil. Twijfel je of dit iets voor jouw klacht is? Laat je nummer achter. We bellen je terug en zeggen je eerlijk wat er nodig is, ook als dat betekent dat je bij ons niets moet komen doen.
         </p>
 
-        <div class="mt-10 flex flex-wrap gap-3 reveal reveal-d2">
+        <div class="mt-10 btn-stack flex flex-wrap gap-3 reveal reveal-d2">
           <a href="https://altagenda.crossuite.com/credokinesitherapie/step1" target="_blank" rel="noopener noreferrer" class="btn btn-bone">Boek direct online</a>
           <a href="tel:+32480628545" class="btn btn-ghost">Bel +32 480 62 85 45</a>
         </div>
@@ -1148,7 +1124,7 @@
           <h3 class="display d-md text-bone">Vraag een terugbelmoment</h3>
           <p class="mt-4 text-[14px] text-bone/70 prose-body">Eén kinesist belt je binnen twee werkdagen terug. Geen verkooppraatje.</p>
 
-          <form class="mt-8 grid gap-5" data-lead-form data-subject="Terugbelmoment aangevraagd — rehab" novalidate>
+          <form class="mt-8 grid gap-5" data-lead-form data-subject="Terugbelmoment aangevraagd via rehab" novalidate>
             <div>
               <label for="lead-naam" class="eyebrow block mb-3">Naam</label>
               <input id="lead-naam" name="naam" type="text" required autocomplete="name"
@@ -1240,7 +1216,7 @@
         <p class="mt-5 text-[14px] text-bone/55 prose-body">
           Op tien minuten van Hasselt. Eigen oefenzaal met indoorpiste.
         </p>
-        <div class="mt-8 flex flex-wrap gap-3">
+        <div class="mt-8 btn-stack flex flex-wrap gap-3">
           <a href="https://altagenda.crossuite.com/credokinesitherapie/step1" target="_blank" rel="noopener noreferrer" class="btn btn-bone">Boek een afspraak</a>
           <a href="tel:+32480628545" class="btn btn-ghost">Bel ons</a>
         </div>
@@ -1267,7 +1243,7 @@
       <div class="lg:col-span-4">
         <p class="eyebrow mb-6 text-bone/50">Openingsuren</p>
         <dl class="text-[15px] divide-y divide-bone/12">
-          <div class="flex justify-between py-2.5"><dt class="text-bone/70">Maandag — vrijdag</dt><dd class="text-bone/50">[TE BEVESTIGEN]</dd></div>
+          <div class="flex justify-between py-2.5"><dt class="text-bone/70">Maandag tot vrijdag</dt><dd class="text-bone/50">[TE BEVESTIGEN]</dd></div>
           <div class="flex justify-between py-2.5"><dt class="text-bone/70">Zaterdag</dt><dd class="text-bone/50">[TE BEVESTIGEN]</dd></div>
           <div class="flex justify-between py-2.5"><dt class="text-bone/70">Zondag</dt><dd class="text-bone/50">Gesloten</dd></div>
         </dl>
@@ -1281,7 +1257,7 @@
     <p class="footmark display mt-16 md:mt-24" aria-hidden="true">Credo</p>
 
     <div class="mt-8 pt-6 border-t border-bone/15 flex flex-wrap items-center justify-between gap-4">
-      <p class="eyebrow text-bone/45">&copy; <span id="year">2026</span> Credo Rehab &amp; Performance — BTW [TE BEVESTIGEN]</p>
+      <p class="eyebrow text-bone/45">&copy; <span id="year">2026</span> Credo Rehab &amp; Performance &middot; BTW [TE BEVESTIGEN]</p>
       <p class="eyebrow text-bone/45">Motivatie · Passie · Empathie</p>
     </div>
   </div>
@@ -1363,9 +1339,9 @@
     "result": { "@type": "Reservation", "name": "Afspraak kinesitherapie" }
   },
   "employee": [
-    { "@type": "Person", "name": "Thomas Casier",         "jobTitle": "Kinesist — zaakvoerder" },
-    { "@type": "Person", "name": "Milan Vandecaetsbeek",  "jobTitle": "Kinesist — zaakvoerder" },
-    { "@type": "Person", "name": "Tuur Vanderstukken",    "jobTitle": "Kinesist — zaakvoerder" },
+    { "@type": "Person", "name": "Thomas Casier",         "jobTitle": "Kinesist en zaakvoerder" },
+    { "@type": "Person", "name": "Milan Vandecaetsbeek",  "jobTitle": "Kinesist en zaakvoerder" },
+    { "@type": "Person", "name": "Tuur Vanderstukken",    "jobTitle": "Kinesist en zaakvoerder" },
     { "@type": "Person", "name": "Rimke Eurlings",        "jobTitle": "Kinesist" },
     { "@type": "Person", "name": "Philippe Valvekens",    "jobTitle": "Kinesist" },
     { "@type": "Person", "name": "Dries Verschueren",     "jobTitle": "Kinesist" }

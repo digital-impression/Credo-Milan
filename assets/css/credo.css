@@ -50,6 +50,12 @@
     font-size: clamp(4rem, 20vw, 16rem);
     line-height: 0.82;
     color: var(--ink);
+    /* Een blok-h2 is zo breed als de container, en dan rekt background-size:
+       cover de foto tot een uitgewassen streep. Het element krimpt daarom naar
+       de breedte van het woord zelf. */
+    display: block;
+    width: max-content;
+    max-width: 100%;
   }
   .credo-word.has-fill {
     /* The veil used to sit at .42, which on letterforms this wide flattened
@@ -153,7 +159,8 @@
   .btn {
     display: inline-flex; align-items: center; justify-content: center; gap: .6rem;
     border-radius: 999px;
-    padding: .85rem 1.6rem;
+    padding: .9rem 1.6rem;
+    min-height: 46px;
     font-size: 12px; font-weight: 600;
     text-transform: uppercase; letter-spacing: .16em;
     transition: background-color .25s ease, color .25s ease, border-color .25s ease;
@@ -456,14 +463,30 @@
   }
   .team-info:hover, .team-info:focus-visible { background: var(--bone); color: var(--ink); }
 
+  /* Credentials komen van onderaan opzetten in plaats van de hele foto af te
+     dekken: je blijft het portret zien, de tekst legt zich er alleen overheen. */
   .team-creds {
-    position: absolute; inset: 0; z-index: 2;
-    background: rgba(13,13,13,.92); color: var(--bone);
-    padding: 1.1rem; overflow: auto;
-    display: flex; flex-direction: column; justify-content: flex-end;
-    opacity: 0; pointer-events: none; transition: opacity .35s ease;
+    position: absolute; inset: auto 0 0 0; z-index: 2; max-height: 100%;
+    background: linear-gradient(to top,
+      rgba(13,13,13,.96) 0%, rgba(13,13,13,.92) 62%, rgba(13,13,13,0) 100%);
+    color: var(--bone);
+    padding: 2.75rem 1.1rem 1.15rem; overflow: auto;
+    opacity: 0; pointer-events: none; transform: translate3d(0, 12px, 0);
+    transition: opacity .4s ease, transform .5s cubic-bezier(.22,.61,.36,1);
   }
-  .team-cardx.is-open .team-creds { opacity: 1; pointer-events: auto; }
+  .team-cardx.is-open .team-creds { opacity: 1; pointer-events: auto; transform: none; }
+
+  /* Op een toestel met muis is aanwijzen genoeg; de infoknop blijft bestaan
+     voor toetsenbord en verschijnt pas wanneer hij focus krijgt. */
+  @media (hover: hover) and (pointer: fine) {
+    .team-cardx:hover .team-creds,
+    .team-cardx:focus-within .team-creds { opacity: 1; pointer-events: auto; transform: none; }
+    .team-info { opacity: 0; transition: opacity .3s ease, background-color .3s ease, color .3s ease; }
+    .team-info:focus-visible { opacity: 1; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .team-creds { transition: opacity .2s ease; transform: none; }
+  }
 
   .team-rail-nav { display: flex; align-items: center; gap: .75rem; }
   .team-arrow {
@@ -500,7 +523,7 @@
 
   .soc {
     display: inline-flex; align-items: center; justify-content: center;
-    width: 2.6rem; height: 2.6rem;
+    width: 2.75rem; height: 2.75rem;
     border: 1px solid rgba(244,241,234,.3); color: var(--bone);
     font-size: 11px; letter-spacing: .12em;
     transition: background-color .3s ease, color .3s ease;
@@ -524,4 +547,39 @@
     font-size: clamp(1.05rem, 1.7vw, 1.5rem);
     color: rgba(244,241,234,.72);
     white-space: nowrap;
+  }
+
+  /* ---------- De vloer ---------- */
+  /* Elke regel licht op wanneer je hem aanwijst: het register blijft rustig,
+     maar je ziet welke regel je leest. */
+  .vloer-regel { transition: background-color .35s ease; }
+  .vloer-regel > * { transition: transform .45s cubic-bezier(.22,.61,.36,1); }
+  @media (hover: hover) and (pointer: fine) and (min-width: 768px) {
+    .vloer-regel:hover { background: rgba(244,241,234,.04); }
+    .vloer-regel:hover > * { transform: translateX(8px); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .vloer-regel > * { transition: none; }
+    .vloer-regel:hover > * { transform: none; }
+  }
+
+  /* ---------- Mobiel ---------- */
+  /* De vaste kop dekte de titel af bij een sprong naar een anker. Er staat nu
+     ook ademruimte onder de kop in plaats van precies de hoogte ervan. */
+  section[id] { scroll-margin-top: calc(var(--header-h) + 12px); }
+
+  @media (max-width: 640px) {
+    /* Op een telefoon leest een regel van 15px prettiger met iets meer lucht,
+       en staan de blokken te dicht op elkaar met de desktopmarges. */
+    .prose-body { line-height: 1.7; }
+    .btn { width: auto; }
+    /* Twee knoppen naast elkaar worden 120px breed en breken hun label; onder
+       elkaar over de volle breedte blijven ze leesbaar en raakbaar. */
+    .btn-stack > .btn { width: 100%; }
+    .eyebrow { letter-spacing: .2em; }
+  }
+
+  /* Onder de vaste actiebalk hoort ruimte, anders valt de laatste regel eronder. */
+  @media (max-width: 767px) {
+    body { padding-bottom: calc(64px + env(safe-area-inset-bottom, 0px)); }
   }
