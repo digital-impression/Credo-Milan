@@ -553,61 +553,85 @@
     white-space: nowrap;
   }
 
-  /* ---------- De vloer: de etalage ---------- */
-  /* De vorige opzet gaf de rechterpanelen een verhouding van 0,54 op desktop
-     en 0,50 op tablet: zo smal dat elke foto voor de helft weggesneden werd.
-     Nu ligt elke verhouding vast en zijn de bronnen op precies die maat
-     gesneden, zodat er niets meer uitgerekt of afgekapt wordt.
-       links  een staand beeld, 3:4
-       rechts twee liggende beelden, 3:2, samen even hoog als links. */
-  .etalage {
+  /* ---------- De vloer: de collage ---------- */
+  /* Zes vlakken, elk met twee opnames die in en uit elkaar vervagen op hun
+     eigen tempo. Zo zie je twaalf verschillende mensen in de ruimte die één
+     etalage eerder maar drie liet zien. */
+  .collage {
     display: grid; gap: 2px; background: rgba(244,241,234,.15);
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
   }
-  .et-item {
-    position: relative; margin: 0; overflow: hidden;
-    aspect-ratio: 3 / 2; background: var(--ink);
+  @media (min-width: 640px) { .collage { grid-template-columns: repeat(3, 1fr); } }
+  @media (min-width: 1024px) { .collage { grid-template-columns: repeat(6, 1fr); } }
+
+  .coll-cel {
+    position: relative; overflow: hidden;
+    aspect-ratio: 1 / 1; background: var(--ink);
   }
-  /* Ook op een telefoon houdt het staande beeld zijn eigen verhouding, anders
-     wordt er alsnog een derde van weggesneden. */
-  .et-lead { aspect-ratio: 3 / 4; }
-  .et-item .photo {
-    width: 100%; height: 100%; object-fit: cover; display: block;
-    transition: transform 1.2s cubic-bezier(.22,.61,.36,1), filter .6s ease;
-  }
-  .et-cap {
-    position: absolute; left: 0; bottom: 0; z-index: 2;
-    padding: .6rem 1rem; color: var(--bone);
-    background: rgba(13,13,13,.72);
-    border-top: 1px solid rgba(244,241,234,.18);
-    border-right: 1px solid rgba(244,241,234,.18);
-  }
-  @media (min-width: 768px) {
-    .etalage { grid-template-columns: 1fr 1fr; }
-    .et-lead { grid-row: span 2; aspect-ratio: 3 / 4; }
-    .et-item:not(.et-lead) { aspect-ratio: 3 / 2; }
-  }
-  @media (hover: hover) and (pointer: fine) {
-    .et-item:hover .photo { transform: scale(1.06); filter: grayscale(1) contrast(1.14); }
-  }
+  .coll-cel .photo { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .coll-a, .coll-b { animation: coll-wissel 12s ease-in-out infinite; animation-delay: var(--d, 0s); }
+  .coll-b { animation-name: coll-wissel-b; }
+  @keyframes coll-wissel   { 0%, 44% { opacity: 1; } 56%, 100% { opacity: 0; } }
+  @keyframes coll-wissel-b { 0%, 44% { opacity: 0; } 56%, 100% { opacity: 1; } }
+
+  /* Wie beweging heeft uitgezet, ziet gewoon het eerste beeld staan. */
   @media (prefers-reduced-motion: reduce) {
-    .et-item .photo { transition: none; }
-    .et-item:hover .photo { transform: none; }
+    .coll-a, .coll-b { animation: none; }
+    .coll-b { opacity: 0; }
   }
 
-  /* ---------- De vloer ---------- */
-  /* Elke regel licht op wanneer je hem aanwijst: het register blijft rustig,
-     maar je ziet welke regel je leest. */
-  .vloer-regel { transition: background-color .35s ease; }
-  .vloer-regel > * { transition: transform .45s cubic-bezier(.22,.61,.36,1); }
-  @media (hover: hover) and (pointer: fine) and (min-width: 768px) {
-    .vloer-regel:hover { background: rgba(244,241,234,.04); }
-    .vloer-regel:hover > * { transform: translateX(8px); }
+  /* ---------- Footer ---------- */
+  .marq-words {
+    font-family: 'Anton', 'Arial Narrow', Impact, sans-serif;
+    text-transform: uppercase; letter-spacing: .04em;
+    font-size: clamp(.95rem, 1.5vw, 1.25rem);
+    color: rgba(244,241,234,.5);
+    gap: 1.75rem; padding-inline-end: 1.75rem;
+    animation-duration: 46s;
   }
-  @media (prefers-reduced-motion: reduce) {
-    .vloer-regel > * { transition: none; }
-    .vloer-regel:hover > * { transform: none; }
+  .marq-words li { white-space: nowrap; }
+  .marq-rule { width: 100%; overflow: hidden; }
+  .marq-rule .marq-track { width: max-content; }
+
+  .foot-door {
+    position: relative; display: block;
+    transition: background-color .35s ease, border-color .35s ease;
   }
+  .foot-door:hover, .foot-door:focus-visible { background: #141414; border-color: rgba(244,241,234,.45); }
+  .foot-arrow {
+    position: absolute; right: 1.5rem; bottom: 1.5rem; color: var(--bone);
+    transition: transform .4s cubic-bezier(.22,.61,.36,1);
+  }
+  .foot-door:hover .foot-arrow { transform: translateX(7px); }
+
+  .soc {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 2.75rem; height: 2.75rem;
+    border: 1px solid rgba(244,241,234,.3); color: var(--bone);
+    font-size: 11px; letter-spacing: .12em;
+    transition: background-color .3s ease, color .3s ease;
+  }
+  .soc:hover, .soc:focus-visible { background: var(--bone); color: var(--ink); }
+
+  /* The name, set as large as the column allows and clipped at the baseline. */
+  .footmark {
+    font-size: clamp(4rem, 21vw, 17rem);
+    line-height: .8; letter-spacing: .01em;
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(244,241,234,.28);
+    user-select: none;
+  }
+  @supports not (-webkit-text-stroke: 1px red) { .footmark { color: rgba(244,241,234,.12); } }
+  /* Clubs without a logo file of their own, set as a wordmark so the strip
+     keeps one rhythm. Replace with the real crest once the club supplies it. */
+  .marq-word {
+    font-family: 'Anton', 'Arial Narrow', Impact, sans-serif;
+    text-transform: uppercase; letter-spacing: .06em;
+    font-size: clamp(1.05rem, 1.7vw, 1.5rem);
+    color: rgba(244,241,234,.72);
+    white-space: nowrap;
+  }
+
 
   /* ---------- Mobiel ---------- */
   /* De vaste kop dekte de titel af bij een sprong naar een anker. Er staat nu
