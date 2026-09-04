@@ -109,9 +109,10 @@
 <section class="hero-still relative min-h-[100svh] flex items-end overflow-hidden grain bg-ink" aria-labelledby="hero-title">
   <div class="grain-layer" aria-hidden="true"></div>
 
-  <!-- Eén doorlopende opname, vertraagd met berekende tussenframes en met een
-       korte overvloeiing rond gemaakt. Dezelfde clip draagt de deur op het
-       keuzescherm, zodat wat je daar aanwijst letterlijk terugkomt. -->
+  <!-- Seconde 15,60 tot 19,30: eerst de bankdruk, daarna het optrekken aan de
+       rekstok. Daar zit een snede tussen, dus die twee vloeien in elkaar. Het
+       optrekken loopt iets voorbij de achttiende seconde, anders wordt de
+       beweging halverwege afgekapt. Dezelfde clip draagt de deur. -->
   <div class="grain-pin absolute inset-0 z-0 overflow-hidden">
     <video id="hero-video"
            class="photo w-full h-[118%] object-cover object-center will-change-transform"
@@ -121,7 +122,7 @@
       <source src="../assets/video/hero-performance.mp4" type="video/mp4">
     </video>
 
-    <img id="hero-img" src="../assets/img/hero-performance-poster.jpg" alt="Atleet zet aan voor een sprint langs de mosmuur op de indoorpiste."
+    <img id="hero-img" src="../assets/img/hero-performance-poster.jpg" alt="Bankdruk in het rek en optrekken aan de rekstok."
          class="photo w-full h-[118%] object-cover object-center will-change-transform absolute inset-0 hidden"
          fetchpriority="high" decoding="async" onerror="imgFail(this,'01')">
 
