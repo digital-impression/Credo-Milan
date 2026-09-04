@@ -109,13 +109,14 @@
 <section class="hero-still relative min-h-[100svh] flex items-end overflow-hidden grain bg-ink" aria-labelledby="hero-title">
   <div class="grain-layer" aria-hidden="true"></div>
 
-  <!-- Uit het aangeleverde materiaal is dit het fragment dat het dichtst bij
-       revalidatie ligt: trage, gecontroleerde oefening op het platform, geen
-       sprint en geen sprong. Vertraagd en heen-en-terug gemonteerd, zodat de
-       lus geen zichtbare naad heeft. -->
+  <!-- De hero is een trage beeldreeks, geen fragment uit de film. Die film is
+       een promomontage met een snede om de één à drie seconden; daar zit geen
+       take in die lang genoeg is om rustig te blijven. Vier stills met een
+       zeer trage duw en overvloeiingen van bijna twee seconden geven wel rust,
+       en variatie bovendien. De laatste vloeit terug in de eerste. -->
   <div class="grain-pin absolute inset-0 z-0 overflow-hidden">
     <video id="hero-video"
-           class="photo w-full h-[118%] object-cover object-[54%_center] md:object-center will-change-transform"
+           class="photo w-full h-[118%] object-cover object-center will-change-transform"
            poster="../assets/img/rehab/hero-still.jpg"
            autoplay muted loop playsinline preload="auto" aria-hidden="true" tabindex="-1">
       <source src="../assets/video/hero-rehab.webm" type="video/webm">
@@ -123,8 +124,8 @@
     </video>
 
     <img id="hero-img" src="../assets/img/rehab/hero-still.jpg"
-         alt="Gecontroleerde oefening op het platform in de oefenzaal van Credo."
-         class="photo w-full h-[118%] object-cover object-[54%_center] md:object-center will-change-transform absolute inset-0 hidden"
+         alt="Beelden uit de praktijk: behandeling, opbouw en weer vrij bewegen."
+         class="photo w-full h-[118%] object-cover object-center will-change-transform absolute inset-0 hidden"
          fetchpriority="high" decoding="async" onerror="imgFail(this,'01')">
 
     <div class="absolute inset-0 bg-gradient-to-t from-ink via-ink/40 to-transparent" aria-hidden="true"></div>
