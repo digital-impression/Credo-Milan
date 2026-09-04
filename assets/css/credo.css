@@ -169,6 +169,7 @@
     text-transform: uppercase; letter-spacing: .16em;
     transition: background-color .25s ease, color .25s ease, border-color .25s ease;
     text-align: center;
+    white-space: nowrap;
   }
   .btn-bone   { background: var(--bone); color: var(--ink); border: 1px solid var(--bone); }
   .btn-bone:hover   { background: var(--taupe); border-color: var(--taupe); color: var(--bone); }
@@ -235,7 +236,8 @@
   /* ---------- Header ---------- */
   #site-header { transition: background-color .35s ease, border-color .35s ease; }
   #site-header.is-solid { background: rgba(13,13,13,.96); border-bottom-color: rgba(244,241,234,.14); }
-  .nav-link { font-size: 11px; text-transform: uppercase; letter-spacing: .2em; font-weight: 500; transition: color .2s ease; }
+  .nav-link {
+    white-space: nowrap; font-size: 11px; text-transform: uppercase; letter-spacing: .2em; font-weight: 500; transition: color .2s ease; }
   .nav-link:hover { color: var(--taupe2); }
 
   /* ---------- Team cards ---------- */
@@ -421,12 +423,19 @@
     display: flex; align-items: center; gap: clamp(2.5rem, 6vw, 6rem);
     padding-inline-end: clamp(2.5rem, 6vw, 6rem);
     animation: marq 38s linear infinite;
+    /* Zonder dit rondt de browser de spoorbreedte af en zie je bij elke
+       omwenteling een sprongetje van een halve pixel. */
+    will-change: transform;
+    flex: none;
   }
   .marq:hover .marq-track,
   .marq:focus-within .marq-track { animation-play-state: paused; }
   .marq-item { flex: none; display: flex; align-items: center; height: 46px; }
   .marq-item .partner-logo { max-height: 46px; width: auto; object-fit: contain; }
-  @keyframes marq { to { transform: translateX(-100%); } }
+  @keyframes marq {
+    from { transform: translate3d(0, 0, 0); }
+    to   { transform: translate3d(-100%, 0, 0); }
+  }
   @media (prefers-reduced-motion: reduce) {
     .marq-track { animation: none; }
     .marq { width: 100%; overflow-x: auto; }
@@ -508,7 +517,7 @@
     font-size: clamp(.95rem, 1.5vw, 1.25rem);
     color: rgba(244,241,234,.5);
     gap: 1.75rem; padding-inline-end: 1.75rem;
-    animation-duration: 46s;
+    animation-duration: 120s;
   }
   .marq-words li { white-space: nowrap; }
   .marq-rule { width: 100%; overflow: hidden; }
@@ -587,7 +596,7 @@
     font-size: clamp(.95rem, 1.5vw, 1.25rem);
     color: rgba(244,241,234,.5);
     gap: 1.75rem; padding-inline-end: 1.75rem;
-    animation-duration: 46s;
+    animation-duration: 120s;
   }
   .marq-words li { white-space: nowrap; }
   .marq-rule { width: 100%; overflow: hidden; }
