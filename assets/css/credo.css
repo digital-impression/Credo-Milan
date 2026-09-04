@@ -102,6 +102,8 @@
   .grain > .grain-layer {
     position: absolute; inset: 0; pointer-events: none; z-index: 2;
     opacity: .055; mix-blend-mode: overlay;
+    /* Op stilstaande vlakken geeft de korrel textuur; over bewegend beeld
+       geeft ze ruis die met elk frame verspringt. Daar blijft ze weg. */
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
   }
   /* Lift ordinary content above the grain. This is more specific than
@@ -662,3 +664,30 @@
   @media (max-width: 767px) {
     body { padding-bottom: calc(64px + env(safe-area-inset-bottom, 0px)); }
   }
+
+  /* De hero draagt al beweging; daar hoeft geen korrel overheen. */
+  .hero-still .grain-layer { display: none; }
+
+  /* ---------- Schakelaar tussen de twee onderdelen ---------- */
+  /* Twee helften in een omhulsel: de actieve helft is ingevuld, de andere
+     wacht. Zo zie je in een oogopslag waar je bent en waar je heen kan. */
+  .switch {
+    display: inline-flex; align-items: center;
+    border: 1px solid rgba(244,241,234,.28);
+    border-radius: 999px; padding: 3px;
+    background: rgba(13,13,13,.55);
+    flex: none;
+  }
+  .switch-opt {
+    display: inline-flex; align-items: center; justify-content: center;
+    padding: .5rem .9rem; border-radius: 999px;
+    font-size: 10.5px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: .14em;
+    white-space: nowrap; color: rgba(244,241,234,.6);
+    transition: background-color .3s ease, color .3s ease;
+  }
+  @media (min-width: 640px) { .switch-opt { padding: .5rem 1.05rem; font-size: 11px; } }
+  .switch-opt:hover { color: var(--bone); }
+  .switch-opt.is-actief { background: var(--bone); color: var(--ink); }
+  .switch-opt.is-actief:hover { color: var(--ink); }
+  .switch-opt:focus-visible { outline: 2px solid var(--bone); outline-offset: 2px; }

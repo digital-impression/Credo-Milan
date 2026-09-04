@@ -146,7 +146,7 @@
     if (!heroImg || reduce) return;
     var y = window.scrollY;
     if (y < window.innerHeight * 1.2) {
-      heroImg.style.transform = 'translate3d(0,' + (y * 0.16).toFixed(2) + 'px,0)';
+      heroImg.style.transform = 'translate3d(0,' + (y * 0.06).toFixed(2) + 'px,0)';
     }
   }
   function onScroll() {
