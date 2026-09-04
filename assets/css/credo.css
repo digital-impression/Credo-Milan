@@ -573,7 +573,10 @@
     grid-template-columns: repeat(2, 1fr);
   }
   @media (min-width: 640px) { .collage { grid-template-columns: repeat(3, 1fr); } }
-  @media (min-width: 1024px) { .collage { grid-template-columns: repeat(6, 1fr); } }
+  /* Vier kolommen in plaats van zes: bij zes werd elk vlak 240 px en vloog de
+     hele sectie voorbij in een halve muisrol. Nu drie rijen van vier, wat de
+     sectie evenveel gewicht geeft als de secties erboven. */
+  @media (min-width: 1024px) { .collage { grid-template-columns: repeat(4, 1fr); } }
 
   .coll-cel {
     position: relative; overflow: hidden;
