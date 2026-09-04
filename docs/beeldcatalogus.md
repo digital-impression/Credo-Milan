@@ -98,3 +98,27 @@ tonen de mensen.
 - Het ijsbad staat alleen op de foto's die van de oude site komen, niet in deze set.
 
 Wie een fotograaf terugstuurt: dit lijstje is de opdracht.
+
+## Welk bronbeeld waar staat
+
+Bijgehouden zodat een volgende keuze niet opnieuw op miniaturen gebeurt. De
+regel die eronder ligt: een staande bron hoort in een staand kader en een
+liggende bron in een liggend kader. Wie een staande foto in een liggend vak
+duwt, gooit de helft van het beeld weg en houdt een uitsnede over die nergens
+op slaat. Elke uitsnede gaat op twee keer de weergavegrootte, met lanczos.
+
+| Plek | Kader | Bron |
+|------|-------|------|
+| rehab, manuele therapie | liggend 5:4 | 140, hand op de schouder tijdens de beweging |
+| rehab, oefentherapie | liggend 5:4 | 126, rust over de gymbal langs de piste |
+| rehab, dry needling | staand naar 5:4 | 024, op de behandeltafel. Enige beeld van een behandelsituatie |
+| performance, screening | liggend 5:4 | 038, het scherm met de testresultaten |
+| performance, return to play | liggend 5:4 | 127, de slee over de piste |
+| performance, oproepband | liggend 16:9 | 147, squat onder de stang |
+| vloer 03 | vierkant | 061, vrouw met bal voor de mosmuur |
+| vloer 04 | vierkant | 156, zittend onder de stang |
+| vloer 05 | vierkant | 163, worp met de bal tegen de muur |
+| vloer 09 | vierkant | 193, ingekaderd shirt met nummer veertien |
+| vloer 11 | vierkant | 152, drukken boven het hoofd |
+| hero revalidatie | film 4,98 tot 5,84 | handen tikken langs de markeringen, van bovenaf |
+| hero performance | film 15,60 tot 19,30 | bankdruk en optrekken aan de rekstok |
