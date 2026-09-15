@@ -22,6 +22,14 @@
 <meta name="twitter:image" content="https://www.credokinesitherapie.be/assets/img/hero-performance-poster.jpg">
 
 <link rel="preload" as="image" fetchpriority="high" href="../assets/img/hero-performance-poster.jpg">
+<!-- Taalversies. Engels en Frans staan nu als landingspagina per taal en
+     dragen noindex tot de vertaling er is; deze verwijzingen mogen blijven
+     staan, want ze vertellen Google alleen welke varianten bestaan. -->
+<link rel="alternate" hreflang="nl-BE" href="https://www.credokinesitherapie.be/">
+<link rel="alternate" hreflang="en" href="https://www.credokinesitherapie.be/en/">
+<link rel="alternate" hreflang="fr" href="https://www.credokinesitherapie.be/fr/">
+<link rel="alternate" hreflang="x-default" href="https://www.credokinesitherapie.be/">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -68,6 +76,14 @@
       </div>
 
       <div class="flex items-center gap-3 shrink-0">
+        <!-- Taalkeuze. Engels en Frans staan er nu als losse landingspagina
+             per taal; de volledige vertaling volgt zodra de Nederlandse tekst
+             vastligt. Vanaf lg zichtbaar, daaronder staat hij in de lade. -->
+        <div class="taal hidden lg:inline-flex" role="group" aria-label="Kies een taal">
+          <a href="../" class="taal-opt is-actief" aria-current="page">NL</a>
+          <a href="../en/" class="taal-opt">EN</a>
+          <a href="../fr/" class="taal-opt">FR</a>
+        </div>
         <a href="https://altagenda.crossuite.com/credokinesitherapie/step2" target="_blank" rel="noopener noreferrer"
            class="btn btn-bone hidden sm:inline-flex !py-[10px] !px-5 !text-[12px] sm:!text-[11px] whitespace-nowrap">Boek een afspraak</a>
 
@@ -97,6 +113,12 @@
       <a href="https://altagenda.crossuite.com/credokinesitherapie/step2" target="_blank" rel="noopener noreferrer"
          class="btn btn-bone mt-6 w-full">Boek een afspraak</a>
       <a href="tel:+32480628545" class="btn btn-ghost mt-3 w-full">Bel +32 480 62 85 45</a>
+
+      <div class="taal mt-8 self-start" role="group" aria-label="Kies een taal">
+        <a href="../" class="taal-opt is-actief" aria-current="page">NL</a>
+        <a href="../en/" class="taal-opt">EN</a>
+        <a href="../fr/" class="taal-opt">FR</a>
+      </div>
     </nav>
   </div>
 </header>
@@ -1051,9 +1073,15 @@
         </li>
         <li class="team-cardx" data-team-card>
           <div class="team-figure" data-imgwrap>
-            <!-- Portret van Bas is nog niet aangeleverd; tot dan een vlak in de
-                 huisstijl in plaats van een gebroken beeld. -->
-            <div class="img-failed absolute inset-0" data-fallback="07" aria-hidden="true"></div>
+            <!-- Aangeleverd door de praktijk op 15 september. Het is een
+                 telefoonopname van het hele lichaam, dus de uitsnede om hem op
+                 hetzelfde kader als de andere zes te krijgen is strak: 440 bij
+                 550 pixels uit een bron van 1200 bij 1600. Daardoor staat hij
+                 iets zachter dan de rest. Een portret in dezelfde opzet als de
+                 anderen zou dat oplossen. -->
+            <img src="../assets/img/team/bas.jpg"
+                 alt="Portret van Bas Van Bael, kinesist bij Credo."
+                 class="photo" loading="lazy" decoding="async" onerror="imgFail(this,'T7')">
 
             <div class="team-creds" id="tc-bas">
               <p class="eyebrow eyebrow-light mb-3">Credentials</p>

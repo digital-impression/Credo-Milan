@@ -729,3 +729,32 @@
   .nav-link { font-size: 12px; letter-spacing: .16em; }
   .eyebrow  { font-size: 12px; }
 }
+
+/* ------------------------------------------------------------------
+   Taalkeuze
+   Drie afkortingen naast elkaar, zelfde vorm als de schakelaar tussen
+   revalidatie en performance, maar kleiner: het is een hulpmiddel, geen
+   hoofdkeuze. De actieve taal staat vol, de andere twee blijven rustig.
+   ------------------------------------------------------------------ */
+.taal {
+  display: inline-flex; align-items: center; gap: 2px;
+  padding: 2px; border-radius: 999px;
+  border: 1px solid rgba(244, 241, 234, .18);
+  background: rgba(13, 13, 13, .45);
+  backdrop-filter: blur(6px);
+}
+.taal-opt {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 34px; padding: .38rem .5rem; border-radius: 999px;
+  font-size: 10.5px; font-weight: 600; letter-spacing: .1em;
+  text-transform: uppercase; color: rgba(244, 241, 234, .6);
+  transition: background .25s ease, color .25s ease;
+}
+.taal-opt:hover { color: var(--bone); }
+.taal-opt.is-actief { background: var(--bone); color: var(--ink); }
+.taal-opt.is-actief:hover { color: var(--ink); }
+.taal-opt:focus-visible { outline: 2px solid var(--bone); outline-offset: 2px; }
+
+@media (hover: none) and (pointer: coarse) {
+  .taal-opt { min-height: 44px; min-width: 44px; font-size: 12px; }
+}

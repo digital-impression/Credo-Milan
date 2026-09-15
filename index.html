@@ -24,6 +24,14 @@
 <link rel="preload" as="image" fetchpriority="high" href="assets/img/keuze-rehab.jpg">
 <link rel="preload" as="image" fetchpriority="high" href="assets/img/keuze-performance.jpg">
 
+<!-- Taalversies. Engels en Frans staan nu als landingspagina per taal en
+     dragen noindex tot de vertaling er is; deze verwijzingen mogen blijven
+     staan, want ze vertellen Google alleen welke varianten bestaan. -->
+<link rel="alternate" hreflang="nl-BE" href="https://www.credokinesitherapie.be/">
+<link rel="alternate" hreflang="en" href="https://www.credokinesitherapie.be/en/">
+<link rel="alternate" hreflang="fr" href="https://www.credokinesitherapie.be/fr/">
+<link rel="alternate" hreflang="x-default" href="https://www.credokinesitherapie.be/">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -151,6 +159,14 @@
           <a href="rehab/" class="nav-link text-bone">Revalidatie</a>
           <a href="performance/" class="nav-link text-bone">Performance</a>
         </nav>
+        <!-- Taalkeuze. Engels en Frans staan er nu als losse landingspagina
+             per taal; de volledige vertaling volgt zodra de Nederlandse tekst
+             vastligt. Vanaf lg zichtbaar, daaronder staat hij in de lade. -->
+        <div class="taal hidden lg:inline-flex" role="group" aria-label="Kies een taal">
+          <a href="./" class="taal-opt is-actief" aria-current="page">NL</a>
+          <a href="./en/" class="taal-opt">EN</a>
+          <a href="./fr/" class="taal-opt">FR</a>
+        </div>
         <a href="tel:+32480628545" class="nav-link text-bone hidden sm:inline-flex whitespace-nowrap">+32 480 62 85 45</a>
         <a href="tel:+32480628545" class="nav-link text-bone sm:hidden">Bel</a>
         <a href="https://altagenda.crossuite.com/credokinesitherapie/step2" target="_blank" rel="noopener noreferrer"
