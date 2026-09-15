@@ -42,7 +42,7 @@
   <div class="mx-auto max-w-[1500px] px-5 md:px-10">
     <div class="flex items-center justify-between gap-6 xl:gap-10 h-[72px]">
 
-      <a href="../" class="flex items-center gap-3 shrink-0" aria-label="Credo Rehab en Performance, naar boven">
+      <a href="../" class="merk-link flex items-center gap-3 shrink-0" aria-label="Credo Rehab en Performance, naar boven">
         <span class="display text-[19px] md:text-[22px] tracking-[0.02em] text-bone">CREDO</span>
         <span class="hidden 2xl:inline-block h-4 w-px bg-bone/25" aria-hidden="true"></span>
         <span class="hidden 2xl:inline eyebrow eyebrow-light">Rehab &amp; Performance</span>
@@ -69,7 +69,7 @@
 
       <div class="flex items-center gap-3 shrink-0">
         <a href="https://altagenda.crossuite.com/credokinesitherapie/step2" target="_blank" rel="noopener noreferrer"
-           class="btn btn-bone hidden sm:inline-flex !py-[10px] !px-5 !text-[11px] whitespace-nowrap">Boek een afspraak</a>
+           class="btn btn-bone hidden sm:inline-flex !py-[10px] !px-5 !text-[12px] sm:!text-[11px] whitespace-nowrap">Boek een afspraak</a>
 
         <button id="menu-btn" type="button"
                 class="lg:hidden inline-flex items-center justify-center w-11 h-11 frame-dark text-bone"
@@ -119,10 +119,38 @@
     <video id="hero-video"
            class="photo w-full h-[118%] object-cover object-center will-change-transform"
            poster="../assets/img/rehab/hero-still.jpg"
+           data-poster-smal="../assets/img/rehab/hero-still-smal.jpg"
+           data-smal-webm="../assets/video/hero-rehab-smal.webm"
+           data-smal-mp4="../assets/video/hero-rehab-smal.mp4"
+           data-breed-webm="../assets/video/hero-rehab.webm"
+           data-breed-mp4="../assets/video/hero-rehab.mp4"
            autoplay muted loop playsinline preload="auto" aria-hidden="true" tabindex="-1">
+      <!-- Zonder JS blijft de brede clip staan; die werkt overal, alleen op een
+           telefoon zie je er een strook van. -->
       <source src="../assets/video/hero-rehab.webm" type="video/webm">
       <source src="../assets/video/hero-rehab.mp4" type="video/mp4">
     </video>
+
+    <script>
+    /* Het herokader is op een telefoon ongeveer 390 bij 844. Daarin wordt de
+       brede opname tot een verticale strook aangesneden: gemeten bleef er 21
+       procent van het beeld over. Voor smalle schermen staat er een staande
+       uitsnede klaar. De keuze valt hier, in de stroom, want credo.js draagt
+       defer en komt te laat om een download te voorkomen. */
+    (function (v) {
+      if (!v || !window.matchMedia) return;
+      if (!window.matchMedia('(max-width: 640px)').matches) return;
+      while (v.firstElementChild) v.removeChild(v.firstElementChild);
+      [['webm', 'video/webm'], ['mp4', 'video/mp4']].forEach(function (t) {
+        var s = document.createElement('source');
+        s.src = v.getAttribute('data-smal-' + t[0]);
+        s.type = t[1];
+        v.appendChild(s);
+      });
+      if (v.dataset.posterSmal) v.poster = v.dataset.posterSmal;
+      v.load();
+    })(document.getElementById('hero-video'));
+    </script>
 
     <img id="hero-img" src="../assets/img/rehab/hero-still.jpg"
          alt="Atleet remt af en zet zich weer af op de indoorpiste langs de mosmuur."
@@ -481,10 +509,10 @@
         <ul class="border-t border-bone/15">
 
         <li class="grid grid-cols-[5rem_1fr] md:grid-cols-[9rem_1fr] gap-x-4 items-baseline border-b border-bone/15 py-6 reveal">
-          <span class="display text-[clamp(2.4rem,5vw,3.4rem)] leading-none text-bone/45 whitespace-nowrap">[·]</span>
+          <span class="display text-[clamp(2.4rem,5vw,3.4rem)] leading-none text-bone whitespace-nowrap" data-count="2000" data-suffix="+">0</span>
           <span class="min-w-0">
             <span class="eyebrow block">Patiënten begeleid</span>
-            <span class="block mt-2 text-[13px] leading-relaxed text-bone/60">[TE BEVESTIGEN]</span>
+            <span class="block mt-2 text-[13px] leading-relaxed text-bone/60">sporters en niet-sporters, van alle leeftijden</span>
           </span>
         </li>
         <li class="grid grid-cols-[5rem_1fr] md:grid-cols-[9rem_1fr] gap-x-4 items-baseline border-b border-bone/15 py-6 reveal reveal-d1">
@@ -495,10 +523,10 @@
           </span>
         </li>
         <li class="grid grid-cols-[5rem_1fr] md:grid-cols-[9rem_1fr] gap-x-4 items-baseline border-b border-bone/15 py-6 reveal reveal-d2">
-          <span class="display text-[clamp(2.4rem,5vw,3.4rem)] leading-none text-bone/45 whitespace-nowrap">[·]</span>
+          <span class="display text-[clamp(2.4rem,5vw,3.4rem)] leading-none text-bone whitespace-nowrap">5&#8202;&ndash;&#8202;91</span>
           <span class="min-w-0">
             <span class="eyebrow block">Jongste tot oudste patiënt</span>
-            <span class="block mt-2 text-[13px] leading-relaxed text-bone/60">14 tot 81 jaar<span class="text-taupe2">&#42;</span></span>
+            <span class="block mt-2 text-[13px] leading-relaxed text-bone/60">in jaren</span>
           </span>
         </li>
         <li class="grid grid-cols-[5rem_1fr] md:grid-cols-[9rem_1fr] gap-x-4 items-baseline border-b border-bone/15 py-6 reveal reveal-d3">
@@ -508,10 +536,6 @@
           </span>
         </li>
         </ul>
-
-        <p class="mt-5 text-[12px] leading-relaxed text-bone/45">
-          <span class="text-taupe2">&#42;</span> [TE BEVESTIGEN]
-        </p>
       </div>
 
       <div class="hidden lg:block lg:col-span-2 h-[300px] px-2">
@@ -563,12 +587,12 @@
     <ul class="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
       <li class="partner-card frame-dark flex flex-col reveal">
         <div class="bg-bone h-28 flex items-center justify-center p-6" data-imgwrap>
-          <img src="https://static.wixstatic.com/media/8cedec_f5d040f24ed5485ba38bae0312419876~mv2.png" alt="Logo van Sporting Hasselt (prof)"
+          <img src="https://static.wixstatic.com/media/8cedec_f5d040f24ed5485ba38bae0312419876~mv2.png" alt="Logo van Sporting Hasselt"
                class="partner-logo max-h-16 w-auto object-contain"
                loading="lazy" decoding="async" onerror="imgFail(this,'P')">
         </div>
         <div class="p-5 md:p-6 flex-1">
-          <h3 class="display d-sm text-bone">Sporting Hasselt (prof)</h3>
+          <h3 class="display d-sm text-bone">Sporting Hasselt</h3>
           <p class="eyebrow mt-3">Club</p>
           <p class="mt-4 text-[13px] leading-relaxed text-bone/65">
             In het verleden waren Tuur (kinesitherapeut &amp; physical coach) en Milan (strength coach) actief binnen de club. Vandaag maakt Dries er deel uit van de staf als kinesitherapeut en strength coach.
@@ -577,12 +601,12 @@
       </li>
       <li class="partner-card frame-dark flex flex-col reveal reveal-d1">
         <div class="bg-bone h-28 flex items-center justify-center p-6" data-imgwrap>
-          <img src="https://static.wixstatic.com/media/c19dfb_a5d049eb6f2f4f0980a8dd9b1a275195~mv2.png" alt="Logo van KRC Genk Ladies (prof)"
+          <img src="https://static.wixstatic.com/media/c19dfb_a5d049eb6f2f4f0980a8dd9b1a275195~mv2.png" alt="Logo van KRC Genk Ladies"
                class="partner-logo max-h-16 w-auto object-contain"
                loading="lazy" decoding="async" onerror="imgFail(this,'P')">
         </div>
         <div class="p-5 md:p-6 flex-1">
-          <h3 class="display d-sm text-bone">KRC Genk Ladies (prof)</h3>
+          <h3 class="display d-sm text-bone">KRC Genk Ladies</h3>
           <p class="eyebrow mt-3">Club</p>
           <p class="mt-4 text-[13px] leading-relaxed text-bone/65">
             Gedurende twee seizoenen maakte Milan deel uit van de technische staf van Genk Ladies als physical coach.
@@ -610,7 +634,7 @@
                loading="lazy" decoding="async" onerror="imgFail(this,'P')">
         </div>
         <div class="p-5 md:p-6 flex-1">
-          <h3 class="display d-sm text-bone">OH Leuven (prof)</h3>
+          <h3 class="display d-sm text-bone">OH Leuven</h3>
           <p class="eyebrow mt-3">Club</p>
           <p class="mt-4 text-[13px] leading-relaxed text-bone/65">
             Tuur was in het verleden actief als physical coach bij OH Leuven, waar hij ervaring opdeed binnen een professionele topsportomgeving.
@@ -624,7 +648,7 @@
                loading="lazy" decoding="async" onerror="imgFail(this,'P')">
         </div>
         <div class="p-5 md:p-6 flex-1">
-          <h3 class="display d-sm text-bone">Lommel SK (prof)</h3>
+          <h3 class="display d-sm text-bone">Lommel SK</h3>
           <p class="eyebrow mt-3">Club</p>
           <p class="mt-4 text-[13px] leading-relaxed text-bone/65">
             Tuur is momenteel als physical coach actief bij het eerste team van Lommel SK.
@@ -633,12 +657,12 @@
       </li>
       <li class="partner-card frame-dark flex flex-col reveal reveal-d1">
         <div class="bg-bone h-28 flex items-center justify-center p-6" data-imgwrap>
-          <img src="https://static.wixstatic.com/media/b42414_c1f9187c6cc04d6bb2ce53a365c331b5~mv2.png" alt="Logo van Torpedo Hasselt (prof)"
+          <img src="https://static.wixstatic.com/media/b42414_c1f9187c6cc04d6bb2ce53a365c331b5~mv2.png" alt="Logo van Torpedo Hasselt"
                class="partner-logo max-h-16 w-auto object-contain"
                loading="lazy" decoding="async" onerror="imgFail(this,'P')">
         </div>
         <div class="p-5 md:p-6 flex-1">
-          <h3 class="display d-sm text-bone">Torpedo Hasselt (prof)</h3>
+          <h3 class="display d-sm text-bone">Torpedo Hasselt</h3>
           <p class="eyebrow mt-3">Club</p>
           <p class="mt-4 text-[13px] leading-relaxed text-bone/65">
             Thomas heeft door zijn jarenlange ervaring als kinesitherapeut bij Torpedo Hasselt een sterke band met de club opgebouwd.
@@ -752,18 +776,21 @@
 
     <ul class="grid gap-6 md:grid-cols-3">
       <li class="frame-light p-6 md:p-8 reveal reveal-fly">
+        <p class="sterren mb-5 text-ink/70" role="img" aria-label="Vijf van de vijf sterren"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.5l2.6 5.28 5.83.85-4.22 4.11 1 5.81L10 14.81l-5.21 2.74 1-5.81L1.57 7.63l5.83-.85z"/></svg><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.5l2.6 5.28 5.83.85-4.22 4.11 1 5.81L10 14.81l-5.21 2.74 1-5.81L1.57 7.63l5.83-.85z"/></svg><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.5l2.6 5.28 5.83.85-4.22 4.11 1 5.81L10 14.81l-5.21 2.74 1-5.81L1.57 7.63l5.83-.85z"/></svg><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.5l2.6 5.28 5.83.85-4.22 4.11 1 5.81L10 14.81l-5.21 2.74 1-5.81L1.57 7.63l5.83-.85z"/></svg><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.5l2.6 5.28 5.83.85-4.22 4.11 1 5.81L10 14.81l-5.21 2.74 1-5.81L1.57 7.63l5.83-.85z"/></svg></p>
         <p class="display text-[clamp(1.05rem,1.6vw,1.35rem)] leading-[1.25] text-ink">
           Tof, erg enthousiast en gemotiveerd team van kinesisten. Door hun aanpak op maat verliep mijn revalidatie boven verwachting. Heb hen al aan velen aangeraden en elkeen is er erg tevreden. Mooie uitgeruste praktijk waar er steeds een toffe sfeer heerst. Toppers in hun vak!
         </p>
         <p class="eyebrow mt-6 text-ink/45">Gitte Reners &middot; Google-review</p>
       </li>
       <li class="frame-light p-6 md:p-8 reveal reveal-fly reveal-d2">
+        <p class="sterren mb-5 text-ink/70" role="img" aria-label="Vijf van de vijf sterren"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.5l2.6 5.28 5.83.85-4.22 4.11 1 5.81L10 14.81l-5.21 2.74 1-5.81L1.57 7.63l5.83-.85z"/></svg><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.5l2.6 5.28 5.83.85-4.22 4.11 1 5.81L10 14.81l-5.21 2.74 1-5.81L1.57 7.63l5.83-.85z"/></svg><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.5l2.6 5.28 5.83.85-4.22 4.11 1 5.81L10 14.81l-5.21 2.74 1-5.81L1.57 7.63l5.83-.85z"/></svg><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.5l2.6 5.28 5.83.85-4.22 4.11 1 5.81L10 14.81l-5.21 2.74 1-5.81L1.57 7.63l5.83-.85z"/></svg><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.5l2.6 5.28 5.83.85-4.22 4.11 1 5.81L10 14.81l-5.21 2.74 1-5.81L1.57 7.63l5.83-.85z"/></svg></p>
         <p class="display text-[clamp(1.05rem,1.6vw,1.35rem)] leading-[1.25] text-ink">
           Altijd professionele en persoonlijke aanpak. Hangt een toffe vibe zodat je er elke keer graag bent!
         </p>
         <p class="eyebrow mt-6 text-ink/45">Oleg Cheprassov &middot; Google-review</p>
       </li>
       <li class="frame-light p-6 md:p-8 reveal reveal-fly reveal-d4">
+        <p class="sterren mb-5 text-ink/70" role="img" aria-label="Vijf van de vijf sterren"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.5l2.6 5.28 5.83.85-4.22 4.11 1 5.81L10 14.81l-5.21 2.74 1-5.81L1.57 7.63l5.83-.85z"/></svg><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.5l2.6 5.28 5.83.85-4.22 4.11 1 5.81L10 14.81l-5.21 2.74 1-5.81L1.57 7.63l5.83-.85z"/></svg><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.5l2.6 5.28 5.83.85-4.22 4.11 1 5.81L10 14.81l-5.21 2.74 1-5.81L1.57 7.63l5.83-.85z"/></svg><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.5l2.6 5.28 5.83.85-4.22 4.11 1 5.81L10 14.81l-5.21 2.74 1-5.81L1.57 7.63l5.83-.85z"/></svg><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1.5l2.6 5.28 5.83.85-4.22 4.11 1 5.81L10 14.81l-5.21 2.74 1-5.81L1.57 7.63l5.83-.85z"/></svg></p>
         <p class="display text-[clamp(1.05rem,1.6vw,1.35rem)] leading-[1.25] text-ink">
           Ben zeer tevreden over de behandeling die ik hier krijg. Kinesisten staan altijd klaar om te helpen. Genoeg mogelijkheden om mezelf te versterken en weer fit te worden.
         </p>
@@ -972,12 +999,12 @@
             <button type="button" class="team-info" data-team-toggle
                     aria-expanded="false" aria-controls="tc-bas">
               <span aria-hidden="true">info</span>
-              <span class="sr-only">Toon credentials van Bas [ACHTERNAAM TE BEVESTIGEN]</span>
+              <span class="sr-only">Toon credentials van Bas Van Bael</span>
             </button>
           </div>
 
           <p class="team-index mt-4 uppercase">07</p>
-          <h3 class="display mt-2 text-[clamp(1.25rem,2.2vw,1.7rem)] leading-[0.95] text-ink">Bas [ACHTERNAAM TE BEVESTIGEN]</h3>
+          <h3 class="display mt-2 text-[clamp(1.25rem,2.2vw,1.7rem)] leading-[0.95] text-ink">Bas Van Bael</h3>
           <p class="eyebrow mt-2 text-ink/55">Kinesist</p>
         </li>
     </ul>
@@ -1193,10 +1220,16 @@
   <div class="grain-layer" aria-hidden="true"></div>
 
   <div class="grain-pin absolute inset-0 z-0" data-imgwrap>
-    <img src="../assets/img/rehab/cta.jpg"
-         alt="De indoorpiste en oefenzaal van Credo in Diepenbeek."
-         class="photo w-full h-full" loading="lazy" decoding="async"
-         onerror="imgFail(this,'09')">
+    <!-- Deze band is op een telefoon een hoge, smalle kolom. Het breedbeeld
+         werd daarin tot dertien procent van het beeld aangesneden, gemeten.
+         Onder 640 pixels staat daarom een staande uitsnede klaar. -->
+    <picture class="block w-full h-full">
+      <source media="(max-width: 640px)" srcset="../assets/img/rehab/cta-smal.jpg">
+      <img src="../assets/img/rehab/cta.jpg"
+           alt="De indoorpiste en oefenzaal van Credo in Diepenbeek."
+           class="photo w-full h-full" loading="lazy" decoding="async"
+           onerror="imgFail(this,'09')">
+    </picture>
     <div class="absolute inset-0 bg-ink/80" aria-hidden="true"></div>
   </div>
 
@@ -1405,7 +1438,7 @@
     <p class="footmark display mt-16 md:mt-24" aria-hidden="true">Credo</p>
 
     <div class="mt-8 pt-6 border-t border-bone/15 flex flex-wrap items-center justify-between gap-4">
-      <p class="eyebrow text-bone/45">&copy; <span id="year">2026</span> Credo Rehab &amp; Performance &middot; BTW [TE BEVESTIGEN]</p>
+      <p class="eyebrow text-bone/45">&copy; <span id="year">2026</span> Credo Rehab &amp; Performance &middot; BTW BE 0756.834.184</p>
       <p class="eyebrow text-bone/45">Motivatie · Passie · Empathie</p>
     </div>
   </div>

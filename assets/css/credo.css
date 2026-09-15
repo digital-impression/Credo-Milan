@@ -694,3 +694,38 @@
   .switch-opt.is-actief { background: var(--bone); color: var(--ink); }
   .switch-opt.is-actief:hover { color: var(--ink); }
   .switch-opt:focus-visible { outline: 2px solid var(--bone); outline-offset: 2px; }
+
+/* ------------------------------------------------------------------
+   Sterren bij een Google-review
+   Vijf gevulde sterren, in de kleur van de tekst eromheen zodat ze
+   werken op licht en op donker. De rij zelf draagt de betekenis via
+   aria-label; de sterren zelf zijn voor de schermlezer onzichtbaar.
+   ------------------------------------------------------------------ */
+.sterren { display: flex; gap: 3px; align-items: center; }
+.sterren svg { width: 14px; height: 14px; fill: currentColor; flex: none; }
+
+/* ------------------------------------------------------------------
+   Aanraakmaten op een telefoon
+   Op een aanraakscherm is 44 bij 44 pixels de ondergrens waaronder
+   mensen ernaast tikken. Gemeten stonden de schakelaar in de balk op
+   32 pixels hoog, de tekstlinks op 23 en het woordmerk op 17. Die
+   krijgen hieronder lucht, zonder dat er iets verschuift: de extra
+   ruimte zit in de opvulling, niet in de rand.
+   Alleen op aanraakschermen, zodat de balk op een laptop niet groeit.
+   ------------------------------------------------------------------ */
+@media (hover: none) and (pointer: coarse) {
+  .switch-opt { min-height: 44px; padding-top: 0; padding-bottom: 0; font-size: 12px; }
+  .team-info  { min-height: 44px; min-width: 44px; }
+  .link-line  { min-height: 44px; padding-top: 10px; padding-bottom: 12px; }
+  .nav-link   { min-height: 44px; min-width: 44px; display: inline-flex;
+                align-items: center; justify-content: center; font-size: 12px; }
+  .team-info span[aria-hidden] { font-size: 12px; }
+  .merk-link  { min-height: 44px; display: inline-flex; align-items: center; }
+}
+
+/* Onder de 640 pixels staat elfpuntsletter te klein. De navigatie in de
+   uitschuiflade en de bovenregels gaan daar een maat omhoog. */
+@media (max-width: 640px) {
+  .nav-link { font-size: 12px; letter-spacing: .16em; }
+  .eyebrow  { font-size: 12px; }
+}

@@ -120,5 +120,30 @@ op slaat. Elke uitsnede gaat op twee keer de weergavegrootte, met lanczos.
 | vloer 05 | vierkant | 163, worp met de bal tegen de muur |
 | vloer 09 | vierkant | 193, ingekaderd shirt met nummer veertien |
 | vloer 11 | vierkant | 152, drukken boven het hoofd |
-| hero revalidatie | film 4,98 tot 5,84 | handen tikken langs de markeringen, van bovenaf |
-| hero performance | film 15,60 tot 19,30 | bankdruk en optrekken aan de rekstok |
+| hero revalidatie, breed | film 36,20 tot 38,20 | afremmen en aanzetten op de piste langs de mosmuur |
+| hero revalidatie, telefoon | film 31,00 tot 32,10 | aanzetten langs de mosmuur, staand kader |
+| hero performance, breed | film 15,60 tot 19,30 | bankdruk en optrekken aan de rekstok |
+| hero performance, telefoon | film 17,60 tot 19,30 | alleen het optrekken, staand kader |
+
+## Staand of liggend, en waarom het op een telefoon anders moet
+
+Een herokader is op een laptop breed en op een telefoon hoog. Dezelfde opname
+past niet in beide. Gemeten op een toestel van 390 bij 844 bleef er van de
+brede heroclip eenentwintig procent van het beeld over, en van de band achter
+het formulier dertien procent. Dat is wat mensen bedoelen als ze zeggen dat een
+foto samengedrukt lijkt: er wordt niets uitgerekt, er wordt te veel afgesneden.
+
+Daarom staat er voor smalle schermen apart materiaal klaar, drie op vier:
+
+- `hero-rehab-smal` en `hero-performance-smal`, plus hun eigen posters. De
+  keuze valt in een klein script direct achter het video-element, want
+  credo.js draagt defer en komt te laat om een download te voorkomen.
+- `cta-smal.jpg` op beide paginas, gekozen met een `<picture>` onder 640 pixels.
+
+Na die ingreep is tweeënvijftig procent van de heroclip zichtbaar in plaats van
+eenentwintig. Wie later een beeld vervangt: kijk of het kader op een telefoon
+staand wordt, en leg er dan een staande uitsnede naast.
+
+Voor het optrekken aan de rekstok werkt een staand kader vanzelf. De bankdruk
+niet: dat is een liggende beweging. Daarom toont de telefoonversie van
+performance alleen het optrekken.
