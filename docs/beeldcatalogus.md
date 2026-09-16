@@ -120,7 +120,7 @@ op slaat. Elke uitsnede gaat op twee keer de weergavegrootte, met lanczos.
 | vloer 05 | vierkant | 163, worp met de bal tegen de muur |
 | vloer 09 | vierkant | 193, ingekaderd shirt met nummer veertien |
 | vloer 11 | vierkant | 152, drukken boven het hoofd |
-| hero revalidatie, breed | film 36,20 tot 38,20 | afremmen en aanzetten op de piste langs de mosmuur |
+| hero revalidatie, breed | film 36,60 tot 38,22 | de sprongen op de piste langs de mosmuur; de afremming ervoor staat vol bewegingsonscherpte |
 | hero revalidatie, telefoon | film 31,00 tot 32,10 | aanzetten langs de mosmuur, staand kader |
 | hero performance, breed | film 15,60 tot 19,30 | bankdruk en optrekken aan de rekstok |
 | hero performance, telefoon | film 17,60 tot 19,30 | alleen het optrekken, staand kader |
