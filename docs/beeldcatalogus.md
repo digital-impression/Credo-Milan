@@ -147,3 +147,25 @@ staand wordt, en leg er dan een staande uitsnede naast.
 Voor het optrekken aan de rekstok werkt een staand kader vanzelf. De bankdruk
 niet: dat is een liggende beweging. Daarom toont de telefoonversie van
 performance alleen het optrekken.
+
+## Een fout in het snijgereedschap, en hoe hij eruit zag
+
+Het script las de afmetingen uit de stroomregel die ffmpeg afdrukt, en draaide
+ze om zodra daar rotate of displaymatrix in stond. Bij dit materiaal klopt dat
+niet: de draaiing zit in de EXIF van de JPEG. Ffmpeg noemt hem niet in die
+regel maar past hem wel toe bij het decoderen. Hij meldt dus 6192 bij 4128 en
+levert 4128 bij 6192.
+
+Daardoor rekende het script de uitsnede op een liggend beeld terwijl het beeld
+staand was. De uitsnede viel buiten het kader, ffmpeg klemde hem dicht op het
+midden, en de aanwijzing waar het onderwerp stond deed niets. Het resultaat
+zag er nooit kapot uit; het stond alleen altijd in het midden. Dat verklaart
+een deel van de uitsneden die er in eerdere rondes naast zaten: niet de keuze
+van de foto was fout, maar de kadrering werd genegeerd.
+
+De nieuwe versie decodeert eerst een beeld en meet daarop. Ze meldt ook wanneer
+een aanwijzing alsnog geklemd wordt, want bij een uitsnede over de volle
+breedte kan er horizontaal niets meer schuiven. Dat is geen fout, maar je moet
+het weten voor je aan de knoppen draait.
+
+Wie later beelden vervangt: gebruik cut5, niet de oudere versies.
