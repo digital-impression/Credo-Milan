@@ -31,7 +31,12 @@
     font-family: 'Anton', 'Arial Narrow', Impact, sans-serif;
     font-weight: 400;
     text-transform: uppercase;
-    line-height: 0.9;
+    /* Anton heeft hoge kapitalen en nauwelijks staartletters. Op 0,9 bleef er
+       bij een kop van 88 pixels maar vijftien pixels wit tussen twee regels
+       over, gemeten; de onderkant van de ene regel lag zowat tegen de
+       bovenkant van de volgende. Op 0,96 blijft het strak maar krijgt elke
+       regel lucht. */
+    line-height: 0.96;
     letter-spacing: 0.005em;
     /* 'anywhere' (not 'break-word') so a long word also shrinks the
        min-content size — otherwise it widens its grid track at 320px. */
@@ -573,10 +578,11 @@
     grid-template-columns: repeat(2, 1fr);
   }
   @media (min-width: 640px) { .collage { grid-template-columns: repeat(3, 1fr); } }
-  /* Zes kolommen, dezelfde opmaak als de Instagram-strook in de footer. Twee
-     rijen dus, en de sectie krijgt haar gewicht uit de ruimte eromheen in
-     plaats van uit grotere vlakken. */
-  @media (min-width: 1024px) { .collage { grid-template-columns: repeat(6, 1fr); } }
+  /* Er zijn zes vakken. Op zes kolommen worden dat tegels van 238 pixels: een
+     strook, geen zaal. Drie kolommen maakt er twee rijen van ruim 450, en dan
+     dragen de beelden de sectie in plaats van de witruimte eromheen. Drie
+     deelt ook netjes op zes, waar vier een rafelige laatste rij geeft. */
+  @media (min-width: 1024px) { .collage { grid-template-columns: repeat(3, 1fr); } }
 
   .coll-cel {
     position: relative; overflow: hidden;
