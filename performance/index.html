@@ -574,21 +574,21 @@
 
       <ul class="lg:col-span-5 border-t border-bone/15">
 
-        <li class="grid grid-cols-[5rem_1fr] md:grid-cols-[9rem_1fr] gap-x-4 items-baseline border-b border-bone/15 py-6 reveal">
+        <li class="grid grid-cols-[5rem_1fr] md:grid-cols-[9rem_1fr] gap-x-4 items-center border-b border-bone/15 py-6 reveal">
           <span class="display text-[clamp(2.4rem,5vw,3.4rem)] leading-none text-bone whitespace-nowrap" data-count="4">0</span>
           <span class="min-w-0">
             <span class="display block text-[clamp(1.15rem,2.4vw,1.7rem)] leading-[1.06] text-bone">Profclubs</span>
             <span class="block mt-1.5 text-[13px] leading-relaxed text-bone/60">Red Flames · KRC Genk Ladies · OH Leuven · Sporting Hasselt</span>
           </span>
         </li>
-        <li class="grid grid-cols-[5rem_1fr] md:grid-cols-[9rem_1fr] gap-x-4 items-baseline border-b border-bone/15 py-6 reveal reveal-d1">
+        <li class="grid grid-cols-[5rem_1fr] md:grid-cols-[9rem_1fr] gap-x-4 items-center border-b border-bone/15 py-6 reveal reveal-d1">
           <span class="display text-[clamp(2.4rem,5vw,3.4rem)] leading-none text-bone whitespace-nowrap" data-count="250" data-suffix="+">0</span>
           <span class="min-w-0">
             <span class="display block text-[clamp(1.15rem,2.4vw,1.7rem)] leading-[1.06] text-bone">Atleten</span>
             <span class="block mt-1.5 text-[13px] leading-relaxed text-bone/60">van jeugdspelers tot internationals</span>
           </span>
         </li>
-        <li class="grid grid-cols-[5rem_1fr] md:grid-cols-[9rem_1fr] gap-x-4 items-baseline border-b border-bone/15 py-6 reveal reveal-d2">
+        <li class="grid grid-cols-[5rem_1fr] md:grid-cols-[9rem_1fr] gap-x-4 items-center border-b border-bone/15 py-6 reveal reveal-d2">
           <span class="display text-[clamp(2.4rem,5vw,3.4rem)] leading-none text-bone whitespace-nowrap" data-count="6" data-suffix="+">0</span>
           <span class="min-w-0">
             <span class="display block text-[clamp(1.15rem,2.4vw,1.7rem)] leading-[1.06] text-bone">Specialisaties</span>
@@ -878,16 +878,28 @@
      atleten hierboven vertellen, en dat draagt meer dan een regel die
      langsglijdt voor iemand iets gelezen heeft.
      ============================================================ -->
-<section class="bg-ink text-bone grain py-20 md:py-28" aria-labelledby="oproep-title">
+<section class="oproep relative bg-ink text-bone grain overflow-hidden py-24 md:py-36 border-y border-bone/12" aria-labelledby="oproep-title">
+
+  <!-- Laag 1: de foto. Sfeer, geen onderwerp, dus gedempt en zonder alt. -->
+  <div class="oproep-beeld grain-pin absolute inset-0 z-0" data-imgwrap>
+    <img src="../assets/img/performance/oproep-performance.jpg" alt="" class="photo" loading="lazy" decoding="async"
+         onerror="imgFail(this,'CTA')">
+  </div>
+  <!-- Laag 2: het verloop dat de tekstzijde dichtmaakt. -->
+  <div class="oproep-waas grain-pin absolute inset-0 z-[1]" aria-hidden="true"></div>
   <div class="grain-layer" aria-hidden="true"></div>
-  <div class="grain-pin mx-auto max-w-[1500px] px-5 md:px-10">
-    <p class="eyebrow text-bone/55 mb-8 reveal">Meten &middot; Verbeteren &middot; Presteren</p>
+
+  <div class="relative mx-auto max-w-[1500px] px-5 md:px-10">
+    <!-- Laag 3: het woord in omtreklijnen, achter de kop. -->
+    <p class="oproep-echo display" aria-hidden="true">Credo</p>
+
+    <p class="eyebrow text-bone/60 mb-8 reveal">Meten &middot; Verbeteren &middot; Presteren</p>
     <div class="grid gap-10 lg:grid-cols-12 lg:items-end">
-      <h2 id="oproep-title" class="lg:col-span-7 display text-bone leading-[0.94] text-[clamp(2.1rem,5.4vw,4.2rem)] reveal reveal-d1">
+      <h2 id="oproep-title" class="lg:col-span-7 display text-bone leading-[0.92] text-[clamp(2.3rem,5.8vw,4.6rem)] reveal reveal-d1">
         Raden kan iedereen.<br>Meten is het werk.
       </h2>
       <div class="lg:col-span-5 reveal reveal-d2">
-        <p class="text-[15px] md:text-base text-bone/75 prose-body">
+        <p class="text-[15px] md:text-base text-bone/85 prose-body">
           E&eacute;n screening legt vast waar je vandaag staat. Daarna gaat het niet meer over wat zou kunnen werken, maar over wat bij jou aantoonbaar vooruitgang oplevert.
         </p>
         <div class="mt-8 btn-stack flex flex-wrap gap-3">

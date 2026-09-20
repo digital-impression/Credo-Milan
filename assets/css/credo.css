@@ -807,3 +807,40 @@
 @media (min-width: 360px) and (max-width: 639px) {
   .overstap-aanloop { display: inline; }
 }
+
+/* ------------------------------------------------------------------
+   De oproep onder de ervaringen
+   Een vlak zwart blok leest als een tussenschot, niet als een uitnodiging.
+   Deze band staat daarom op lagen, van achter naar voor: een foto die als
+   sfeer dient en niet als onderwerp, een verloop dat de tekstzijde
+   dichtmaakt zodat er nooit iets tegen de letters aan ligt, het woord in
+   omtreklijnen achter de kop, de korrel die over de hele site loopt, en
+   pas dan de tekst.
+
+   Het omtrekwoord is dezelfde greep die eerst onderaan de footer stond. Daar
+   herhaalde het alleen de naam die er al boven stond; hier draagt het wel
+   iets, want het geeft diepte zonder een tweede boodschap toe te voegen.
+   ------------------------------------------------------------------ */
+.oproep { isolation: isolate; }
+.oproep-beeld img { width: 100%; height: 100%; object-fit: cover; opacity: .38; }
+
+/* Het verloop loopt van de tekstzijde naar buiten, niet van boven naar
+   onder: de tekst staat links, dus daar moet het dicht. */
+.oproep-waas {
+  background:
+    linear-gradient(100deg, var(--ink) 0%, rgba(13,13,13,.92) 34%, rgba(13,13,13,.55) 66%, rgba(13,13,13,.72) 100%),
+    linear-gradient(to top, rgba(13,13,13,.85) 0%, transparent 42%);
+}
+
+.oproep-echo {
+  position: absolute;
+  left: -0.055em; bottom: -0.2em;
+  font-size: clamp(7rem, 27vw, 21rem);
+  line-height: .78; letter-spacing: .012em;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(244, 241, 234, .17);
+  user-select: none; pointer-events: none; white-space: nowrap;
+}
+@supports not (-webkit-text-stroke: 1px red) {
+  .oproep-echo { color: rgba(244, 241, 234, .06); }
+}
