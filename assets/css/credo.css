@@ -758,3 +758,52 @@
 @media (hover: none) and (pointer: coarse) {
   .taal-opt { min-height: 44px; min-width: 44px; font-size: 12px; }
 }
+
+/* ------------------------------------------------------------------
+   Tekst in de hero
+   Dit is het enige stuk van de site waar tekst op bewegend beeld staat,
+   dus het enige stuk waar het contrast per frame verschilt. Gemeten tegen
+   de pixels die er werkelijk onder liggen stond de bovenregel op 4,1 tot
+   4,4 op 1; de norm voor tekst van dat formaat is 4,5. De lopende tekst
+   haalde 5,4 tot 5,7, genoeg op papier maar mager op beeld dat beweegt.
+
+   Iets groter, iets minder ver uit elkaar, en een halve tint helderder.
+   De lopende tekst gaat van 400 naar 500: een dunne letter houdt slecht
+   stand op een ondergrond die verschuift. Alleen hier, de rest van de
+   site staat op een vlakke kleur en heeft dit niet nodig.
+   ------------------------------------------------------------------ */
+.hero-still .eyebrow {
+  font-size: 13px;
+  letter-spacing: .12em;
+  color: rgba(244, 241, 234, .88);
+}
+.hero-still p.prose-body {
+  font-size: 17px;
+  font-weight: 500;
+  line-height: 1.62;
+  color: rgba(244, 241, 234, .94);
+}
+@media (max-width: 767px) {
+  .hero-still p.prose-body { font-size: 16px; }
+  .hero-still .eyebrow { font-size: 12.5px; }
+}
+
+/* ------------------------------------------------------------------
+   De schakelaar op een telefoon
+   Met de volledige woorden erin is hij 245 pixels breed. Op een scherm
+   van 320 duwt dat de menuknop 83 pixels buiten beeld, gemeten. Onder de
+   640 valt daarom de helft weg waar je al op staat: die is er toch alleen
+   om te tonen waar je bent, en dat weet je. Wat overblijft is de overstap,
+   met het volledige woord erin.
+   ------------------------------------------------------------------ */
+@media (max-width: 639px) {
+  .switch-opt.is-actief { display: none; }
+}
+
+/* Het aanloopwoord maakt van "Performance" een zin: naar Performance. Op de
+   allersmalste schermen duwt het de menuknop er twaalf pixels uit, gemeten op
+   320, dus daar valt het weg en blijft het woord alleen staan. */
+.overstap-aanloop { display: none; }
+@media (min-width: 360px) and (max-width: 639px) {
+  .overstap-aanloop { display: inline; }
+}
