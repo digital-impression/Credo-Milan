@@ -161,11 +161,13 @@
   window.addEventListener('scroll', onScroll, { passive: true });
   parallax();
 
-  /* ---------- Converging hairlines draw in with the stats ---------- */
-  var converge = document.querySelector('.converge');
-  if (converge) {
+  /* ---------- Converging hairlines draw in with the stats ----------
+     Er staan er twee: een brede voor naast elkaar, en een staande die alleen
+     op een telefoon meedoet. Beide horen te tekenen zodra ze in beeld komen. */
+  var converges = document.querySelectorAll('.converge');
+  if (converges.length) {
     if (reduce || !('IntersectionObserver' in window)) {
-      converge.classList.add('is-drawn');
+      converges.forEach(function (el) { el.classList.add('is-drawn'); });
     } else {
       var cObs = new IntersectionObserver(function (entries) {
         entries.forEach(function (entry) {
@@ -175,8 +177,39 @@
           }
         });
       }, { threshold: 0.3 });
-      cObs.observe(converge);
+      converges.forEach(function (el) { cObs.observe(el); });
     }
+  }
+
+  /* ---------- De drie waarden klappen in op een telefoon ----------
+     In de opmaak staan ze alle drie open, zodat zonder JS niets verborgen
+     blijft. Past het niet naast elkaar, dan blijft de eerste open staan en
+     gaan de andere twee dicht: zo zie je de drie namen samen en lees je wat
+     je wil lezen. Wie zelf iets openklapt, houdt dat; er wordt pas opnieuw
+     gesloten als het formaat echt over de grens gaat. */
+  var waarden = document.querySelectorAll('[data-waarde]');
+  if (waarden.length && window.matchMedia) {
+    var smal = window.matchMedia('(max-width: 767px)');
+    var stelWaarden = function () {
+      waarden.forEach(function (d, i) { d.open = smal.matches ? i === 0 : true; });
+    };
+    stelWaarden();
+    if (smal.addEventListener) smal.addEventListener('change', stelWaarden);
+    else if (smal.addListener) smal.addListener(stelWaarden);
+  }
+
+  /* ---------- Recensieportretten komen tot leven ----------
+     Op een muis keert de kleur terug bij aanwijzen; dat staat in de
+     stylesheet. Op een telefoon bestaat aanwijzen niet, dus daar doet het
+     beeld het zodra de kaart in de baan voor je staat. */
+  var kaarten = document.querySelectorAll('.review-kaart');
+  if (kaarten.length && 'IntersectionObserver' in window && !reduce) {
+    var rObs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        entry.target.classList.toggle('is-levend', entry.intersectionRatio >= 0.55);
+      });
+    }, { threshold: [0, 0.55, 1] });
+    kaarten.forEach(function (el) { rObs.observe(el); });
   }
 
   /* ---------- Photo-filled display type ---------- */

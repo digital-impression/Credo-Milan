@@ -128,7 +128,7 @@
 <!-- ============================================================
      SECTIE 01 — HERO (rehab)
      ============================================================ -->
-<section class="hero-still relative min-h-[100svh] flex items-end overflow-hidden grain bg-ink" aria-labelledby="hero-title">
+<section class="hero-still relative min-h-[95svh] flex items-end overflow-hidden grain bg-ink" aria-labelledby="hero-title">
   <div class="grain-layer" aria-hidden="true"></div>
 
   <!-- Seconde 36,60 tot 38,22: een doorlopende opname op de indoorpiste
@@ -271,31 +271,49 @@
 
       <hr class="rule-light my-12 md:my-16 border-0" aria-hidden="true">
 
-      <div class="gsm-rail grid gap-14 md:grid-cols-3 md:gap-10 lg:gap-16">
+      <div class="waarden grid gap-14 md:grid-cols-3 md:gap-10 lg:gap-16">
 
-        <div class="reveal reveal-fly border-t-2 border-ink pt-6">
-          <p class="eyebrow mb-4 text-ink/45">Waarde 01</p>
-          <h3 class="display text-[clamp(2.7rem,7vw,4.6rem)] leading-[0.96] text-ink">Motivatie</h3>
+        <details class="waarde reveal reveal-fly border-t-2 border-ink pt-6" data-waarde open>
+          <summary class="waarde-kop">
+            <span class="waarde-naam">
+              <span class="eyebrow block mb-4 text-ink/45">Waarde 01</span>
+              <span class="display block text-[clamp(2.7rem,7vw,4.6rem)] leading-[0.96] text-ink"
+                    role="heading" aria-level="3">Motivatie</span>
+            </span>
+            <span class="waarde-plus" aria-hidden="true">+</span>
+          </summary>
           <p class="mt-5 text-[15px] text-ink/70 prose-body">
             Jouw doel wordt ons doel, en dat kan alles zijn: pijnvrij de kleinkinderen optillen, zonder problemen enkele kilometers kunnen lopen, na een kruisbandoperatie terug op het hoogste niveau voetballen. Vanaf dag &eacute;&eacute;n zullen we er alles aan doen om dit doel mee te helpen bereiken.
           </p>
-        </div>
+        </details>
 
-        <div class="reveal reveal-fly reveal-d2 border-t-2 border-ink pt-6">
-          <p class="eyebrow mb-4 text-ink/45">Waarde 02</p>
-          <h3 class="display text-[clamp(2.7rem,7vw,4.6rem)] leading-[0.96] text-ink">Passie</h3>
+        <details class="waarde reveal reveal-fly reveal-d2 border-t-2 border-ink pt-6" data-waarde open>
+          <summary class="waarde-kop">
+            <span class="waarde-naam">
+              <span class="eyebrow block mb-4 text-ink/45">Waarde 02</span>
+              <span class="display block text-[clamp(2.7rem,7vw,4.6rem)] leading-[0.96] text-ink"
+                    role="heading" aria-level="3">Passie</span>
+            </span>
+            <span class="waarde-plus" aria-hidden="true">+</span>
+          </summary>
           <p class="mt-5 text-[15px] text-ink/70 prose-body">
             Onze passie voor de job en voor onze pati&euml;nten zorgt voor een heel betrokken aanpak. Dankzij ons enthousiasme zullen we altijd trachten het beste in jullie naar boven te halen.
           </p>
-        </div>
+        </details>
 
-        <div class="reveal reveal-fly reveal-d4 border-t-2 border-ink pt-6">
-          <p class="eyebrow mb-4 text-ink/45">Waarde 03</p>
-          <h3 class="display text-[clamp(2.7rem,7vw,4.6rem)] leading-[0.96] text-ink">Empathie</h3>
+        <details class="waarde reveal reveal-fly reveal-d4 border-t-2 border-ink pt-6" data-waarde open>
+          <summary class="waarde-kop">
+            <span class="waarde-naam">
+              <span class="eyebrow block mb-4 text-ink/45">Waarde 03</span>
+              <span class="display block text-[clamp(2.7rem,7vw,4.6rem)] leading-[0.96] text-ink"
+                    role="heading" aria-level="3">Empathie</span>
+            </span>
+            <span class="waarde-plus" aria-hidden="true">+</span>
+          </summary>
           <p class="mt-5 text-[15px] text-ink/70 prose-body">
             Achter elke pati&euml;nt schuilt een mens. Daarom bieden we graag een luisterend oor voor al je vragen en bekommernissen. Via onze empathische aanpak begrijpen we beter welke factoren je klachten be&iuml;nvloeden, en kunnen we dat meenemen in de revalidatie.
           </p>
-        </div>
+        </details>
 
       </div>
     </div>
@@ -551,8 +569,21 @@
         </svg>
       </div>
 
-      <div class="lg:col-span-5 reveal reveal-d2 lg:pl-4">
-        <div class="flex items-center gap-5 md:gap-8">
+      <div class="doelblok lg:col-span-5 reveal reveal-d2 lg:pl-4">
+
+        <!-- Naast elkaar lopen de drie lijnen van de cijfers links naar het
+             doel rechts. Onder elkaar kan dat niet, dus daar lopen ze van
+             boven naar beneden het cijfer in. Zelfde gedachte, andere
+             richting, en op een telefoon is dit het moment waar de sectie
+             om draait. -->
+        <svg class="converge doel-lijnen lg:hidden" viewBox="0 0 100 100"
+             preserveAspectRatio="none" aria-hidden="true" focusable="false">
+          <path d="M12 0 C 12 62, 50 40, 50 100"></path>
+          <path d="M50 0 C 50 62, 50 40, 50 100"></path>
+          <path d="M88 0 C 88 62, 50 40, 50 100"></path>
+        </svg>
+
+        <div class="doelwoord flex items-center gap-5 md:gap-8">
           <p class="display leading-[0.78] text-taupe2 text-[clamp(6.5rem,20vw,14rem)] shrink-0" data-count="1">0</p>
           <p class="display text-bone leading-[0.82] text-[clamp(3.2rem,10vw,7rem)]">Doel</p>
         </div>
@@ -1154,9 +1185,6 @@
         <p class="eyebrow mb-8 reveal">Praktisch / 09</p>
         <h2 id="faq-title" class="display d-xl text-ink reveal reveal-d1">Voor je belt.</h2>
       </div>
-      <p class="md:col-span-5 text-[15px] text-ink/65 prose-body reveal reveal-d2">
-        Staat je vraag er niet bij? Bel <a href="tel:+32480628545" class="link-line text-ink">+32 480 62 85 45</a>.
-      </p>
     </div>
 
     <div class="grid gap-10 lg:grid-cols-12 lg:gap-16">
@@ -1233,6 +1261,9 @@
             </p>
           </div>
         </details>
+        <p class="mt-8 pt-6 border-t border-ink/15 text-[15px] text-ink/65 prose-body reveal">
+          Staat je vraag er niet bij? Bel <a href="tel:+32480628545" class="link-line text-ink">+32 480 62 85 45</a>.
+        </p>
       </div>
 
       <div class="lg:col-span-5">
@@ -1308,17 +1339,6 @@
           <a href="https://altagenda.crossuite.com/credokinesitherapie/step2" target="_blank" rel="noopener noreferrer" class="btn btn-bone">Boek direct online</a>
           <a href="tel:+32480628545" class="btn btn-ghost">Bel +32 480 62 85 45</a>
         </div>
-
-        <!-- Mailen staat bij de andere manieren om contact te nemen, niet
-             onderaan het formulier: zo staan alle wegen naast elkaar. -->
-        <div class="mt-10 pt-8 border-t border-bone/20 reveal reveal-d2">
-          <p class="text-[14px] text-bone/70 prose-body max-w-[46ch]">
-            Stuur ons een e-mail als je een vraag hebt. Vermeld daarin zeker ook je telefoonnummer, zodat we je indien nodig snel kunnen contacteren.
-          </p>
-          <a href="mailto:info@credokinesitherapie.be" class="link-line mt-5 text-bone inline-flex">info@credokinesitherapie.be
-            <svg width="16" height="9" viewBox="0 0 16 9" fill="none" aria-hidden="true"><path d="M0 4.5h14M10.5 1L14 4.5 10.5 8" stroke="currentColor" stroke-width="1.3"/></svg>
-          </a>
-        </div>
       </div>
 
       <div class="lg:col-span-6 reveal reveal-d1">
@@ -1362,6 +1382,15 @@
           </form>
 
         </div>
+
+        <div class="mt-6 reveal reveal-d2">
+          <p class="text-[14px] text-bone/70 prose-body max-w-[46ch]">
+            Stuur ons een e-mail als je een vraag hebt. Vermeld daarin zeker ook je telefoonnummer, zodat we je indien nodig snel kunnen contacteren.
+          </p>
+          <a href="mailto:info@credokinesitherapie.be" class="link-line mt-5 text-bone inline-flex">info@credokinesitherapie.be
+            <svg width="16" height="9" viewBox="0 0 16 9" fill="none" aria-hidden="true"><path d="M0 4.5h14M10.5 1L14 4.5 10.5 8" stroke="currentColor" stroke-width="1.3"/></svg>
+          </a>
+        </div>
       </div>
 
     </div>
@@ -1377,13 +1406,18 @@
      ============================================================ -->
 <footer id="contact" class="bg-ink text-bone">
 
+  <!-- Wat hier stond, stond er in zeven kopjes: kom langs, direct, ook bij
+       Credo, volg ons, openingsuren, en onderaan nog twee regels. Telefoon en
+       e-mail stonden er twee keer, en het adres droeg een eigen kop naast een
+       knop die naar dezelfde kaart wees. Nu draagt de footer twee blokken -
+       waar we zijn en wanneer we open zijn - en daaronder een regel met alles
+       waar je op kan klikken. -->
 
   <div class="mx-auto max-w-[1500px] px-5 md:px-10 pt-16 md:pt-24 pb-10">
 
+    <div class="grid gap-12 lg:grid-cols-12 lg:gap-16">
 
-    <div class="grid gap-12 lg:grid-cols-12 lg:gap-10">
-
-      <div class="lg:col-span-5">
+      <div class="lg:col-span-7">
         <p class="eyebrow mb-5 text-bone/50">Kom langs</p>
 
         <!-- De naam op formaat. Dit is het laatste wat iemand ziet, dus hier
@@ -1396,7 +1430,7 @@
           Kapelstraat 89<br>3590 Diepenbeek
         </a>
         <p class="mt-5 text-[14px] text-bone/55 prose-body">
-          Op tien minuten van Hasselt.
+          Op tien minuten van Hasselt, met ruime parking.
         </p>
         <div class="mt-8 btn-stack flex flex-wrap gap-3">
           <a href="https://altagenda.crossuite.com/credokinesitherapie/step2" target="_blank" rel="noopener noreferrer" class="btn btn-bone">Boek een afspraak</a>
@@ -1404,52 +1438,37 @@
         </div>
       </div>
 
-      <div class="lg:col-span-3">
-        <p class="eyebrow mb-6 text-bone/50">Direct</p>
-        <ul class="space-y-3 text-[15px]">
-          <li><a href="tel:+32480628545" class="link-line text-bone">+32 480 62 85 45</a></li>
-          <li><a href="mailto:info@credokinesitherapie.be" class="link-line text-bone">info@credokinesitherapie.be</a></li>
-          <li><a href="../#team" class="link-line text-bone">Het team</a></li>
-        </ul>
-
-        <!-- De keuze tussen beide sites hoort hier subtiel te staan, niet als
-             twee grote kaarten die de footer openen. -->
-        <p class="eyebrow mt-10 mb-4 text-bone/50">Ook bij Credo</p>
-        <ul class="space-y-3 text-[15px]">
-          <li><a href="../performance/" class="link-line text-bone">Personal training &amp; performance</a></li>
-        </ul>
-
-        <p class="eyebrow mt-10 mb-4 text-bone/50">Volg ons</p>
-        <ul class="flex gap-3">
-          <li><a href="https://www.instagram.com/credo_kinesitherapie/" target="_blank" rel="noopener noreferrer"
-                 class="soc" aria-label="Credo op Instagram">IG</a></li>
-          <li><a href="https://www.facebook.com/CredoKinesitherapie" target="_blank" rel="noopener noreferrer"
-                 class="soc" aria-label="Credo op Facebook">FB</a></li>
-        </ul>
-      </div>
-
-      <div class="lg:col-span-4">
+      <div class="lg:col-span-5">
         <p class="eyebrow mb-6 text-bone/50">Openingsuren</p>
-        <dl class="text-[15px] divide-y divide-bone/12">
-          <div class="flex justify-between gap-4 py-2.5"><dt class="text-bone/70">Maandag tot vrijdag</dt><dd class="text-bone/85 whitespace-nowrap">08:00 &ndash; 21:00</dd></div>
-          <div class="flex justify-between gap-4 py-2.5"><dt class="text-bone/70">Zaterdag</dt><dd class="text-bone/50">Gesloten</dd></div>
-          <div class="flex justify-between gap-4 py-2.5"><dt class="text-bone/70">Zondag</dt><dd class="text-bone/50">Gesloten</dd></div>
+        <dl class="text-[15px] divide-y divide-bone/12 border-t border-bone/12">
+          <div class="flex justify-between gap-4 py-3"><dt class="text-bone/70">Maandag tot vrijdag</dt><dd class="text-bone/85 whitespace-nowrap">08:00 &ndash; 21:00</dd></div>
+          <div class="flex justify-between gap-4 py-3"><dt class="text-bone/70">Zaterdag</dt><dd class="text-bone/50">Gesloten</dd></div>
+          <div class="flex justify-between gap-4 py-3"><dt class="text-bone/70">Zondag</dt><dd class="text-bone/50">Gesloten</dd></div>
         </dl>
         <a href="https://www.google.com/maps/search/Credo+Rehab+%26+Performance+Kapelstraat+89+Diepenbeek"
-           target="_blank" rel="noopener noreferrer" class="link-line mt-6 text-bone inline-flex">Bekijk op Google
+           target="_blank" rel="noopener noreferrer" class="link-line mt-7 text-bone inline-flex">Bekijk op Google
           <svg width="16" height="9" viewBox="0 0 16 9" fill="none" aria-hidden="true"><path d="M0 4.5h14M10.5 1L14 4.5 10.5 8" stroke="currentColor" stroke-width="1.3"/></svg>
         </a>
       </div>
     </div>
 
+    <!-- Eén regel met alles waar je op kan klikken. -->
+    <nav class="mt-14 md:mt-20 pt-7 border-t border-bone/15 flex flex-wrap items-center gap-x-8 gap-y-5"
+         aria-label="Contact en kanalen">
+      <a href="tel:+32480628545" class="link-line text-bone">+32 480 62 85 45</a>
+      <a href="mailto:info@credokinesitherapie.be" class="link-line text-bone">info@credokinesitherapie.be</a>
+      <a href="../performance/" class="link-line text-bone">Personal training &amp; performance</a>
+      <ul class="flex gap-3 lg:ms-auto">
+        <li><a href="https://www.instagram.com/credo_kinesitherapie/" target="_blank" rel="noopener noreferrer"
+               class="soc" aria-label="Credo op Instagram">IG</a></li>
+        <li><a href="https://www.facebook.com/CredoKinesitherapie" target="_blank" rel="noopener noreferrer"
+               class="soc" aria-label="Credo op Facebook">FB</a></li>
+      </ul>
+    </nav>
 
-
-    <!-- Hier stond de naam nog eens in omtreklijnen. Nu hij boven het adres
-         staat, is dat een herhaling: twee keer hetzelfde woord in een footer
-         maakt geen van beide sterker. -->
-    <div class="mt-14 md:mt-20 pt-6 border-t border-bone/15 flex flex-wrap items-center justify-between gap-4">
+    <div class="mt-8 pt-6 border-t border-bone/12 flex flex-wrap items-center justify-between gap-4">
       <p class="eyebrow text-bone/45">&copy; <span id="year">2026</span> Credo Rehab &amp; Performance &middot; BTW BE 0756.834.184</p>
-      <p class="eyebrow text-bone/45">Motivatie · Passie · Empathie</p>
+      <p class="eyebrow text-bone/45">Motivatie &middot; Passie &middot; Empathie</p>
     </div>
   </div>
 </footer>

@@ -128,10 +128,14 @@
 
   /* The line the heroes carry under their frame, here under both doors. */
   .keuze-rule {
-    display: flex; flex-wrap: wrap; gap: .5rem 2rem; justify-content: space-between;
+    display: flex; flex-wrap: wrap; align-items: center; gap: .25rem 2rem; justify-content: space-between;
     border-top: 1px solid rgba(244,241,234,.15);
-    padding: .9rem clamp(1.25rem, 3vw, 2.5rem);
+    padding: .5rem clamp(1.25rem, 3vw, 2.5rem);
   }
+  /* Het nummer is het enige waar je hier op kan tikken en het stond op
+     achttien pixels hoog. Onder een duim is dat te weinig; de regel eromheen
+     blijft even hoog doordat er lucht van de rand naar de link verhuist. */
+  .keuze-rule a { display: inline-flex; align-items: center; min-height: 44px; }
 </style>
 </head>
 
