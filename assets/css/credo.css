@@ -874,6 +874,12 @@
      de pagina dan dit bestand, dus zonder extra zwaarte wint grid. */
   body .gsm-rail {
     display: flex;
+    /* Naast elkaar in kolommen is even hoog netjes, want je ziet de drie
+       tegelijk. In een baan zie je er een, en dan is even hoog juist lelijk:
+       de kortste recensie kreeg de hoogte van de langste en stond met een
+       handbreed leegte binnen zijn eigen rand. Elke kaart zo hoog als hij
+       zelf is. */
+    align-items: flex-start;
     gap: 1rem;
     overflow-x: auto;
     overscroll-behavior-x: contain;
@@ -892,9 +898,15 @@
     -webkit-overflow-scrolling: touch;
   }
   body .gsm-rail::-webkit-scrollbar { display: none; }
+  /* De breedte staat op een deel van de baan zelf, niet op een deel van het
+     scherm. De baan bij de waarden zit namelijk binnen een kader met eigen
+     binnenmarge; op 78vw werd een kaart daar breder dan de ruimte die hij had
+     en stak de volgende niet meer uit. Op 86 procent blijft er overal een
+     zelfde stuk van de volgende kaart staan, en dat stuk is de uitnodiging
+     om te vegen. */
   body .gsm-rail > * {
     flex: none;
-    width: 78vw;
+    width: 86%;
     max-width: 320px;
     scroll-snap-align: start;
   }
