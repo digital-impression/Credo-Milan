@@ -850,3 +850,115 @@
 @supports not (-webkit-text-stroke: 1px red) {
   .oproep-echo { color: rgba(244, 241, 234, .06); }
 }
+
+/* ==================================================================
+   DE TELEFOON
+   Niet het bureaublad dat krimpt, maar een eigen indeling.
+
+   Wat er misging: elke herhalende reeks stond onder elkaar. Vijf
+   trajectstappen met elk een foto, zes clubkaarten, drie ervaringen.
+   Dat maakte de pagina vierentwintigduizend pixels lang, bijna dertig
+   schermen. Je kon er wel doorheen, maar je zag nooit dat er vijf
+   stappen zijn; je zag stap een, en daarna nog een, en nog een.
+
+   Een reeks hoort op een telefoon zijwaarts. Dan zie je in een
+   oogopslag dat er meer is, je veegt met de duim, en de pagina blijft
+   kort. Dat is ook al hoe de ploegenrij werkt, dus het is geen nieuw
+   patroon maar hetzelfde patroon op meer plaatsen.
+   ================================================================== */
+@media (max-width: 767px) {
+
+  /* ---- Een reeks wordt een baan die je opzij veegt ---- */
+  /* De lijst draagt ook Tailwinds .grid. Die zet display:grid met dezelfde
+     zwaarte als een losse klasse, en de CDN schrijft zijn stijlen later in
+     de pagina dan dit bestand, dus zonder extra zwaarte wint grid. */
+  body .gsm-rail {
+    display: flex;
+    gap: 1rem;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    /* Zonder dit klapt de eerste kaart tegen de schermrand: het uitlijnen op
+       de snappunten telt de binnenmarge niet mee, dus de goot links wordt
+       weggescrold en de eerste letter valt eraf. */
+    scroll-padding-inline: 1.25rem;
+    /* Tot aan de schermrand doorlopen: een baan die binnen de marge
+       blijft ziet eruit als een fout, een die eronder doorloopt zegt
+       dat er meer is. */
+    margin-inline: -1.25rem;
+    padding-inline: 1.25rem;
+    padding-bottom: .5rem;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  body .gsm-rail::-webkit-scrollbar { display: none; }
+  body .gsm-rail > * {
+    flex: none;
+    width: 78vw;
+    max-width: 320px;
+    scroll-snap-align: start;
+  }
+  /* De laatste kaart moet ook links kunnen uitlijnen, anders blijft er
+     rechts een gat van een halve kaart staan. */
+  /* De invliegbeweging gaat zijwaarts. Binnen een baan die je zelf zijwaarts
+     veegt vecht dat met elkaar: de kaart schuift terwijl je scrolt, en de
+     breedte van de baan verspringt onder je duim. Binnen een baan dus stil. */
+  body .gsm-rail .reveal-fly { transform: none; }
+
+  body .gsm-rail::after {
+    content: "";
+    flex: none;
+    inline-size: .25rem;
+  }
+
+  /* ---- Minder lucht tussen de secties ---- */
+  /* Zes rem boven en onder is op een scherm van 390 bijna een derde
+     scherm leegte per sectie. Op een telefoon leest dichter beter: de
+     scheiding komt van de kleurwissel en de lijnen, niet van het gat. */
+  body .py-24  { padding-top: 3.25rem; padding-bottom: 3.25rem; }
+  body .py-20  { padding-top: 3rem;    padding-bottom: 3rem; }
+  body .pt-24  { padding-top: 3.25rem; }
+  body .pb-24  { padding-bottom: 3.25rem; }
+  body .pt-16  { padding-top: 2.5rem; }
+  body .pb-16  { padding-bottom: 2.5rem; }
+  body .py-14  { padding-top: 2.25rem;  padding-bottom: 2.25rem; }
+  body .mb-14  { margin-bottom: 2rem; }
+  body .mt-16  { margin-top: 2.5rem; }
+  body .mb-12  { margin-bottom: 1.75rem; }
+
+  /* ---- De dienstenblokken ---- */
+  /* De foto stond op vijf staat vier en vulde bijna een half scherm voor
+     je de titel zag. Drie staat twee laat de foto zijn werk doen en
+     brengt de kop naar boven. */
+  body .media-blend { aspect-ratio: 3 / 2; }
+
+  /* ---- De cijfers ---- */
+  /* De lijnen die samenkomen staan hier toch al uit; zonder die tussenkolom
+     hoort het antwoord direct onder de cijfers, niet een scherm lager. */
+  #cijfers .lg\:col-span-5:last-of-type { margin-top: .5rem; }
+}
+
+/* ------------------------------------------------------------------
+   Telefoon, vervolg: de blokken die na de banen nog te lang waren
+   ------------------------------------------------------------------ */
+@media (max-width: 767px) {
+
+  /* De dienstenblokken. Kop, tekst en link stonden met veertien rem lucht
+     rond elk blok; op een telefoon is dat per blok een half scherm niets.
+     De foto is al van vijf staat vier naar drie staat twee gegaan. */
+  body .lg\:py-20 { padding-top: 2rem; padding-bottom: 2.25rem; }
+
+  /* Motivatie, passie, empathie stonden als drie koppen van bijna vijf rem
+     onder elkaar met veertien rem ertussen: drie schermen voor drie woorden.
+     Op een telefoon horen ze als een rij te lezen, niet als drie hoofdstukken. */
+  body #aanpak .gap-14 { gap: 2.25rem; }
+  body #aanpak .grid h3 { font-size: clamp(2rem, 11vw, 2.8rem); }
+
+  /* Het woord CREDO met de foto erin vult op een telefoon een heel scherm
+     voor er iets gezegd is. Iets kleiner laat het nog steeds groot zijn en
+     brengt de zin eronder mee in beeld. */
+  body .credo-word { font-size: clamp(3.4rem, 17vw, 7rem); }
+
+  /* De vragenlijst: de kop nam evenveel plaats als drie vragen. */
+  body #praktisch .mb-12 { margin-bottom: 1.5rem; }
+}
