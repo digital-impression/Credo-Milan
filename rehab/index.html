@@ -526,31 +526,31 @@
       <div class="md:col-span-7">
         <p class="eyebrow mb-8 reveal">In cijfers / 04</p>
         <h2 id="cijfers-title" class="display d-xl text-bone reveal reveal-d1">
-          Drie cijfers.<br>&Eacute;&eacute;n doel.
+          Drie cijfers.<br><span class="regel-accent">&Eacute;&eacute;n doel.</span>
         </h2>
       </div>
     </div>
 
-    <div class="grid lg:grid-cols-12 lg:items-center gap-y-12 lg:gap-y-0">
+    <div class="grid lg:grid-cols-12 gap-y-12 lg:gap-y-0">
 
       <div class="lg:col-span-5">
         <ul class="border-t border-bone/15">
 
-        <li class="grid grid-cols-[5rem_1fr] md:grid-cols-[9rem_1fr] gap-x-4 items-center border-b border-bone/15 py-6 reveal">
+        <li class="grid grid-cols-[5rem_1fr] md:grid-cols-[9rem_1fr] cijferrij gap-x-4 items-center border-b border-bone/15 py-6 reveal">
           <span class="display text-[clamp(2.4rem,5vw,3.4rem)] leading-none text-bone whitespace-nowrap" data-count="2000" data-suffix="+">0</span>
           <span class="min-w-0">
             <span class="display block text-[clamp(1.15rem,2.4vw,1.7rem)] leading-[1.06] text-bone">Pati&euml;nten</span>
             <span class="block mt-1.5 text-[13px] leading-relaxed text-bone/60">sporters &amp; niet-sporters</span>
           </span>
         </li>
-        <li class="grid grid-cols-[5rem_1fr] md:grid-cols-[9rem_1fr] gap-x-4 items-center border-b border-bone/15 py-6 reveal reveal-d1">
+        <li class="grid grid-cols-[5rem_1fr] md:grid-cols-[9rem_1fr] cijferrij gap-x-4 items-center border-b border-bone/15 py-6 reveal reveal-d1">
           <span class="display text-[clamp(2.4rem,5vw,3.4rem)] leading-none text-bone whitespace-nowrap">5&#8202;&ndash;&#8202;91</span>
           <span class="min-w-0">
             <span class="display block text-[clamp(1.15rem,2.4vw,1.7rem)] leading-[1.06] text-bone">Jaar</span>
             <span class="block mt-1.5 text-[13px] leading-relaxed text-bone/60">jongste tot oudste pati&euml;nt</span>
           </span>
         </li>
-        <li class="grid grid-cols-[5rem_1fr] md:grid-cols-[9rem_1fr] gap-x-4 items-center border-b border-bone/15 py-6 reveal reveal-d2">
+        <li class="grid grid-cols-[5rem_1fr] md:grid-cols-[9rem_1fr] cijferrij gap-x-4 items-center border-b border-bone/15 py-6 reveal reveal-d2">
           <span class="display text-[clamp(2.4rem,5vw,3.4rem)] leading-none text-bone whitespace-nowrap" data-count="7">0</span>
           <span class="min-w-0">
             <span class="display block text-[clamp(1.15rem,2.4vw,1.7rem)] leading-[1.06] text-bone">Therapeuten</span>
@@ -560,13 +560,13 @@
         </ul>
       </div>
 
-      <div class="hidden lg:block lg:col-span-2 h-[300px] px-2">
-        <svg class="converge w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true" focusable="false">
-          <!-- Een lijn per cijfer links. Er staan er nu drie. -->
-          <path d="M0 15 C 55 15, 45 50, 100 50"></path>
-          <path d="M0 50 C 55 50, 45 50, 100 50"></path>
-          <path d="M0 85 C 55 85, 45 50, 100 50"></path>
-        </svg>
+      <!-- De drie lijnen lopen van de cijferrijen naar het cijfer een. Waar ze
+           precies beginnen en uitkomen hangt af van de letterhoogte, die met de
+           schermbreedte meeschaalt, dus credo.js meet dat en schrijft de paden.
+           Zonder JS blijft de kolom leeg; er gaat geen inhoud verloren. -->
+      <div class="doel-lijnen-vak hidden lg:block lg:col-span-2 px-2">
+        <svg class="converge doel-lijnen-breed" viewBox="0 0 100 100"
+             preserveAspectRatio="none" aria-hidden="true" focusable="false"></svg>
       </div>
 
       <div class="doelblok lg:col-span-5 reveal reveal-d2 lg:pl-4">
@@ -584,7 +584,7 @@
         </svg>
 
         <div class="doelwoord flex items-center gap-5 md:gap-8">
-          <p class="display leading-[0.78] text-taupe2 text-[clamp(6.5rem,20vw,14rem)] shrink-0" data-count="1">0</p>
+          <p class="doelcijfer display leading-[0.78] text-taupe2 text-[clamp(6.5rem,20vw,14rem)] shrink-0" data-count="1">0</p>
           <p class="display text-bone leading-[0.82] text-[clamp(3.2rem,10vw,7rem)]">Doel</p>
         </div>
 
@@ -897,7 +897,7 @@
     <div class="grid gap-6 md:grid-cols-12 md:items-end mb-12 md:mb-16">
       <div class="md:col-span-7">
         <p class="eyebrow mb-8 reveal">Team / 07</p>
-        <h2 class="display d-xl text-ink reveal reveal-d1">Zeven therapeuten.<br>Eén standaard.</h2>
+        <h2 class="display d-xl text-ink reveal reveal-d1">Zeven therapeuten.<br><span class="regel-accent">Eén standaard.</span></h2>
       </div>
     </div>
 
@@ -1136,33 +1136,68 @@
     </div>
   </div>
 
-  <div class="grain-pin relative z-[3]">
-    <ul class="collage" aria-hidden="true">
-        <li class="coll-cel" style="--d: 0.0s">
-          <img src="../assets/img/vloer/01.jpg" alt="" class="photo coll-a" loading="lazy" decoding="async">
-          <img src="../assets/img/vloer/02.jpg" alt="" class="photo coll-b" loading="lazy" decoding="async">
-        </li>
-        <li class="coll-cel" style="--d: 0.9s">
-          <img src="../assets/img/vloer/03.jpg" alt="" class="photo coll-a" loading="lazy" decoding="async">
-          <img src="../assets/img/vloer/04.jpg" alt="" class="photo coll-b" loading="lazy" decoding="async">
-        </li>
-        <li class="coll-cel" style="--d: 1.8s">
-          <img src="../assets/img/vloer/05.jpg" alt="" class="photo coll-a" loading="lazy" decoding="async">
-          <img src="../assets/img/vloer/06.jpg" alt="" class="photo coll-b" loading="lazy" decoding="async">
-        </li>
-        <li class="coll-cel" style="--d: 2.7s">
-          <img src="../assets/img/vloer/07.jpg" alt="" class="photo coll-a" loading="lazy" decoding="async">
-          <img src="../assets/img/vloer/08.jpg" alt="" class="photo coll-b" loading="lazy" decoding="async">
-        </li>
-        <li class="coll-cel" style="--d: 3.6s">
-          <img src="../assets/img/vloer/09.jpg" alt="" class="photo coll-a" loading="lazy" decoding="async">
-          <img src="../assets/img/vloer/10.jpg" alt="" class="photo coll-b" loading="lazy" decoding="async">
-        </li>
-        <li class="coll-cel" style="--d: 4.5s">
-          <img src="../assets/img/vloer/11.jpg" alt="" class="photo coll-a" loading="lazy" decoding="async">
-          <img src="../assets/img/vloer/12.jpg" alt="" class="photo coll-b" loading="lazy" decoding="async">
-        </li>
-    </ul>
+  <!-- Twaalf beelden in een carrousel: het middelste groot, de buren
+       kleiner en erachter, en de rest loopt de rand uit. Je ziet in een
+       oogopslag dat er meer is, en elk beeld krijgt zijn eigen moment in
+       plaats van een van twaalf tegels te zijn. Zonder JS staan de kaarten
+       gewoon naast elkaar op een baan die je zijwaarts scrolt. -->
+  <div class="vloer-gal grain-pin relative z-[3] mt-2 md:mt-6" data-gal
+       role="group" aria-label="Beelden uit de zaal van Credo">
+    <div class="vloer-baan" data-gal-baan>
+        <figure class="vloer-kaart" data-gal-kaart>
+          <img src="../assets/img/vloer/01.jpg" alt="" class="photo"
+               loading="lazy" decoding="async">
+        </figure>
+        <figure class="vloer-kaart" data-gal-kaart>
+          <img src="../assets/img/vloer/02.jpg" alt="" class="photo"
+               loading="lazy" decoding="async">
+        </figure>
+        <figure class="vloer-kaart" data-gal-kaart>
+          <img src="../assets/img/vloer/03.jpg" alt="" class="photo"
+               loading="lazy" decoding="async">
+        </figure>
+        <figure class="vloer-kaart" data-gal-kaart>
+          <img src="../assets/img/vloer/04.jpg" alt="" class="photo"
+               loading="lazy" decoding="async">
+        </figure>
+        <figure class="vloer-kaart" data-gal-kaart>
+          <img src="../assets/img/vloer/05.jpg" alt="" class="photo"
+               loading="lazy" decoding="async">
+        </figure>
+        <figure class="vloer-kaart" data-gal-kaart>
+          <img src="../assets/img/vloer/06.jpg" alt="" class="photo"
+               loading="lazy" decoding="async">
+        </figure>
+        <figure class="vloer-kaart" data-gal-kaart>
+          <img src="../assets/img/vloer/07.jpg" alt="" class="photo"
+               loading="lazy" decoding="async">
+        </figure>
+        <figure class="vloer-kaart" data-gal-kaart>
+          <img src="../assets/img/vloer/08.jpg" alt="" class="photo"
+               loading="lazy" decoding="async">
+        </figure>
+        <figure class="vloer-kaart" data-gal-kaart>
+          <img src="../assets/img/vloer/09.jpg" alt="" class="photo"
+               loading="lazy" decoding="async">
+        </figure>
+        <figure class="vloer-kaart" data-gal-kaart>
+          <img src="../assets/img/vloer/10.jpg" alt="" class="photo"
+               loading="lazy" decoding="async">
+        </figure>
+        <figure class="vloer-kaart" data-gal-kaart>
+          <img src="../assets/img/vloer/11.jpg" alt="" class="photo"
+               loading="lazy" decoding="async">
+        </figure>
+        <figure class="vloer-kaart" data-gal-kaart>
+          <img src="../assets/img/vloer/12.jpg" alt="" class="photo"
+               loading="lazy" decoding="async">
+        </figure>
+    </div>
+
+    <div class="vloer-nav">
+      <button type="button" class="gal-pijl" data-gal-prev aria-label="Vorige foto"><svg width="22" height="10" viewBox="0 0 22 10" fill="none" aria-hidden="true"><path d="M22 5H1M5.5 1L1 5l4.5 4" stroke="currentColor" stroke-width="1.4"/></svg></button>
+      <button type="button" class="gal-pijl" data-gal-next aria-label="Volgende foto"><svg width="22" height="10" viewBox="0 0 22 10" fill="none" aria-hidden="true"><path d="M0 5h21M16.5 1L21 5l-4.5 4" stroke="currentColor" stroke-width="1.4"/></svg></button>
+    </div>
   </div>
 </section>
 
@@ -1261,9 +1296,6 @@
             </p>
           </div>
         </details>
-        <p class="mt-8 pt-6 border-t border-ink/15 text-[15px] text-ink/65 prose-body reveal">
-          Staat je vraag er niet bij? Bel <a href="tel:+32480628545" class="link-line text-ink">+32 480 62 85 45</a>.
-        </p>
       </div>
 
       <div class="lg:col-span-5">
@@ -1297,6 +1329,10 @@
       </div>
 
     </div>
+
+    <p class="mt-12 md:mt-16 pt-8 border-t border-ink/12 text-center text-[15px] text-ink/65 reveal">
+      Staat je vraag er niet bij? Bel <a href="tel:+32480628545" class="link-line text-ink">+32 480 62 85 45</a>.
+    </p>
   </div>
 </section>
 
@@ -1338,6 +1374,15 @@
         <div class="mt-10 btn-stack flex flex-wrap gap-3 reveal reveal-d2">
           <a href="https://altagenda.crossuite.com/credokinesitherapie/step2" target="_blank" rel="noopener noreferrer" class="btn btn-bone">Boek direct online</a>
           <a href="tel:+32480628545" class="btn btn-ghost">Bel +32 480 62 85 45</a>
+        </div>
+
+        <div class="mt-10 pt-8 border-t border-bone/20 reveal reveal-d2">
+          <p class="text-[14px] text-bone/70 prose-body max-w-[46ch]">
+            Stuur ons een e-mail als je een vraag hebt. Vermeld daarin zeker ook je telefoonnummer, zodat we je indien nodig snel kunnen contacteren.
+          </p>
+          <a href="mailto:info@credokinesitherapie.be" class="link-line mt-5 text-bone inline-flex">info@credokinesitherapie.be
+            <svg width="16" height="9" viewBox="0 0 16 9" fill="none" aria-hidden="true"><path d="M0 4.5h14M10.5 1L14 4.5 10.5 8" stroke="currentColor" stroke-width="1.3"/></svg>
+          </a>
         </div>
       </div>
 
@@ -1382,15 +1427,6 @@
           </form>
 
         </div>
-
-        <div class="mt-6 reveal reveal-d2">
-          <p class="text-[14px] text-bone/70 prose-body max-w-[46ch]">
-            Stuur ons een e-mail als je een vraag hebt. Vermeld daarin zeker ook je telefoonnummer, zodat we je indien nodig snel kunnen contacteren.
-          </p>
-          <a href="mailto:info@credokinesitherapie.be" class="link-line mt-5 text-bone inline-flex">info@credokinesitherapie.be
-            <svg width="16" height="9" viewBox="0 0 16 9" fill="none" aria-hidden="true"><path d="M0 4.5h14M10.5 1L14 4.5 10.5 8" stroke="currentColor" stroke-width="1.3"/></svg>
-          </a>
-        </div>
       </div>
 
     </div>
@@ -1411,42 +1447,38 @@
        e-mail stonden er twee keer, en het adres droeg een eigen kop naast een
        knop die naar dezelfde kaart wees. Nu draagt de footer twee blokken -
        waar we zijn en wanneer we open zijn - en daaronder een regel met alles
-       waar je op kan klikken. -->
+       waar je op kan klikken. Die twee blokken zijn er nu een. -->
 
   <div class="mx-auto max-w-[1500px] px-5 md:px-10 pt-16 md:pt-24 pb-10">
 
-    <div class="grid gap-12 lg:grid-cols-12 lg:gap-16">
+    <!-- Eén blok: de naam, waar we staan, hoe je binnenkomt en wanneer we
+         open zijn. Dat stond eerder als twee losse kopjes naast elkaar,
+         terwijl het samen één antwoord is op dezelfde vraag. Het adres staat
+         in de leesletter: in kapitalen las het als een tweede kop naast het
+         woordmerk, en een adres hoort gewoon leesbaar te zijn. -->
+    <div class="reveal">
+      <p class="display text-bone leading-[0.82] text-[clamp(3.4rem,9vw,6.5rem)] tracking-[0.01em]">CREDO</p>
+      <p class="eyebrow mt-3 text-bone/45">Rehab &amp; Performance</p>
 
-      <div class="lg:col-span-7">
-        <p class="eyebrow mb-5 text-bone/50">Kom langs</p>
+      <a href="https://www.google.com/maps/search/?api=1&amp;query=Kapelstraat+89%2C+3590+Diepenbeek%2C+Belgi%C3%AB" target="_blank" rel="noopener noreferrer"
+         class="mt-7 block text-[17px] md:text-lg leading-[1.6] text-bone/90 hover:text-taupe2 transition-colors">
+        Kapelstraat 89<br>3590 Diepenbeek
+      </a>
+      <p class="mt-3 text-[14px] text-bone/55 prose-body">
+        Op tien minuten van Hasselt, met ruime parking.
+      </p>
 
-        <!-- De naam op formaat. Dit is het laatste wat iemand ziet, dus hier
-             mag hij staan zoals hij op de muur van de praktijk staat. -->
-        <p class="display text-bone leading-[0.82] text-[clamp(3.4rem,9vw,6.5rem)] tracking-[0.01em]">CREDO</p>
-        <p class="eyebrow mt-3 mb-7 text-bone/45">Rehab &amp; Performance</p>
-
-        <a href="https://www.google.com/maps/search/?api=1&amp;query=Kapelstraat+89%2C+3590+Diepenbeek%2C+Belgi%C3%AB" target="_blank" rel="noopener noreferrer"
-           class="display block text-[clamp(1.5rem,2.6vw,2.1rem)] leading-[1.04] text-bone hover:text-taupe2 transition-colors">
-          Kapelstraat 89<br>3590 Diepenbeek
-        </a>
-        <p class="mt-5 text-[14px] text-bone/55 prose-body">
-          Op tien minuten van Hasselt, met ruime parking.
-        </p>
-        <div class="mt-8 btn-stack flex flex-wrap gap-3">
-          <a href="https://altagenda.crossuite.com/credokinesitherapie/step2" target="_blank" rel="noopener noreferrer" class="btn btn-bone">Boek een afspraak</a>
-          <a href="tel:+32480628545" class="btn btn-ghost">Bel ons</a>
-        </div>
+      <div class="mt-8 btn-stack flex flex-wrap gap-3">
+        <a href="https://altagenda.crossuite.com/credokinesitherapie/step2" target="_blank" rel="noopener noreferrer" class="btn btn-bone">Boek een afspraak</a>
+        <a href="tel:+32480628545" class="btn btn-ghost">Bel ons</a>
       </div>
 
-      <div class="lg:col-span-5">
-        <p class="eyebrow mb-6 text-bone/50">Openingsuren</p>
-        <dl class="text-[15px] divide-y divide-bone/12 border-t border-bone/12">
-          <div class="flex justify-between gap-4 py-3"><dt class="text-bone/70">Maandag tot vrijdag</dt><dd class="text-bone/85 whitespace-nowrap">08:00 &ndash; 21:00</dd></div>
-          <div class="flex justify-between gap-4 py-3"><dt class="text-bone/70">Zaterdag</dt><dd class="text-bone/50">Gesloten</dd></div>
-          <div class="flex justify-between gap-4 py-3"><dt class="text-bone/70">Zondag</dt><dd class="text-bone/50">Gesloten</dd></div>
-        </dl>
+      <div class="mt-11 pt-7 border-t border-bone/12 flex flex-wrap items-baseline gap-x-10 gap-y-3 text-[15px]">
+        <p class="eyebrow text-bone/50">Openingsuren</p>
+        <p class="text-bone/85">Maandag tot vrijdag <span class="text-bone/55">08:00 &ndash; 21:00</span></p>
+        <p class="text-bone/85">Zaterdag en zondag <span class="text-bone/55">gesloten</span></p>
         <a href="https://www.google.com/maps/search/Credo+Rehab+%26+Performance+Kapelstraat+89+Diepenbeek"
-           target="_blank" rel="noopener noreferrer" class="link-line mt-7 text-bone inline-flex">Bekijk op Google
+           target="_blank" rel="noopener noreferrer" class="link-line text-bone lg:ms-auto">Bekijk op Google
           <svg width="16" height="9" viewBox="0 0 16 9" fill="none" aria-hidden="true"><path d="M0 4.5h14M10.5 1L14 4.5 10.5 8" stroke="currentColor" stroke-width="1.3"/></svg>
         </a>
       </div>

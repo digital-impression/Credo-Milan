@@ -44,6 +44,16 @@
   }
   /* Grid/flex children must be allowed to shrink below their content width */
   .grid > *, .flex > * { min-width: 0; }
+
+  /* Een kapitaal met een accent is in Anton veel hoger dan een gewone. Gemeten
+     op honderd pixels: de E draagt 86 pixels inkt boven de basislijn, de E met
+     accent 111. Op een regelhoogte van 0,96 is er 84 pixels tussen twee
+     basislijnen, dus zo'n accent duwt vijftien pixels de regel erboven in en
+     dat zie je als een vuil streepje tegen de onderkant van de vorige regel.
+     Deze klasse geeft precies die ene regel de ruimte die het accent nodig
+     heeft. De rest van de koppen blijft staan zoals ze staat; overal losser
+     zetten om twee regels te redden zou het hele beeld veranderen. */
+  .regel-accent { display: block; margin-top: .22em; }
   .d-hero  { font-size: clamp(3.1rem, 13vw, 7rem); }
   .d-xl    { font-size: clamp(2.6rem, 8.5vw, 5.5rem); }
   .d-lg    { font-size: clamp(2.1rem, 6vw, 4rem); }
@@ -337,6 +347,11 @@
      de rand van het blok naar het cijfer toe en staan daarom op de volle
      breedte; de hoogte is net genoeg om de bocht te zien. */
   .doel-lijnen { display: block; width: 100%; height: 4.5rem; margin-bottom: .5rem; }
+
+  /* De brede versie vult de hele rij, zodat een lijn zowel een cijferrij als
+     het cijfer een kan bereiken; waar ze beginnen en eindigen rekent het
+     script uit. */
+  .doel-lijnen-breed { display: block; width: 100%; height: 100%; }
 
   /* Onder elkaar hoort dit blok in het midden: het cijfer staat alleen op de
      regel, en links uitlijnen laat het scheef hangen onder de drie cijfers
@@ -639,89 +654,64 @@
     white-space: nowrap;
   }
 
-  /* ---------- De vloer: de collage ---------- */
-  /* Zes vlakken, elk met twee opnames die in en uit elkaar vervagen op hun
-     eigen tempo. Zo zie je twaalf verschillende mensen in de ruimte die één
-     etalage eerder maar drie liet zien. */
-  .collage {
-    display: grid; gap: 2px; background: rgba(244,241,234,.15);
-    grid-template-columns: repeat(2, 1fr);
-  }
-  @media (min-width: 640px) { .collage { grid-template-columns: repeat(3, 1fr); } }
-  /* Er zijn zes vakken. Op zes kolommen worden dat tegels van 238 pixels: een
-     strook, geen zaal. Drie kolommen maakt er twee rijen van ruim 450, en dan
-     dragen de beelden de sectie in plaats van de witruimte eromheen. Drie
-     deelt ook netjes op zes, waar vier een rafelige laatste rij geeft. */
-  @media (min-width: 1024px) { .collage { grid-template-columns: repeat(3, 1fr); } }
+  /* ---------- De vloer: de carrousel ----------
+     De collage liet twaalf tegels tegelijk zien en daardoor geen enkele. Nu
+     staat er een kaart groot in het midden, met de buren kleiner en
+     gedimd erachter en de rest die de rand uit loopt. Zo zie je meteen dat
+     er meer is, en krijgt elk beeld zijn eigen moment.
 
-  .coll-cel {
-    position: relative; overflow: hidden;
-    aspect-ratio: 1 / 1; background: var(--ink);
-  }
-  .coll-cel .photo { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-  .coll-a, .coll-b { animation: coll-wissel 12s ease-in-out infinite; animation-delay: var(--d, 0s); }
-  .coll-b { animation-name: coll-wissel-b; }
-  @keyframes coll-wissel   { 0%, 44% { opacity: 1; } 56%, 100% { opacity: 0; } }
-  @keyframes coll-wissel-b { 0%, 44% { opacity: 0; } 56%, 100% { opacity: 1; } }
+     De breedte van de kaart is de maat waar alles aan hangt. De buren staan
+     op achtenzeventig procent van die breedte opzij en op vierentachtig
+     procent grootte, dus ze schuiven een stukje achter het midden: dat
+     overlappen is wat de rij diepte geeft. Het script zet per kaart de
+     verschuiving; zonder JS staan ze in een baan die je zijwaarts scrolt. */
+  .vloer-gal { --kw: clamp(210px, 28vw, 390px); }
 
-  /* Wie beweging heeft uitgezet, ziet gewoon het eerste beeld staan. */
-  @media (prefers-reduced-motion: reduce) {
-    .coll-a, .coll-b { animation: none; }
-    .coll-b { opacity: 0; }
+  .vloer-baan {
+    position: relative;
+    height: calc(var(--kw) * 1.25);
   }
+  .vloer-kaart {
+    position: absolute; top: 0; left: 50%;
+    width: var(--kw); height: calc(var(--kw) * 1.25);
+    margin: 0 0 0 calc(var(--kw) / -2);
+    overflow: hidden; border-radius: 14px;
+    background: var(--ink);
+    box-shadow: 0 20px 55px rgba(0,0,0,.6);
+    transition: transform .6s cubic-bezier(.22,.61,.36,1), opacity .6s ease;
+    will-change: transform;
+  }
+  .vloer-kaart .photo { width: 100%; height: 100%; object-fit: cover; }
 
-  /* ---------- Footer ---------- */
-  .marq-words {
-    font-family: 'Anton', 'Arial Narrow', Impact, sans-serif;
-    text-transform: uppercase; letter-spacing: .04em;
-    font-size: clamp(.95rem, 1.5vw, 1.25rem);
-    color: rgba(244,241,234,.5);
-    gap: 1.75rem; padding-inline-end: 1.75rem;
-    animation-duration: 120s;
+  /* Zolang het script niet gedraaid heeft, is de baan een gewone rij die je
+     zijwaarts kan scrollen. Zo blijft alles bereikbaar zonder JS. */
+  .vloer-baan:not(.is-gal) {
+    display: flex; gap: 1rem; height: auto;
+    overflow-x: auto; scroll-snap-type: x mandatory;
+    padding-inline: 1.25rem; scroll-padding-inline: 1.25rem;
+    scrollbar-width: none;
   }
-  .marq-words li { white-space: nowrap; }
-  .marq-rule { width: 100%; overflow: hidden; }
-  .marq-rule .marq-track { width: max-content; }
+  .vloer-baan:not(.is-gal)::-webkit-scrollbar { display: none; }
+  .vloer-baan:not(.is-gal) .vloer-kaart {
+    position: static; margin: 0; flex: none; scroll-snap-align: start;
+  }
+  .vloer-baan:not(.is-gal) + .vloer-nav { display: none; }
 
-  .foot-door {
-    position: relative; display: block;
-    transition: background-color .35s ease, border-color .35s ease;
+  .vloer-nav {
+    display: flex; align-items: center; justify-content: center; gap: .75rem;
+    margin-top: 2.25rem;
   }
-  .foot-door:hover, .foot-door:focus-visible { background: #141414; border-color: rgba(244,241,234,.45); }
-  .foot-arrow {
-    position: absolute; right: 1.5rem; bottom: 1.5rem; color: var(--bone);
-    transition: transform .4s cubic-bezier(.22,.61,.36,1);
-  }
-  .foot-door:hover .foot-arrow { transform: translateX(7px); }
-
-  .soc {
+  .gal-pijl {
+    width: 2.75rem; height: 2.75rem; border-radius: 999px;
     display: inline-flex; align-items: center; justify-content: center;
-    width: 2.75rem; height: 2.75rem;
-    border: 1px solid rgba(244,241,234,.3); color: var(--bone);
-    font-size: 11px; letter-spacing: .12em;
-    transition: background-color .3s ease, color .3s ease;
+    border: 1px solid rgba(244,241,234,.3); background: transparent; color: var(--bone);
+    cursor: pointer; transition: background-color .3s ease, color .3s ease, border-color .3s ease;
   }
-  .soc:hover, .soc:focus-visible { background: var(--bone); color: var(--ink); }
+  .gal-pijl:hover { background: var(--bone); color: var(--ink); border-color: var(--bone); }
 
-  /* The name, set as large as the column allows and clipped at the baseline. */
-  .footmark {
-    font-size: clamp(4rem, 21vw, 17rem);
-    line-height: .8; letter-spacing: .01em;
-    color: transparent;
-    -webkit-text-stroke: 1px rgba(244,241,234,.28);
-    user-select: none;
+  @media (prefers-reduced-motion: reduce) {
+    .vloer-kaart { transition: none; }
   }
-  @supports not (-webkit-text-stroke: 1px red) { .footmark { color: rgba(244,241,234,.12); } }
-  /* Clubs without a logo file of their own, set as a wordmark so the strip
-     keeps one rhythm. Replace with the real crest once the club supplies it. */
-  .marq-word {
-    font-family: 'Anton', 'Arial Narrow', Impact, sans-serif;
-    text-transform: uppercase; letter-spacing: .06em;
-    font-size: clamp(1.05rem, 1.7vw, 1.5rem);
-    color: rgba(244,241,234,.72);
-    white-space: nowrap;
-  }
-
 
   /* ---------- Mobiel ---------- */
   /* De vaste kop dekte de titel af bij een sprong naar een anker. Er staat nu

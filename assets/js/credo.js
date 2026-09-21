@@ -161,6 +161,56 @@
   window.addEventListener('scroll', onScroll, { passive: true });
   parallax();
 
+  /* ---------- De drie lijnen komen uit bij het cijfer een ----------
+     Ze liepen naar het midden van de rechterkolom, en dat midden ligt tussen
+     het cijfer en de zin eronder: ze kwamen dus nergens aan. Waar het cijfer
+     staat hangt af van de letterhoogte, die met de schermbreedte meeschaalt,
+     dus het staat niet vast in de opmaak. Hier wordt het gemeten. */
+  /* De cijferrijen en het blok met het doel dragen allebei .reveal, en dat
+     zet ze tot ze in beeld komen achtentwintig pixels lager. Meet je met
+     getBoundingClientRect, dan meet je die verschuiving mee terwijl de kolom
+     met de lijnen zelf niet verschuift, en beginnen de lijnen achtentwintig
+     pixels naast hun rij. offsetTop kent die verschuiving niet en geeft de
+     plaats zoals de indeling hem bedoelt. */
+  function topIn(el, wortel) {
+    var y = 0;
+    while (el && el !== wortel) { y += el.offsetTop; el = el.offsetParent; }
+    return y;
+  }
+
+  function tekenDoelLijnen() {
+    var vak = document.querySelector('.doel-lijnen-vak');
+    var svg = vak && vak.querySelector('.doel-lijnen-breed');
+    if (!vak || !svg || !vak.offsetHeight) return;   /* verborgen op smal */
+    var wortel = document.getElementById('cijfers');
+    var rijen  = document.querySelectorAll('#cijfers .cijferrij');
+    var cijfer = document.querySelector('#cijfers .doelcijfer');
+    if (!wortel || !rijen.length || !cijfer) return;
+
+    var top = topIn(vak, wortel), hoog = vak.offsetHeight;
+    /* Het optische midden van de een ligt iets boven het midden van zijn
+       regeldoos: Anton draagt boven de basislijn veel meer inkt dan eronder. */
+    var mik = ((topIn(cijfer, wortel) + cijfer.offsetHeight * 0.46) - top) / hoog * 100;
+
+    var paden = '';
+    for (var i = 0; i < rijen.length; i++) {
+      var y = ((topIn(rijen[i], wortel) + rijen[i].offsetHeight / 2) - top) / hoog * 100;
+      paden += '<path d="M0 ' + y.toFixed(2) +
+               ' C 58 ' + y.toFixed(2) + ', 42 ' + mik.toFixed(2) +
+               ', 100 ' + mik.toFixed(2) + '"></path>';
+    }
+    svg.innerHTML = paden;
+  }
+  tekenDoelLijnen();
+  /* Anton komt van een server en kan later binnenvallen. Dan staat het cijfer
+     opeens ergens anders, dus wordt er opnieuw gemeten. */
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(tekenDoelLijnen);
+  var doelTimer;
+  window.addEventListener('resize', function () {
+    clearTimeout(doelTimer);
+    doelTimer = setTimeout(tekenDoelLijnen, 150);
+  });
+
   /* ---------- Converging hairlines draw in with the stats ----------
      Er staan er twee: een brede voor naast elkaar, en een staande die alleen
      op een telefoon meedoet. Beide horen te tekenen zodra ze in beeld komen. */
@@ -180,6 +230,63 @@
       converges.forEach(function (el) { cObs.observe(el); });
     }
   }
+
+  /* ---------- De carrousel van de vloer ----------
+     De kaart in het midden staat op ware grootte, de twee buren op 78 procent
+     opzij en 84 procent groot, en de twee daarachter verder weg en kleiner.
+     Wat verder ligt, gaat uit beeld. De verschuiving staat in procenten van
+     de kaartbreedte, dus de hele rij schaalt mee met de maat die in de
+     stylesheet staat, zonder dat hier getallen in pixels liggen. */
+  document.querySelectorAll('[data-gal]').forEach(function (gal) {
+    var baan    = gal.querySelector('[data-gal-baan]');
+    var kaarten = [].slice.call(gal.querySelectorAll('[data-gal-kaart]'));
+    if (!baan || kaarten.length < 3) return;
+
+    var n = kaarten.length, actief = 0;
+    var OPZIJ = [0, 78, 140], GROOT = [1, .84, .70], DOOR = [1, .92, .72];
+
+    baan.classList.add('is-gal');     /* pas nu de gestapelde opmaak aan */
+
+    function zet() {
+      kaarten.forEach(function (k, i) {
+        var d = ((i - actief) % n + n) % n;
+        if (d > n / 2) d -= n;                    /* kortste weg, ook rond */
+        var a = Math.abs(d), kant = d < 0 ? -1 : 1;
+        var ver = a > 2;
+        k.style.transform = 'translateX(' + (ver ? kant * 190 : kant * OPZIJ[a]) + '%)' +
+                            ' scale(' + (ver ? .62 : GROOT[a]) + ')';
+        k.style.opacity   = ver ? 0 : DOOR[a];
+        k.style.zIndex    = ver ? 0 : 10 - a;
+        k.style.visibility = ver ? 'hidden' : '';
+      });
+    }
+
+    function stap(richting) { actief = ((actief + richting) % n + n) % n; zet(); }
+
+    var vorige = gal.querySelector('[data-gal-prev]');
+    var volgende = gal.querySelector('[data-gal-next]');
+    if (vorige)   vorige.addEventListener('click', function () { stap(-1); });
+    if (volgende) volgende.addEventListener('click', function () { stap(1); });
+
+    /* Op een kaart naast het midden tikken brengt die naar voren. */
+    kaarten.forEach(function (k, i) {
+      k.addEventListener('click', function () { if (i !== actief) { actief = i; zet(); } });
+    });
+
+    /* Vegen. Vijfendertig pixels is genoeg om een veeg van een tik te
+       onderscheiden zonder dat je ver hoeft te halen. */
+    var startX = null;
+    baan.addEventListener('pointerdown', function (e) { startX = e.clientX; });
+    baan.addEventListener('pointerup', function (e) {
+      if (startX === null) return;
+      var dx = e.clientX - startX;
+      startX = null;
+      if (Math.abs(dx) > 35) stap(dx < 0 ? 1 : -1);
+    });
+    baan.addEventListener('pointercancel', function () { startX = null; });
+
+    zet();
+  });
 
   /* ---------- De drie waarden klappen in op een telefoon ----------
      In de opmaak staan ze alle drie open, zodat zonder JS niets verborgen
