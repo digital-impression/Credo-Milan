@@ -910,85 +910,21 @@
 @supports not (-webkit-text-stroke: 1px red) {
   .oproep-echo { color: rgba(244, 241, 234, .06); }
 }
-
 /* ==================================================================
    DE TELEFOON
    Niet het bureaublad dat krimpt, maar een eigen indeling.
 
-   Wat er misging: elke herhalende reeks stond onder elkaar. Vijf
-   trajectstappen met elk een foto, zes clubkaarten, drie ervaringen.
-   Dat maakte de pagina vierentwintigduizend pixels lang, bijna dertig
-   schermen. Je kon er wel doorheen, maar je zag nooit dat er vijf
-   stappen zijn; je zag stap een, en daarna nog een, en nog een.
-
-   Een reeks hoort op een telefoon zijwaarts. Dan zie je in een
-   oogopslag dat er meer is, je veegt met de duim, en de pagina blijft
-   kort. Dat is ook al hoe de ploegenrij werkt, dus het is geen nieuw
-   patroon maar hetzelfde patroon op meer plaatsen.
+   Eerst stond hier een baan die je opzij veegde: elke reeks - het
+   traject, de clubs, de ervaringen, de ploeg - schoof zijwaarts. Dat
+   hield de pagina kort, maar het verstopt de inhoud achter een
+   beweging die je moet ontdekken, en je kan nooit twee items naast
+   elkaar leggen. Die banen zijn eruit. Wat blijft is per reeks een
+   vorm die bij die reeks past: het traject als tijdlijn, de clubs als
+   lijst met hun wapen ernaast, de ervaringen onder elkaar, de ploeg in
+   twee kolommen. De carrousel van de vloer blijft wel schuiven; die is
+   beeld en geen tekst.
    ================================================================== */
 @media (max-width: 767px) {
-
-  /* ---- Een reeks wordt een baan die je opzij veegt ---- */
-  /* De lijst draagt ook Tailwinds .grid. Die zet display:grid met dezelfde
-     zwaarte als een losse klasse, en de CDN schrijft zijn stijlen later in
-     de pagina dan dit bestand, dus zonder extra zwaarte wint grid. */
-  body .gsm-rail {
-    display: flex;
-    /* Naast elkaar in kolommen is even hoog netjes, want je ziet de drie
-       tegelijk. In een baan zie je er een, en dan is even hoog juist lelijk:
-       de kortste recensie kreeg de hoogte van de langste en stond met een
-       handbreed leegte binnen zijn eigen rand. Elke kaart zo hoog als hij
-       zelf is. */
-    align-items: flex-start;
-    gap: 1rem;
-    overflow-x: auto;
-    overscroll-behavior-x: contain;
-    scroll-snap-type: x mandatory;
-    /* Zonder dit klapt de eerste kaart tegen de schermrand: het uitlijnen op
-       de snappunten telt de binnenmarge niet mee, dus de goot links wordt
-       weggescrold en de eerste letter valt eraf. */
-    scroll-padding-inline: 1.25rem;
-    /* Tot aan de schermrand doorlopen: een baan die binnen de marge
-       blijft ziet eruit als een fout, een die eronder doorloopt zegt
-       dat er meer is. */
-    margin-inline: -1.25rem;
-    padding-inline: 1.25rem;
-    padding-bottom: .5rem;
-    scrollbar-width: none;
-    -webkit-overflow-scrolling: touch;
-  }
-  body .gsm-rail::-webkit-scrollbar { display: none; }
-  /* De breedte staat op een deel van de baan zelf, niet op een deel van het
-     scherm. De baan bij de waarden zit namelijk binnen een kader met eigen
-     binnenmarge; op 78vw werd een kaart daar breder dan de ruimte die hij had
-     en stak de volgende niet meer uit. Op 86 procent blijft er overal een
-     zelfde stuk van de volgende kaart staan, en dat stuk is de uitnodiging
-     om te vegen. */
-  body .gsm-rail > * {
-    flex: none;
-    width: 86%;
-    max-width: 320px;
-    scroll-snap-align: start;
-  }
-  /* De laatste kaart moet ook links kunnen uitlijnen, anders blijft er
-     rechts een gat van een halve kaart staan. */
-  /* De invliegbeweging gaat zijwaarts. Binnen een baan die je zelf zijwaarts
-     veegt vecht dat met elkaar: de kaart schuift terwijl je scrolt, en de
-     breedte van de baan verspringt onder je duim. Binnen een baan dus stil. */
-  body .gsm-rail .reveal-fly { transform: none; }
-
-  /* De recensiekaart is de uitzondering op de regel hierboven. Haar portret
-     zet de bovenrand vast en haar rand sluit de onderkant; laat je zo'n kaart
-     op eigen hoogte eindigen, dan staat het gat onder de korte kaart buiten
-     de rand en dat leest als een fout in plaats van als een korte tekst. */
-  body .gsm-rail .review-kaart { align-self: stretch; }
-
-  body .gsm-rail::after {
-    content: "";
-    flex: none;
-    inline-size: .25rem;
-  }
-
   /* ---- Minder lucht tussen de secties ---- */
   /* Zes rem boven en onder is op een scherm van 390 bijna een derde
      scherm leegte per sectie. Op een telefoon leest dichter beter: de
@@ -1115,4 +1051,96 @@
      donkere strook boven een vlak dat niet zwart is. Rechte snede dus. */
   #diensten .media-blend::after,
   #aanbod  .media-blend::after { background: none; }
+}
+
+/* ==================================================================
+   DE VIER REEKSEN OP EEN TELEFOON
+   Elke reeks krijgt de vorm die erbij hoort in plaats van allemaal
+   dezelfde baan die je opzij veegt.
+   ================================================================== */
+@media (max-width: 767px) {
+
+  /* ---- 03 Traject: een tijdlijn ----
+     Vijf stappen met elk een foto van vier staat vijf werden onder
+     elkaar vijf schermen. Het gaat hier niet om de foto's maar om de
+     volgorde, dus de foto wordt een vierkantje links en de stap staat
+     ernaast. Zo zie je in een half scherm dat het er vijf zijn en in
+     welke volgorde ze komen. */
+  #traject ol { display: block; }
+  #traject ol > li {
+    display: grid;
+    grid-template-columns: 84px 1fr;
+    column-gap: 1.1rem;
+    padding: 1.35rem 0;
+    border-top: 1px solid rgba(244,241,234,.14);
+  }
+  #traject ol > li:last-child { border-bottom: 1px solid rgba(244,241,234,.14); }
+  #traject ol > li > *:not(:first-child) { grid-column: 2; }
+  #traject ol > li > div:first-child {
+    grid-column: 1; grid-row: 1 / span 4;
+    aspect-ratio: 1 / 1; margin-bottom: 0;
+  }
+  /* Het streepje met de stip verbond de kolommen naast elkaar; onder
+     elkaar verbindt het niets meer. */
+  #traject ol > li > div:nth-child(2) { display: none; }
+  #traject ol > li .eyebrow { margin-bottom: .35rem; }
+  #traject ol > li h3 { font-size: 1.3rem; }
+  #traject ol > li p:last-child { margin-top: .5rem; font-size: 14px; line-height: 1.6; }
+
+  /* ---- 05 Samenwerkingen: een lijst met het wapen ernaast ----
+     Twaalf kaarten van elk een logovlak plus tekst zijn onder elkaar
+     vier schermen. Waar het om gaat is welke clubs het zijn en wie van
+     ons er staat, dus het logo krimpt tot een vierkantje naast de naam
+     en het verhaal loopt eronder over de volle breedte. */
+  /* De kaart draagt Tailwinds .flex. Dat is even zwaar als een losse
+     klasse en staat later in de pagina, dus alles wat de kaart tot
+     raster maakt heeft de sectie-id ervoor nodig. */
+  #partners ul { display: block; }
+  #partners .partner-card {
+    display: grid;
+    grid-template-columns: 62px 1fr;
+    column-gap: 1rem;
+    border: 0; border-top: 1px solid rgba(244,241,234,.14);
+    padding: 1.15rem 0;
+  }
+  #partners .partner-card:last-child { border-bottom: 1px solid rgba(244,241,234,.14); }
+  #partners .partner-card > div:first-child {
+    grid-column: 1; grid-row: 1 / span 2;
+    width: 62px; height: 62px; padding: .45rem;
+    align-self: start;
+  }
+  #partners .partner-card > div:first-child .partner-logo { max-height: 100%; }
+  /* Het omhulsel om naam, label en tekst valt weg als doos, zodat die
+     drie zelf in het raster kunnen staan. */
+  #partners .partner-card > div:last-child { display: contents; }
+  #partners .partner-card h3 { grid-column: 2; grid-row: 1; align-self: center; }
+  #partners .partner-card .eyebrow { grid-column: 2; grid-row: 2; margin-top: .15rem; }
+  #partners .partner-card > div:last-child > p:last-child {
+    grid-column: 1 / -1; grid-row: 3;
+    margin-top: .8rem; font-size: 14px; line-height: 1.6;
+  }
+
+  /* ---- 06 Ervaringen: onder elkaar, met een liggend portret ----
+     Drie is weinig genoeg om gewoon te stapelen. Het portret staat op
+     vier staat vijf, en dat is onder elkaar een half scherm per kaart
+     voor er een woord staat; vierkant houdt de persoon groot en brengt
+     de naam mee in beeld. */
+  #reviews ul { display: block; }
+  #reviews .review-kaart + .review-kaart { margin-top: 1.25rem; }
+  .review-beeld { aspect-ratio: 1 / 1; }
+  .review-beeld .photo { object-position: center 26%; }
+
+  /* ---- 07 Team: twee kolommen ----
+     Zeven portretten in een baan lieten er anderhalf tegelijk zien. In
+     twee kolommen staat de hele ploeg in vier rijen, en dan zie je dat
+     het er zeven zijn. */
+  .team-rail {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 1.75rem 1rem;
+    overflow: visible; scroll-snap-type: none;
+    margin-inline: 0; padding-inline: 0; padding-bottom: 0;
+  }
+  .team-cardx { width: auto; }
+  .team-cardx h3 { font-size: 1.15rem; }
+  .team-rail-nav { display: none; }
 }
