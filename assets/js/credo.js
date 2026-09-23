@@ -303,6 +303,26 @@
       clubs.forEach(function (d) { d.open = !smal.matches; });
     };
     stelDicht();
+
+    /* Naast elkaar staat alles open en valt er niets te openen, maar de kop
+       blijft een <summary> en dus een schakelaar: een klik op het wapen of de
+       naam klapte de kaart dicht. De stylesheet vangt de muis af; dit vangt
+       ook het toetsenbord en de klik die een script zelf verstuurt. */
+    document.querySelectorAll('.club > summary').forEach(function (kop) {
+      kop.addEventListener('click', function (e) {
+        if (!smal.matches && !e.target.closest('.club-link')) e.preventDefault();
+      });
+      kop.addEventListener('keydown', function (e) {
+        if (!smal.matches && (e.key === 'Enter' || e.key === ' ')) e.preventDefault();
+      });
+    });
+
+    /* Eén club draagt een link in haar naam, en die naam zit in de kop die de
+       kaart opent. Een tik op de link zou dus allebei doen: de site openen en
+       de kaart omklappen. De link wint. */
+    document.querySelectorAll('.club-link').forEach(function (a) {
+      a.addEventListener('click', function (e) { e.stopPropagation(); });
+    });
     if (smal.addEventListener) smal.addEventListener('change', stelDicht);
     else if (smal.addListener) smal.addListener(stelDicht);
   }

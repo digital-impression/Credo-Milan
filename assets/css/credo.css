@@ -416,6 +416,11 @@
   @media (min-width: 768px) {
     .club-naam  { padding: 1.5rem 1.5rem 0; }
     .club-tekst { padding: 1rem 1.5rem 1.5rem; }
+    /* Naast elkaar staat alles open en valt er niets te openen. Zonder deze
+       regel is de hele kop nog steeds een schakelaar: een klik op het wapen
+       of de naam klapte de kaart dicht. De link erin blijft wel een link. */
+    .club > summary { pointer-events: none; }
+    .club > summary .club-link { pointer-events: auto; }
   }
   .club-plus { display: none; }
 
