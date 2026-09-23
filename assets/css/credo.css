@@ -459,6 +459,37 @@
   .partner-card:hover, .partner-card:focus-within { border-color: rgba(244,241,234,.45); background: #141414; }
   .partner-wordmark { letter-spacing: .01em; }
 
+  /* ---------- Meer tonen ----------
+     Twaalf clubkaarten en zeven portretten zijn samen veel scherm voor iets
+     wat je in een oogopslag wil kunnen overzien. Wat er eerst staat is genoeg
+     om te snappen wat het is; de rest komt op een tik. Zonder JS staat alles
+     open, dus er gaat niets verloren. */
+  .meer-knop {
+    display: inline-flex; align-items: center; justify-content: center; gap: .6rem;
+    min-height: 46px; padding: .6rem 1.4rem;
+    border: 1px solid rgba(244,241,234,.28); border-radius: 999px;
+    background: none; color: var(--bone); cursor: pointer;
+    font-size: 12px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase;
+    transition: background-color .25s ease, color .25s ease, border-color .25s ease;
+  }
+  .meer-knop:hover { background: var(--bone); color: var(--ink); border-color: var(--bone); }
+  .on-light .meer-knop { border-color: rgba(13,13,13,.28); color: var(--ink); }
+  .on-light .meer-knop:hover { background: var(--ink); color: var(--bone); border-color: var(--ink); }
+
+  /* Drie rijen van twee op een telefoon, twee rijen van vier op een laptop. */
+  .clublijst.is-ingeklapt > li:nth-child(n+7) { display: none; }
+  @media (min-width: 1024px) {
+    .clublijst.is-ingeklapt > li:nth-child(n+7) { display: block; }
+    .clublijst.is-ingeklapt > li:nth-child(n+9) { display: none; }
+  }
+
+  /* De ploeg klapt alleen op een telefoon in: naast elkaar is de baan al kort. */
+  .team-meer { display: none; margin-top: 1.75rem; }
+  @media (max-width: 767px) {
+    .team-meer { display: block; }
+    .team-rail.is-ingeklapt > li:nth-child(n+5) { display: none; }
+  }
+
   /* ---------- Clubkaart ----------
      Naast elkaar blijft dit de kaart die er stond: een beige vlak met het
      wapen, daaronder de naam en het verhaal. Onder elkaar werd dat een lijst
@@ -760,19 +791,31 @@
   }
   .soc:hover, .soc:focus-visible { background: var(--bone); color: var(--ink); }
 
-  /* The name, set as large as the column allows and clipped at the baseline. */
+  /* ---------- De naam in de achtergrond van de footer ----------
+     Hij stond als een eigen blok onder de kolommen: een strook van bijna
+     tweehonderd pixels die niets deed dan het woord dragen. Nu ligt hij
+     achter de hele onderkant, onderaan afgesneden door de rand van de
+     footer, zodat hij de achtergrond is waar de kolommen op staan in
+     plaats van een rij eronder. Daarom ook dunner: een lijn die je moet
+     kunnen lezen op honderd pixels hoog moet je nauwelijks zien op
+     driehonderd. */
+  footer#contact { position: relative; overflow: hidden; }
   .footmark {
-    /* Op 21vw eindigde het woord halverwege de footer en hing het daar wat
-       verloren. Ruimer gezet vult het de breedte zonder erbuiten te lopen:
-       in Anton is CREDO ongeveer 2,35 keer de letterhoogte breed, en boven
-       1500 pixels houdt de bovengrens het binnen de kolom. */
+    position: absolute; z-index: 0; pointer-events: none;
+    left: clamp(1.25rem, 2.6vw, 2.5rem); right: 0; bottom: -.1em;
     font-size: clamp(4rem, 26vw, 24rem);
     line-height: .8; letter-spacing: .01em;
     color: transparent;
-    -webkit-text-stroke: 1px rgba(244,241,234,.28);
+    -webkit-text-stroke: 1px rgba(244,241,234,.18);
     user-select: none;
   }
-  @supports not (-webkit-text-stroke: 1px red) { .footmark { color: rgba(244,241,234,.12); } }
+  @supports not (-webkit-text-stroke: 1px red) { .footmark { color: rgba(244,241,234,.07); } }
+  /* Op een telefoon is zesentwintig procent van de breedte te weinig: dan
+     staat er een woordje van 240 pixels in een hoek in plaats van een vlak
+     achter de onderkant. Over de volle breedte doet hij wel wat hij moet. */
+  @media (max-width: 767px) {
+    .footmark { left: 0; right: 0; text-align: center; font-size: 41vw; }
+  }
   /* Clubs without a logo file of their own, set as a wordmark so the strip
      keeps one rhythm. Replace with the real crest once the club supplies it. */
   .marq-word {
@@ -1350,17 +1393,55 @@
 }
 
 /* ------------------------------------------------------------------
+   De hero van performance
+   Twee dingen die alleen hier spelen. Ten eerste liep de bovenregel
+   over de volle breedte en daardoor dwars over het gezicht van de
+   atleet; hij breekt nu binnen drie vijfde van de kolom af, ver
+   voorbij het hoofd. Ten tweede lag de bankdrukker op laptop precies
+   achter de kop. Object-position kon hem niet ver genoeg opzij
+   schuiven: de film is breder dan het kader, maar niet breed genoeg -
+   er zat maar zestien procent speling in. Een hoger kader maakt de
+   film evenredig breder, en pas dan kan hij de gevraagde dertig
+   procent naar rechts. De keerzijde is dat hij ook zakt, want het
+   kader groeit naar onderen; hij staat nu lager in beeld, waar de
+   halter ligt in plaats van waar het plafond was.
+   ------------------------------------------------------------------ */
+.hero-perf .eyebrow { max-width: 60%; }
+
+@media (min-width: 1024px) {
+  .hero-perf #hero-video, .hero-perf #hero-img {
+    height: 143%;
+    object-position: 0% center;
+  }
+}
+
+/* ------------------------------------------------------------------
    Het omtrekwoord in de oproepband
    Naast elkaar staat de kop links en staan de knoppen rechts, en het
    woord ligt achter de kop. Onder elkaar staan de knoppen onder de
    kop, en omdat het woord aan de onderkant hing lag het daar achter de
    knoppen. Het hoort achter de zin te liggen, niet achter de actie.
    ------------------------------------------------------------------ */
+/* Naast elkaar staat het woord rechts in de band, met wat lucht tot de rand.
+   Onder elkaar hoort het precies om de kop heen: even breed als de kop en er
+   midden achter. Dat lukt alleen als het zich naar de kop richt en niet naar
+   het hele blok, en daarom wordt het omhulsel van de kop daar het ankerpunt
+   en op breed juist niet. */
+.oproep-echo { left: auto; right: 1rem; }
+.oproep-kop { position: static; }
+/* De kop draagt .reveal, en dat zet een transform. Een element met een
+   transform wordt zelf het ankerpunt voor alles wat er absoluut in staat, ook
+   als het static is - dan kan het woord de rand van de sectie nooit bereiken.
+   De kop verschijnt hier dus alleen met een verloop, zonder verschuiving. */
+.oproep-kop.reveal { transform: none; }
+
 @media (max-width: 1023px) {
+  .oproep-kop { position: relative; }
   .oproep-echo {
-    bottom: auto; top: 1rem;
-    /* Onder elkaar staat de kop over de volle breedte, dus het woord hoort
-       er midden achter en niet tegen de linkerrand. */
-    left: 50%; transform: translateX(-50%);
+    right: auto; bottom: auto;
+    left: 50%; top: 50%;
+    transform: translate(-50%, -50%);
+    width: max-content;
+    font-size: clamp(7rem, 38vw, 13rem);
   }
 }

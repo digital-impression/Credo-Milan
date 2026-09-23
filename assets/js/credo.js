@@ -185,6 +185,21 @@
     }
   }
 
+  /* ---------- Meer tonen ----------
+     De lijst staat open in de opmaak, zodat zonder JS niets verborgen blijft;
+     dit klapt hem in en zet de knop erbij. De knop verdwijnt als er niets te
+     verbergen valt. */
+  document.querySelectorAll('[data-meer]').forEach(function (knop) {
+    var lijst = document.querySelector(knop.getAttribute('data-meer'));
+    if (!lijst) { knop.hidden = true; return; }
+    lijst.classList.add('is-ingeklapt');
+    knop.addEventListener('click', function () {
+      var open = lijst.classList.toggle('is-ingeklapt') === false;
+      knop.setAttribute('aria-expanded', open ? 'true' : 'false');
+      knop.textContent = open ? knop.getAttribute('data-meer-dicht') : knop.getAttribute('data-meer-open');
+    });
+  });
+
   /* ---------- De carrousel van de vloer ----------
      De kaart in het midden staat op ware grootte, de twee buren op 78 procent
      opzij en 84 procent groot, en de twee daarachter verder weg en kleiner.

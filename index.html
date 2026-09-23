@@ -87,7 +87,19 @@
      pixels speling tussen beeld en kader: te weinig om iets mee te sturen.
      Verticaal blijft er wel speling, en die bepaalt hier waar het hoofd staat. */
   .door-rehab .door-photo       { object-position: 50% 34%; }
-  .door-performance .door-photo { object-position: 50% 42%; }
+  /* De atleet moest een vijfde van de deurbreedte naar rechts en een tiende
+     naar beneden. Horizontaal valt daar met object-position niets aan te
+     doen: de foto is smaller dan de deur, dus hij wordt op breedte geschaald
+     en er blijft geen speling over. Wat wel werkt is het vak zelf breder
+     maken - hij staat links vast, dus alles in het beeld schuift evenredig
+     mee naar rechts: 61 procent maal 1,33 is 81. De foto wordt daardoor ook
+     een derde hoger, en dus telt het percentage hieronder anders dan de
+     tweeënveertig van vroeger; hij staat nu tien procent van de deurhoogte
+     lager dan toen.
+     Let op: Tailwind zet in zijn grondslag max-width 100% op elk beeld, dus
+     zonder max-width none blijft het vak toch op de deurbreedte staan. */
+  .door-performance .door-photo { width: 133%; max-width: none; object-position: 50% 29%; }
+  @media (min-width: 1024px) { .door-performance .door-photo { object-position: 50% 24%; } }
   .door:hover .door-photo, .door:focus-visible .door-photo { filter: grayscale(0) contrast(1.02); }
 
   /* The rehab door has no footage behind it, so the photograph itself moves —
@@ -160,7 +172,10 @@
       clip-path: polygon(110px 0, 100% 0, 100% 100%, 0 100%);
     }
     .door-rehab .door-body { padding-right: 150px; }
-    .door-performance .door-body { padding-left: 150px; }
+    /* Naast elkaar staat het adres rechtsonder, in de hoek van deze deur.
+       De knop eronderdoor laten lopen gaf een botsing tussen 1024 en 1180,
+       waar de deur het smalst is; deze extra lucht houdt de regel vrij. */
+    .door-performance .door-body { padding-left: 150px; padding-bottom: calc(clamp(1rem, 3vw, 2.5rem) + 1.9rem); }
   }
 
   @media (max-width: 1023px) {
@@ -193,16 +208,51 @@
   }
   .door-frame > span:first-of-type { margin-top: 0; }
 
-  /* The line the heroes carry under their frame, here under both doors. */
-  .keuze-rule {
-    display: flex; flex-wrap: wrap; align-items: center; gap: .25rem 2rem; justify-content: space-between;
-    border-top: 1px solid rgba(244,241,234,.15);
-    padding: .5rem clamp(1.25rem, 3vw, 2.5rem);
+  /* ==============================================================
+     Twee deuren die elkaars spiegelbeeld zijn
+     Beide foto's hadden hun onderwerp rechts en beide tekstblokken
+     stonden linksonder: twee keer dezelfde compositie onder elkaar.
+     Op gsm keert de revalidatiefoto nu om en verhuist zijn tekst mee
+     naar rechts, zodat de twee deuren tegenover elkaar staan in
+     plaats van naast elkaar hetzelfde te doen.
+     ============================================================== */
+  @media (max-width: 1023px) {
+    .door-rehab .door-photo { transform: scaleX(-1) scale(1.03); }
+    .door-rehab .door-frame { align-items: flex-end; text-align: right; }
+    /* De scrim wast vanaf links in; gespiegeld hoort hij vanaf rechts. */
+    .door-rehab .door-scrim {
+      background:
+        linear-gradient(to top,  rgba(13,13,13,.96) 0%, rgba(13,13,13,.45) 38%, rgba(13,13,13,0) 72%),
+        linear-gradient(to left, rgba(13,13,13,.55) 0%, rgba(13,13,13,0) 55%),
+        linear-gradient(to bottom, rgba(13,13,13,.6) 0%, rgba(13,13,13,0) 22%);
+    }
   }
-  /* Het nummer is het enige waar je hier op kan tikken en het stond op
-     achttien pixels hoog. Onder een duim is dat te weinig; de regel eromheen
-     blijft even hoog doordat er lucht van de rand naar de link verhuist. */
-  .keuze-rule a { display: inline-flex; align-items: center; min-height: 44px; }
+
+  /* ==============================================================
+     Het adres
+     De balk onderaan was een zwarte strook onder twee foto's, met
+     drie dingen erin die er alle drie al stonden: het nummer staat
+     in de kop, de drie woorden staan op beide subpagina's. Wat
+     overblijft is het adres, en dat past in de vrije hoek van de
+     onderste deur: op gsm links (de tekst is daar naar rechts
+     gegaan), op laptop rechts (de tekst staat daar links).
+     ============================================================== */
+  .keuze { position: relative; }
+  .keuze-adres {
+    position: absolute; z-index: 3; pointer-events: none;
+    bottom: clamp(.7rem, 2vw, 1.4rem);
+    left: clamp(1rem, 3vw, 2.5rem);
+    color: rgba(244, 241, 234, .55);
+  }
+  @media (min-width: 1024px) {
+    .keuze-adres { left: auto; right: clamp(1rem, 3vw, 2.5rem); }
+  }
+  /* Onder elkaar staat de revalidatieknop rechtsonder in dezelfde hoek waar
+     het adres begint. De tekst van die deur schuift daarom een regelhoogte
+     omhoog, zodat het adres eronder vrij blijft. */
+  @media (max-width: 1023px) {
+    .door-rehab .door-body { padding-bottom: 3.25rem; }
+  }
 </style>
 </head>
 
@@ -218,9 +268,12 @@
     <div class="flex items-center h-[72px] gap-4">
 
       <a href="#top" class="merk-link flex items-center gap-3 min-w-0">
-        <span class="display text-[19px] md:text-[22px] tracking-[0.02em] text-bone">CREDO</span>
-        <span class="hidden sm:inline-block h-4 w-px bg-bone/25" aria-hidden="true"></span>
-        <span class="hidden sm:inline eyebrow eyebrow-light">Rehab &amp; Performance</span>
+        <span class="display text-[19px] md:text-[22px] tracking-[0.02em] text-bone whitespace-nowrap">CREDO</span>
+        <!-- Tussen 1024 en 1280 komen de links, de taalkeuze, het nummer en de
+             knop er allemaal bij en is er geen plaats meer: dan brak de regel
+             midden in PERFORMANCE. In die band staat hij er dus niet. -->
+        <span class="hidden sm:inline-block lg:hidden xl:inline-block h-4 w-px bg-bone/25" aria-hidden="true"></span>
+        <span class="hidden sm:inline lg:hidden xl:inline eyebrow eyebrow-light whitespace-nowrap">Rehab &amp; Performance</span>
       </a>
 
       <!-- De links passen pas vanaf 1024 naast de naam en de knop; daaronder
@@ -308,11 +361,8 @@
 
   </div>
 
-  <div class="keuze-rule eyebrow text-bone/55">
-    <span>Kapelstraat 89 &middot; 3590 Diepenbeek</span>
-    <span class="hidden md:inline">Motivatie · Passie · Empathie</span>
-    <a href="tel:+32480628545" class="hover:text-bone transition-colors">+32 480 62 85 45</a>
-  </div>
+  <!-- grain-pin: anders zet de korrellaag dit blok terug in de stroom. -->
+  <p class="keuze-adres grain-pin eyebrow">Kapelstraat 89 &middot; 3590 Diepenbeek</p>
 </section>
 
 </main>
