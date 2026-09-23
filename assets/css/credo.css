@@ -806,10 +806,10 @@
     font-size: clamp(4rem, 26vw, 24rem);
     line-height: .8; letter-spacing: .01em;
     color: transparent;
-    -webkit-text-stroke: 1px rgba(244,241,234,.18);
+    -webkit-text-stroke: 1px rgba(244,241,234,.1);
     user-select: none;
   }
-  @supports not (-webkit-text-stroke: 1px red) { .footmark { color: rgba(244,241,234,.07); } }
+  @supports not (-webkit-text-stroke: 1px red) { .footmark { color: rgba(244,241,234,.045); } }
   /* Op een telefoon is zesentwintig procent van de breedte te weinig: dan
      staat er een woordje van 240 pixels in een hoek in plaats van een vlak
      achter de onderkant. Over de volle breedte doet hij wel wat hij moet. */

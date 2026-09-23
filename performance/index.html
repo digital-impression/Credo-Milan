@@ -914,7 +914,7 @@
 
     <div class="mt-8 md:mt-10 reveal">
       <button type="button" class="meer-knop" data-meer=".clublijst" aria-expanded="false"
-              data-meer-open="Toon alle clubs" data-meer-dicht="Toon minder">Toon alle clubs</button>
+              data-meer-open="Toon alle samenwerkingen" data-meer-dicht="Toon minder">Toon alle samenwerkingen</button>
     </div>
   </div>
 </section>
@@ -1610,21 +1610,21 @@
 
       <div class="reveal">
         <p class="eyebrow mb-5 text-bone/50">Kom langs</p>
-        <a href="https://www.google.com/maps/search/?api=1&amp;query=Kapelstraat+89%2C+3590+Diepenbeek%2C+Belgi%C3%AB" target="_blank" rel="noopener noreferrer"
-           class="block text-[15px] leading-[1.7] text-bone/85 hover:text-taupe2 transition-colors">
-          Kapelstraat 89<br>3590 Diepenbeek
-        </a>
+        <!-- Het adres was zelf een verwijzing naar Google Maps en er stond een
+             tweede regel onder die hetzelfde deed. Nu staat het adres er als
+             tekst en doet de regel eronder het werk. De knop Bel ons is weg:
+             het nummer staat een kolom verder. -->
+        <p class="text-[15px] leading-[1.7] text-bone/85">Kapelstraat 89<br>3590 Diepenbeek</p>
         <p class="mt-3 text-[14px] text-bone/55 prose-body">
           Op tien minuten van Hasselt, met ruime parking.
         </p>
-        <div class="mt-7 btn-stack flex flex-wrap gap-3">
-          <a href="https://altagenda.crossuite.com/credokinesitherapie/step2" target="_blank" rel="noopener noreferrer" class="btn btn-bone">Boek een afspraak</a>
-          <a href="tel:+32480628545" class="btn btn-ghost">Bel ons</a>
-        </div>
         <a href="https://www.google.com/maps/search/Credo+Rehab+%26+Performance+Kapelstraat+89+Diepenbeek"
-           target="_blank" rel="noopener noreferrer" class="link-line mt-6 text-bone inline-flex">Bekijk op Google
+           target="_blank" rel="noopener noreferrer" class="link-line mt-5 text-bone inline-flex">Bekijk op Google
           <svg width="16" height="9" viewBox="0 0 16 9" fill="none" aria-hidden="true"><path d="M0 4.5h14M10.5 1L14 4.5 10.5 8" stroke="currentColor" stroke-width="1.3"/></svg>
         </a>
+        <div class="mt-7 btn-stack flex flex-wrap gap-3">
+          <a href="https://altagenda.crossuite.com/credokinesitherapie/step2" target="_blank" rel="noopener noreferrer" class="btn btn-bone">Boek een afspraak</a>
+        </div>
       </div>
 
       <div class="reveal reveal-d1">
@@ -1648,7 +1648,7 @@
 
     <!-- De twee sociale knoppen staan rechts, op de hoogte waar de naam in
          de achtergrond staat: helemaal onderaan, aan de rand. -->
-    <div class="mt-16 md:mt-24 flex items-end justify-end gap-6 reveal">
+    <div class="mt-14 md:mt-16 flex items-end justify-end gap-6 reveal">
       <ul class="flex gap-3 flex-none">
         <li><a href="https://www.instagram.com/credo_kinesitherapie/" target="_blank" rel="noopener noreferrer"
                class="soc" aria-label="Credo op Instagram">IG</a></li>
@@ -1657,9 +1657,10 @@
       </ul>
     </div>
 
-    <div class="mt-6 pt-6 border-t border-bone/15 flex flex-wrap items-center justify-between gap-4">
+    <!-- De drie woorden lopen al als lint over de bovenkant van de pagina;
+         een tweede keer onderaan maakte de regel alleen voller. -->
+    <div class="mt-6 pt-6 border-t border-bone/15">
       <p class="eyebrow text-bone/45">&copy; <span id="year">2026</span> Credo Rehab &amp; Performance &middot; BTW BE 0756.834.184</p>
-      <p class="eyebrow text-bone/45">Motivatie &middot; Passie &middot; Empathie</p>
     </div>
   </div>
 </footer>
