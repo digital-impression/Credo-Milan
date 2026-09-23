@@ -161,65 +161,9 @@
   window.addEventListener('scroll', onScroll, { passive: true });
   parallax();
 
-  /* ---------- De drie lijnen komen uit bij het cijfer een ----------
-     Ze liepen naar het midden van de rechterkolom, en dat midden ligt tussen
-     het cijfer en de zin eronder: ze kwamen dus nergens aan. Waar het cijfer
-     staat hangt af van de letterhoogte, die met de schermbreedte meeschaalt,
-     dus het staat niet vast in de opmaak. Hier wordt het gemeten. */
-  /* De cijferrijen en het blok met het doel dragen allebei .reveal, en dat
-     zet ze tot ze in beeld komen achtentwintig pixels lager. Meet je met
-     getBoundingClientRect, dan meet je die verschuiving mee terwijl de kolom
-     met de lijnen zelf niet verschuift, en beginnen de lijnen achtentwintig
-     pixels naast hun rij. offsetTop kent die verschuiving niet en geeft de
-     plaats zoals de indeling hem bedoelt. */
-  function topIn(el, wortel) {
-    var y = 0;
-    while (el && el !== wortel) { y += el.offsetTop; el = el.offsetParent; }
-    return y;
-  }
-
-  function tekenDoelLijnen() {
-    var vak = document.querySelector('.doel-lijnen-vak');
-    var svg = vak && vak.querySelector('.doel-lijnen-breed');
-    if (!vak || !svg || !vak.offsetHeight) return;   /* verborgen op smal */
-    var wortel = document.getElementById('cijfers');
-    var rijen  = document.querySelectorAll('#cijfers .cijferrij');
-    var cijfer = document.querySelector('#cijfers .doelkop');
-    if (!wortel || !rijen.length || !cijfer) return;
-
-    var top = topIn(vak, wortel), hoog = vak.offsetHeight;
-    /* Het optische midden van de kop ligt iets boven het midden van haar
-       regeldoos: Anton draagt boven de basislijn veel meer inkt dan eronder. */
-    var mik = ((topIn(cijfer, wortel) + cijfer.offsetHeight * 0.46) - top) / hoog * 100;
-
-    var paden = '';
-    for (var i = 0; i < rijen.length; i++) {
-      var y = ((topIn(rijen[i], wortel) + rijen[i].offsetHeight / 2) - top) / hoog * 100;
-      paden += '<path d="M0 ' + y.toFixed(2) +
-               ' C 58 ' + y.toFixed(2) + ', 42 ' + mik.toFixed(2) +
-               ', 97 ' + mik.toFixed(2) + '"></path>';
-    }
-    /* Een stip op het eindpunt: zo komen de drie lijnen ergens aan in plaats
-       van uit te lopen. Buiten de converge-groep, want die tekent zichzelf
-       met een streepjespatroon en een stip heeft daar niets aan. */
-    svg.innerHTML = paden;
-    /* Het kader rekt zijn inhoud uit (preserveAspectRatio none), dus een
-       cirkel wordt hier een ovaal. Een streepje van bijna geen lengte met een
-       ronde kop en een streek die niet meeschaalt blijft wel rond. */
-    var stip = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-    stip.setAttribute('d', 'M96.9 ' + mik.toFixed(2) + 'L97 ' + mik.toFixed(2));
-    stip.setAttribute('class', 'doel-eindstip');
-    svg.appendChild(stip);
-  }
-  tekenDoelLijnen();
-  /* Anton komt van een server en kan later binnenvallen. Dan staat het cijfer
-     opeens ergens anders, dus wordt er opnieuw gemeten. */
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(tekenDoelLijnen);
-  var doelTimer;
-  window.addEventListener('resize', function () {
-    clearTimeout(doelTimer);
-    doelTimer = setTimeout(tekenDoelLijnen, 150);
-  });
+  /* De drie lijnen bij de cijfers zijn nu een vaste tekening in de opmaak:
+     de rijen staan op een vaste hoogte, dus hun midden ligt vast en er valt
+     niets meer te meten. Het script dat dat deed is weg. */
 
   /* ---------- Converging hairlines draw in with the stats ----------
      Er staan er twee: een brede voor naast elkaar, en een staande die alleen
