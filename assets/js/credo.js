@@ -184,11 +184,11 @@
     if (!vak || !svg || !vak.offsetHeight) return;   /* verborgen op smal */
     var wortel = document.getElementById('cijfers');
     var rijen  = document.querySelectorAll('#cijfers .cijferrij');
-    var cijfer = document.querySelector('#cijfers .doelcijfer');
+    var cijfer = document.querySelector('#cijfers .doelkop');
     if (!wortel || !rijen.length || !cijfer) return;
 
     var top = topIn(vak, wortel), hoog = vak.offsetHeight;
-    /* Het optische midden van de een ligt iets boven het midden van zijn
+    /* Het optische midden van de kop ligt iets boven het midden van haar
        regeldoos: Anton draagt boven de basislijn veel meer inkt dan eronder. */
     var mik = ((topIn(cijfer, wortel) + cijfer.offsetHeight * 0.46) - top) / hoog * 100;
 
@@ -290,19 +290,21 @@
 
   /* ---------- De drie waarden klappen in op een telefoon ----------
      In de opmaak staan ze alle drie open, zodat zonder JS niets verborgen
-     blijft. Past het niet naast elkaar, dan blijft de eerste open staan en
-     gaan de andere twee dicht: zo zie je de drie namen samen en lees je wat
-     je wil lezen. Wie zelf iets openklapt, houdt dat; er wordt pas opnieuw
-     gesloten als het formaat echt over de grens gaat. */
+     blijft. Past het niet naast elkaar, dan gaan ze alle drie dicht: zo staan
+     de drie namen samen in beeld en open je wat je wil lezen. Wie zelf iets
+     openklapt, houdt dat; er wordt pas opnieuw gesloten als het formaat echt
+     over de grens gaat. */
   var waarden = document.querySelectorAll('[data-waarde]');
-  if (waarden.length && window.matchMedia) {
+  var clubs   = document.querySelectorAll('[data-club]');
+  if ((waarden.length || clubs.length) && window.matchMedia) {
     var smal = window.matchMedia('(max-width: 767px)');
-    var stelWaarden = function () {
-      waarden.forEach(function (d, i) { d.open = smal.matches ? i === 0 : true; });
+    var stelDicht = function () {
+      waarden.forEach(function (d) { d.open = !smal.matches; });
+      clubs.forEach(function (d) { d.open = !smal.matches; });
     };
-    stelWaarden();
-    if (smal.addEventListener) smal.addEventListener('change', stelWaarden);
-    else if (smal.addListener) smal.addListener(stelWaarden);
+    stelDicht();
+    if (smal.addEventListener) smal.addEventListener('change', stelDicht);
+    else if (smal.addListener) smal.addListener(stelDicht);
   }
 
   /* ---------- Recensieportretten komen tot leven ----------

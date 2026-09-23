@@ -3,11 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Credo Rehab &amp; Performance | Kinesitherapie in Diepenbeek</title>
+<title>[Variant, schuine naad] Credo Rehab &amp; Performance | Kinesitherapie in Diepenbeek</title>
+<meta name="robots" content="noindex">
 <meta name="description" content="Kinesitherapie, revalidatie en performance training in Diepenbeek bij Hasselt. Zeven therapeuten, physical coaches bij de Red Flames, KRC Genk Ladies en OH Leuven.">
 <link rel="canonical" href="https://www.credokinesitherapie.be/">
 <meta name="theme-color" content="#0D0D0D">
-<meta name="robots" content="index, follow">
 
 <meta property="og:type" content="website">
 <meta property="og:locale" content="nl_BE">
@@ -131,6 +131,43 @@
   @media (prefers-reduced-motion: reduce) {
     .door, .door-photo, .door-scrim, .door-cta svg { transition: none !important; }
     .doors:hover .door, .doors .door:hover { flex-grow: 1; }
+  }
+
+  /* ==============================================================
+     VARIANT: een schuine naad tussen de twee deuren
+     Dezelfde pagina als index.html, met een ander soort scheiding.
+     Elke deur knipt zijn eigen hoek weg en de tweede schuift met een
+     negatieve marge over de eerste heen, zodat de twee sneden op
+     elkaar passen en er geen streep of gat tussen valt. De tekst
+     blijft in beide deuren linksonder staan, want daar snijdt geen
+     van beide.
+     ============================================================== */
+  .door + .door { border-top: 0 !important; border-left: 0 !important; }
+
+  @media (min-width: 1024px) {
+    .door-rehab {
+      clip-path: polygon(0 0, 100% 0, calc(100% - 110px) 100%, 0 100%);
+    }
+    .door-performance {
+      margin-left: -110px;
+      clip-path: polygon(110px 0, 100% 0, 100% 100%, 0 100%);
+    }
+    /* Het kader moet aan de goede kant van de naad blijven: links ruimte
+       aan de snijzijde, rechts ruimte waar de snede binnenkomt. */
+    .door-rehab .door-body { padding-right: 150px; }
+    .door-performance .door-body { padding-left: 150px; }
+  }
+
+  @media (max-width: 1023px) {
+    .door-performance {
+      clip-path: polygon(0 0, 100% 0, 100% 100%, 0 calc(100% - 52px));
+    }
+    .door-rehab {
+      margin-top: -52px;
+      clip-path: polygon(0 52px, 100% 0, 100% 100%, 0 100%);
+    }
+    .door-performance .door-body { padding-bottom: 66px; }
+    .door-rehab .door-body { padding-top: 66px; }
   }
 
   /* The line the heroes carry under their frame, here under both doors. */

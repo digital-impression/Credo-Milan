@@ -200,6 +200,14 @@
   /* Text link with a hairline underline that slides */
   .link-line {
     display: inline-flex; align-items: center; gap: .55rem;
+    /* Een inline-flex krimpt niet vanzelf: hij neemt de breedte die zijn
+       tekst wil hebben. In een smalle footerkolom duwde PERSONAL TRAINING &
+       PERFORMANCE de pagina daardoor vijftien pixels opzij. Met deze grens
+       breekt de tekst binnen de kolom. */
+    max-width: 100%; flex-wrap: wrap;
+    /* Een e-mailadres is een woord zonder spaties; zonder dit breekt het
+       nergens en duwt het zijn kolom open. */
+    overflow-wrap: anywhere;
     font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .18em;
     padding-bottom: 4px; border-bottom: 1px solid currentColor;
     transition: color .25s ease, gap .25s ease;
@@ -343,6 +351,21 @@
     .converge path { stroke-dashoffset: 0; transition: none; }
   }
 
+  /* ---------- Het doel naast de cijfers ----------
+     Er stond een cijfer 1 met het woord DOEL ernaast, zo groot dat het de
+     halve kolom vulde en niets zei wat de kop erboven niet al zei. Nu staat
+     er een klein label in dezelfde vorm als IN CIJFERS / 04, in het beige van
+     dat oude cijfer, met daaronder waar het werkelijk om gaat. De zin eronder
+     staat in de leesletter: twee blokken displayletter boven elkaar vechten
+     om dezelfde aandacht. */
+  .doellabel {
+    font-size: 12px; line-height: 1.5; font-weight: 600;
+    text-transform: uppercase; letter-spacing: .14em;
+    color: var(--taupe-on-dark);
+    margin-bottom: .9rem;
+  }
+  .doelkop { line-height: .98; }
+
   /* De staande versie van diezelfde lijnen, voor onder elkaar. Ze lopen van
      de rand van het blok naar het cijfer toe en staan daarom op de volle
      breedte; de hoogte is net genoeg om de bocht te zien. */
@@ -358,7 +381,6 @@
      erboven, die hun eigen kolomverdeling hebben. */
   @media (max-width: 1023px) {
     .doelblok { text-align: center; }
-    .doelblok .doelwoord { justify-content: center; }
     .doelblok > p { margin-inline: auto; }
   }
 
@@ -374,6 +396,42 @@
   .partner-card { transition: border-color .35s ease, background-color .35s ease; }
   .partner-card:hover, .partner-card:focus-within { border-color: rgba(244,241,234,.45); background: #141414; }
   .partner-wordmark { letter-spacing: .01em; }
+
+  /* ---------- Clubkaart ----------
+     Naast elkaar blijft dit de kaart die er stond: een beige vlak met het
+     wapen, daaronder de naam en het verhaal. Onder elkaar werd dat een lijst
+     van twaalf blokken die samen vier schermen besloeg, terwijl de boodschap
+     juist is dat het er twaalf zijn. Op een telefoon staan de wapens daarom
+     als een muur van twee kolommen en open je een club om te lezen wie van
+     ons er staat. De open stand staat in de opmaak, dus zonder JS is alles
+     leesbaar. */
+  .club > summary { display: block; list-style: none; cursor: default; }
+  .club > summary::-webkit-details-marker { display: none; }
+  .club-vlak {
+    height: 7rem; display: flex; align-items: center; justify-content: center;
+    padding: 1.5rem;
+  }
+  .club-naam { display: flex; align-items: flex-end; gap: .75rem; padding: 1.25rem 1.25rem 0; }
+  .club-tekst { padding: .85rem 1.25rem 1.25rem; }
+  @media (min-width: 768px) {
+    .club-naam  { padding: 1.5rem 1.5rem 0; }
+    .club-tekst { padding: 1rem 1.5rem 1.5rem; }
+  }
+  .club-plus { display: none; }
+
+  /* De enige club met een eigen adres. De link zat eerder als losse regel
+     onder de tekst en brak daarmee het ritme van alle andere kaarten; nu
+     draagt de naam hem. */
+  .club-link {
+    display: inline-flex; align-items: center; gap: .45rem;
+    color: inherit; transition: color .25s ease, gap .25s ease;
+  }
+  .club-link:hover { color: var(--taupe-on-dark); gap: .7rem; }
+  /* Onder een duim is een regel van zeventien pixels te weinig. De opvulling
+     brengt hem op vierenveertig zonder dat de naam verschuift. */
+  @media (hover: none) and (pointer: coarse) {
+    .club-link { padding-block: 14px; margin-block: -14px; }
+  }
   /* failed logo inside a bone tile: keep the fallback block tile-sized */
   .partner-card .img-failed { min-height: 5rem; }
   .partner-card .img-failed::after { font-size: 1.25rem; }
@@ -637,7 +695,11 @@
 
   /* The name, set as large as the column allows and clipped at the baseline. */
   .footmark {
-    font-size: clamp(4rem, 21vw, 17rem);
+    /* Op 21vw eindigde het woord halverwege de footer en hing het daar wat
+       verloren. Ruimer gezet vult het de breedte zonder erbuiten te lopen:
+       in Anton is CREDO ongeveer 2,35 keer de letterhoogte breed, en boven
+       1500 pixels houdt de bovengrens het binnen de kolom. */
+    font-size: clamp(4rem, 26vw, 24rem);
     line-height: .8; letter-spacing: .01em;
     color: transparent;
     -webkit-text-stroke: 1px rgba(244,241,234,.28);
@@ -1014,14 +1076,19 @@
   #diensten .media-blend,
   #aanbod  .media-blend { border: 1px solid rgba(244,241,234,.12); border-bottom: 0; }
 
-  /* De bovenregel draagt het nummer. */
+  /* De bovenregel draagt alleen nog het nummer. De woorden erboven -
+     behandeling, opbouw, dry needling, screening - zeiden wat de kop eronder
+     al zegt, en bij dry needling en screening stond het woord er letterlijk
+     twee keer. Het nummer zegt wel iets: hoeveel er zijn en waar je bent. */
   #diensten article .eyebrow::before,
   #aanbod  article .eyebrow::before {
-    content: counter(dienst, decimal-leading-zero) "\00a0\00b7\00a0";
-    color: var(--taupe);
+    content: counter(dienst, decimal-leading-zero);
+    color: var(--taupe-on-dark);
   }
+  #diensten article .dienst-woord,
+  #aanbod  article .dienst-woord { display: none; }
   #diensten article .eyebrow,
-  #aanbod  article .eyebrow { margin-bottom: 1rem; }
+  #aanbod  article .eyebrow { margin-bottom: .9rem; }
 
   /* Groter, luchtiger, en met meer wit in de letter zelf. */
   #diensten article p.prose-body,
@@ -1033,18 +1100,17 @@
   #diensten article p.prose-body:first-of-type,
   #aanbod  article p.prose-body:first-of-type { margin-top: 1.1rem; }
 
-  /* De link wordt een knop. */
+  /* De link blijft een link, zoals naast elkaar. Als kader over de volle
+     breedte trok hij meer aandacht dan de dienst erboven, en vijf van die
+     kaders onder elkaar maakten van de sectie een rij knoppen. Wat hij wel
+     nodig heeft is hoogte om te raken: vierenveertig pixels, gehaald met
+     opvulling zodat de streep onder het woord blijft staan. */
   #diensten article .link-line,
   #aanbod  article .link-line {
-    display: flex; align-items: center; justify-content: center; gap: .6rem;
-    margin-top: 1.6rem; width: 100%;
-    border: 1px solid rgba(244,241,234,.35);
-    padding: .85rem 1rem; min-height: 48px;
-    background: none;
+    margin-top: 1.5rem;
+    min-height: 44px;
+    padding-top: 12px; padding-bottom: 10px;
   }
-  #diensten article .link-line,
-  #aanbod  article .link-line { border-bottom-color: rgba(244,241,234,.35); }
-
   /* De foto eindigde met een verloop naar zwart, want naast elkaar stond de
      tekst ernaast en moest het beeld daarin oplossen. Onder elkaar sluit de
      foto nu tegen het tekstvlak aan; een verloop naar zwart geeft daar een
@@ -1092,33 +1158,34 @@
      vier schermen. Waar het om gaat is welke clubs het zijn en wie van
      ons er staat, dus het logo krimpt tot een vierkantje naast de naam
      en het verhaal loopt eronder over de volle breedte. */
-  /* De kaart draagt Tailwinds .flex. Dat is even zwaar als een losse
-     klasse en staat later in de pagina, dus alles wat de kaart tot
-     raster maakt heeft de sectie-id ervoor nodig. */
-  #partners ul { display: block; }
-  #partners .partner-card {
-    display: grid;
-    grid-template-columns: 62px 1fr;
-    column-gap: 1rem;
-    border: 0; border-top: 1px solid rgba(244,241,234,.14);
-    padding: 1.15rem 0;
+  /* Een muur van wapens, twee naast elkaar. Twaalf clubs onder elkaar als
+     volle kaarten waren vier schermen; zo staan ze in zes rijen en zie je in
+     een oogopslag hoeveel het er zijn. Tik een club open om te lezen wie van
+     ons er staat. De lijst draagt Tailwinds .grid, even zwaar als een losse
+     klasse en later in de pagina, dus de sectie-id gaat ervoor. */
+  #partners ul {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: .75rem; align-items: start;
   }
-  #partners .partner-card:last-child { border-bottom: 1px solid rgba(244,241,234,.14); }
-  #partners .partner-card > div:first-child {
-    grid-column: 1; grid-row: 1 / span 2;
-    width: 62px; height: 62px; padding: .45rem;
-    align-self: start;
+  #partners .partner-card { border-color: rgba(244,241,234,.14); }
+  #partners .club > summary { cursor: pointer; }
+  #partners .club-vlak { height: 5.25rem; padding: .85rem; }
+  #partners .club-vlak .partner-logo { max-height: 100%; }
+  #partners .club-naam { padding: .8rem .85rem .85rem; align-items: center; }
+  /* De bovenregel mag overal afbreken, want lange woorden verbreedden anders
+     hun kolom. In een tegel van 170 pixels leverde dat MEETTECHNOLOG / IE op;
+     hier past het woord heel en hoeft die noodgreep niet. */
+  #partners .club-naam .eyebrow { overflow-wrap: normal; }
+  #partners .club-naam h3 { font-size: 1.02rem; line-height: 1.05; }
+  #partners .club-naam .eyebrow { font-size: 10.5px; letter-spacing: .12em; margin-top: .3rem; }
+  #partners .club-tekst { padding: 0 .85rem 1rem; }
+  #partners .club-tekst p { font-size: 13.5px; }
+  #partners .club-plus {
+    display: block; flex: none;
+    font-size: 1.25rem; line-height: 1; color: var(--taupe-on-dark);
+    transition: transform .3s ease;
   }
-  #partners .partner-card > div:first-child .partner-logo { max-height: 100%; }
-  /* Het omhulsel om naam, label en tekst valt weg als doos, zodat die
-     drie zelf in het raster kunnen staan. */
-  #partners .partner-card > div:last-child { display: contents; }
-  #partners .partner-card h3 { grid-column: 2; grid-row: 1; align-self: center; }
-  #partners .partner-card .eyebrow { grid-column: 2; grid-row: 2; margin-top: .15rem; }
-  #partners .partner-card > div:last-child > p:last-child {
-    grid-column: 1 / -1; grid-row: 3;
-    margin-top: .8rem; font-size: 14px; line-height: 1.6;
-  }
+  #partners .club[open] .club-plus { transform: rotate(45deg); }
 
   /* ---- 06 Ervaringen: onder elkaar, met een liggend portret ----
      Drie is weinig genoeg om gewoon te stapelen. Het portret staat op
@@ -1143,4 +1210,39 @@
   .team-cardx { width: auto; }
   .team-cardx h3 { font-size: 1.15rem; }
   .team-rail-nav { display: none; }
+}
+
+/* ------------------------------------------------------------------
+   De hero op een telefoon
+   Er stond een kader om de tekst. Naast elkaar werkt dat: het kader
+   valt binnen het beeld en zet de tekst apart. Op 390 pixels loopt het
+   kader tot vlak bij de vier schermranden, en dan is het geen kader
+   meer om iets heen maar een rand om het scherm. Weg dus, en de tekst
+   valt terug op de goot van de pagina zelf.
+
+   De kop stond op dertien procent van de schermbreedte. Dat is op een
+   telefoon ruim vijftig pixels per letterhoogte en bij twee zinnen
+   vult hij samen met de alinea het hele scherm, zodat de knoppen
+   onderaan wegvallen. Iets kleiner brengt ze mee in beeld.
+   ------------------------------------------------------------------ */
+@media (max-width: 639px) {
+  .hero-still .frame-dark {
+    border: 0;
+    padding-left: 0; padding-right: 0;
+    padding-top: .5rem; padding-bottom: 0;
+  }
+  .hero-still .d-hero { font-size: clamp(2.6rem, 11.2vw, 4rem); }
+  .hero-still .eyebrow { margin-bottom: 1.35rem; }
+  .hero-still .mt-8 { margin-top: 1.5rem; }
+}
+
+/* ------------------------------------------------------------------
+   Het omtrekwoord in de oproepband
+   Naast elkaar staat de kop links en staan de knoppen rechts, en het
+   woord ligt achter de kop. Onder elkaar staan de knoppen onder de
+   kop, en omdat het woord aan de onderkant hing lag het daar achter de
+   knoppen. Het hoort achter de zin te liggen, niet achter de actie.
+   ------------------------------------------------------------------ */
+@media (max-width: 1023px) {
+  .oproep-echo { bottom: auto; top: 1rem; }
 }
