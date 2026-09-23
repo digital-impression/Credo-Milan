@@ -782,39 +782,45 @@
   }
   .foot-door:hover .foot-arrow { transform: translateX(7px); }
 
+  /* De twee knoppen dragen nu het eigen teken van elk netwerk in plaats van
+     twee letters: rond, met dezelfde haarlijn als de rest van de footer. */
   .soc {
     display: inline-flex; align-items: center; justify-content: center;
-    width: 2.75rem; height: 2.75rem;
-    border: 1px solid rgba(244,241,234,.3); color: var(--bone);
-    font-size: 11px; letter-spacing: .12em;
-    transition: background-color .3s ease, color .3s ease;
+    width: 2.75rem; height: 2.75rem; border-radius: 999px;
+    border: 1px solid rgba(244,241,234,.28); color: rgba(244,241,234,.82);
+    transition: background-color .3s ease, color .3s ease, border-color .3s ease;
   }
-  .soc:hover, .soc:focus-visible { background: var(--bone); color: var(--ink); }
+  .soc svg { width: 19px; height: 19px; display: block; }
+  .soc:hover, .soc:focus-visible { background: var(--bone); color: var(--ink); border-color: var(--bone); }
 
-  /* ---------- De naam in de achtergrond van de footer ----------
-     Hij stond als een eigen blok onder de kolommen: een strook van bijna
-     tweehonderd pixels die niets deed dan het woord dragen. Nu ligt hij
-     achter de hele onderkant, onderaan afgesneden door de rand van de
-     footer, zodat hij de achtergrond is waar de kolommen op staan in
-     plaats van een rij eronder. Daarom ook dunner: een lijn die je moet
-     kunnen lezen op honderd pixels hoog moet je nauwelijks zien op
-     driehonderd. */
-  footer#contact { position: relative; overflow: hidden; }
-  .footmark {
-    position: absolute; z-index: 0; pointer-events: none;
-    left: clamp(1.25rem, 2.6vw, 2.5rem); right: 0; bottom: -.1em;
-    font-size: clamp(4rem, 26vw, 24rem);
-    line-height: .8; letter-spacing: .01em;
-    color: transparent;
-    -webkit-text-stroke: 1px rgba(244,241,234,.1);
-    user-select: none;
+  /* ---------- De juridische pagina's ----------
+     Een kolom tekst en niets anders. De koppen staan hier niet in Anton:
+     dat is de stem van de site en die hoort niet thuis boven een alinea
+     over bewaartermijnen. */
+  .juridisch h2 {
+    margin: 3rem 0 .9rem;
+    padding-top: 1.75rem;
+    border-top: 1px solid rgba(244,241,234,.14);
+    font-size: 18px; font-weight: 600; letter-spacing: -.005em;
+    color: var(--bone);
   }
-  @supports not (-webkit-text-stroke: 1px red) { .footmark { color: rgba(244,241,234,.045); } }
-  /* Op een telefoon is zesentwintig procent van de breedte te weinig: dan
-     staat er een woordje van 240 pixels in een hoek in plaats van een vlak
-     achter de onderkant. Over de volle breedte doet hij wel wat hij moet. */
-  @media (max-width: 767px) {
-    .footmark { left: 0; right: 0; text-align: center; font-size: 41vw; }
+  .juridisch p {
+    margin: 0 0 1rem;
+    max-width: 68ch;
+    font-size: 16px; line-height: 1.75;
+    color: rgba(244,241,234,.72);
+  }
+  .juridisch a { color: var(--bone); text-decoration: underline; text-underline-offset: 3px; }
+  .juridisch a:hover { color: var(--taupe-on-dark); }
+
+  /* ---------- Voetregels ----------
+     De kleine regels in de footer zijn elf pixels hoog. Onder een duim is
+     dat te weinig om te raken, dus krijgen ze daar lucht boven en onder die
+     de opmaak niet verschuift: wat ze aan vulling winnen, geven ze weer
+     weg aan marge. */
+  .voet-link { display: inline-block; }
+  @media (pointer: coarse) {
+    .voet-link { padding-block: 11px; margin-block: -11px; }
   }
   /* Clubs without a logo file of their own, set as a wordmark so the strip
      keeps one rhythm. Replace with the real crest once the club supplies it. */
