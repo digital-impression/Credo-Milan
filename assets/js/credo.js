@@ -197,9 +197,19 @@
       var y = ((topIn(rijen[i], wortel) + rijen[i].offsetHeight / 2) - top) / hoog * 100;
       paden += '<path d="M0 ' + y.toFixed(2) +
                ' C 58 ' + y.toFixed(2) + ', 42 ' + mik.toFixed(2) +
-               ', 100 ' + mik.toFixed(2) + '"></path>';
+               ', 97 ' + mik.toFixed(2) + '"></path>';
     }
+    /* Een stip op het eindpunt: zo komen de drie lijnen ergens aan in plaats
+       van uit te lopen. Buiten de converge-groep, want die tekent zichzelf
+       met een streepjespatroon en een stip heeft daar niets aan. */
     svg.innerHTML = paden;
+    /* Het kader rekt zijn inhoud uit (preserveAspectRatio none), dus een
+       cirkel wordt hier een ovaal. Een streepje van bijna geen lengte met een
+       ronde kop en een streek die niet meeschaalt blijft wel rond. */
+    var stip = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    stip.setAttribute('d', 'M96.9 ' + mik.toFixed(2) + 'L97 ' + mik.toFixed(2));
+    stip.setAttribute('class', 'doel-eindstip');
+    svg.appendChild(stip);
   }
   tekenDoelLijnen();
   /* Anton komt van een server en kan later binnenvallen. Dan staat het cijfer
@@ -258,6 +268,7 @@
         k.style.opacity   = ver ? 0 : DOOR[a];
         k.style.zIndex    = ver ? 0 : 10 - a;
         k.style.visibility = ver ? 'hidden' : '';
+        k.classList.toggle('is-voor', a === 0);
       });
     }
 

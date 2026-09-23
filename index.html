@@ -82,6 +82,12 @@
     filter: grayscale(1) contrast(1.12); transform: scale(1.03);
     transition: filter .6s ease; will-change: transform;
   }
+  /* De twee foto's zijn opnieuw gesneden zodat het hoofd rechts van de tekst
+     valt, in de open ruimte. Met de oude uitsnede lag er maar zesenvijftig
+     pixels speling tussen beeld en kader: te weinig om iets mee te sturen.
+     Verticaal blijft er wel speling, en die bepaalt hier waar het hoofd staat. */
+  .door-rehab .door-photo       { object-position: 50% 34%; }
+  .door-performance .door-photo { object-position: 50% 42%; }
   .door:hover .door-photo, .door:focus-visible .door-photo { filter: grayscale(0) contrast(1.02); }
 
   /* The rehab door has no footage behind it, so the photograph itself moves —
@@ -123,7 +129,9 @@
   @media (min-width: 1024px) { .door-copy { min-height: 4.9em; } }
 
   /* De balk staat vast en dekt de bovenkant af, dus de deuren beginnen eronder. */
-  .keuze { padding-top: var(--header-h); }
+  /* De kop is doorzichtig en ligt over de deuren, net als over de hero's.
+     Het verloop bovenaan de scrim houdt hem leesbaar; ruimte vrijhouden zou
+     een zwarte balk boven het beeld zetten. */
   .door-cta { pointer-events: none; }          /* the whole door is the link */
   .door-cta svg { transition: transform .4s cubic-bezier(.22,.61,.36,1); }
   .door:hover .door-cta svg { transform: translateX(5px); }
@@ -132,6 +140,58 @@
     .door, .door-photo, .door-scrim, .door-cta svg { transition: none !important; }
     .doors:hover .door, .doors .door:hover { flex-grow: 1; }
   }
+
+  /* ==============================================================
+     De schuine naad tussen de twee deuren
+     Elke deur knipt zijn eigen hoek weg en de tweede schuift met een
+     negatieve marge over de eerste heen, zodat de twee sneden op
+     elkaar passen en er geen streep of gat tussen valt. De tekst
+     blijft in beide deuren linksonder staan, want daar snijdt geen
+     van beide; wel krijgt elk blok ruimte aan de snijzijde.
+     ============================================================== */
+  .door + .door { border-top: 0 !important; border-left: 0 !important; }
+
+  @media (min-width: 1024px) {
+    .door-rehab {
+      clip-path: polygon(0 0, 100% 0, calc(100% - 110px) 100%, 0 100%);
+    }
+    .door-performance {
+      margin-left: -110px;
+      clip-path: polygon(110px 0, 100% 0, 100% 100%, 0 100%);
+    }
+    .door-rehab .door-body { padding-right: 150px; }
+    .door-performance .door-body { padding-left: 150px; }
+  }
+
+  @media (max-width: 1023px) {
+    .door-performance {
+      border-bottom: 0 !important;
+      clip-path: polygon(0 0, 100% 0, 100% 100%, 0 calc(100% - 52px));
+    }
+    .door-rehab {
+      margin-top: -52px;
+      clip-path: polygon(0 52px, 100% 0, 100% 100%, 0 100%);
+    }
+    .door-performance .door-body { padding-bottom: 66px; }
+    .door-rehab .door-body { padding-top: 66px; }
+  }
+
+  /* ==============================================================
+     Geen doos om de tekst
+     Het kader deed niets wat de scrim niet al doet - tot 96 procent
+     inkt onderaan, 55 van links, 60 van boven - en tekende binnen een
+     deur die zelf al een vlak met een rand is een tweede rechthoek.
+     Wat blijft is een kort streepje boven de titel: dat groepeert
+     titel, tekst en knop nog steeds als een blok.
+     ============================================================== */
+  .door-frame { border: 0; padding: 0; }
+  .door-frame::before {
+    content: ""; display: block;
+    width: clamp(48px, 6vw, 84px); height: 1px;
+    background: rgba(244, 241, 234, .6);
+    margin-bottom: clamp(.9rem, 2vw, 1.5rem);
+  }
+  .door-frame > span:first-of-type { margin-top: 0; }
 
   /* The line the heroes carry under their frame, here under both doors. */
   .keuze-rule {
@@ -153,7 +213,7 @@
 <!-- ============================================================
      HEADER — no section nav here; the homepage has one job.
      ============================================================ -->
-<header id="site-header" class="fixed top-0 inset-x-0 z-50 bg-ink border-b border-bone/15">
+<header id="site-header" class="fixed top-0 inset-x-0 z-50 border-b border-transparent">
   <div class="mx-auto max-w-[1500px] px-5 md:px-10">
     <div class="flex items-center h-[72px] gap-4">
 

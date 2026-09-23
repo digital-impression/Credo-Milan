@@ -358,13 +358,76 @@
      dat oude cijfer, met daaronder waar het werkelijk om gaat. De zin eronder
      staat in de leesletter: twee blokken displayletter boven elkaar vechten
      om dezelfde aandacht. */
+  /* De cijferrijen staan op een vaste hoogte met een vaste kolom voor het
+     getal, zodat de drie getallen onder elkaar op hun linkerkant uitlijnen en
+     de rijen een rustig raster vormen in plaats van drie blokken van
+     verschillende hoogte. */
+  .cijferlijst { border-bottom: 1px solid rgba(244,241,234,.16); }
+  .cijferrij {
+    display: grid; grid-template-columns: 7rem 1fr; gap: 0 1.25rem;
+    align-items: center;
+    min-height: 88px;
+    border-top: 1px solid rgba(244,241,234,.16);
+  }
+  .cijfer {
+    font-size: clamp(2.5rem, 3.6vw, 3.5rem); line-height: 1;
+    color: var(--bone); white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+  }
+  .cijfernaam { min-width: 0; }
+  .cijfernaam > .display {
+    font-size: clamp(1.2rem, 1.6vw, 1.5rem); line-height: 1.06; color: var(--bone);
+  }
+  .cijfersub { margin-top: .3rem; font-size: 14px; line-height: 1.5; color: rgba(244,241,234,.66); }
+  @media (min-width: 1024px) {
+    .cijferrij { grid-template-columns: 9.5rem 1fr; gap: 0 2rem; min-height: 100px; }
+  }
+
   .doellabel {
+    display: flex; align-items: center; gap: .6rem;
     font-size: 12px; line-height: 1.5; font-weight: 600;
     text-transform: uppercase; letter-spacing: .14em;
     color: var(--taupe-on-dark);
     margin-bottom: .9rem;
   }
-  .doelkop { line-height: .98; }
+  /* Naast elkaar eindigen de drie lijnen op een stip bij de kop. Onder elkaar
+     zijn er geen lijnen, en dan neemt deze stip die rol over: hij markeert
+     waar de drie cijfers samenkomen. */
+  .doelstip { display: none; width: 8px; height: 8px; border-radius: 99px; background: var(--taupe-on-dark); flex: none; }
+  @media (max-width: 1023px) { .doelstip { display: block; } }
+
+  .doelkop {
+    line-height: .98;
+    font-size: clamp(2.4rem, 5.4vw, 4rem);
+  }
+  .doelzin {
+    margin-top: 1.4rem;
+    font-size: clamp(1.05rem, 1.5vw, 1.3rem); line-height: 1.55;
+    color: rgba(244,241,234,.8);
+    max-width: 30ch;
+  }
+  /* De sectie eindigde op een zin. Nu staat er ook een weg naar buiten: op
+     een laptop als link met een streep in het accent, op een telefoon als
+     knop over de volle breedte. */
+  .doelknop {
+    display: inline-flex; align-items: center; gap: .7rem;
+    margin-top: 2rem; min-height: 48px;
+    font-size: 16px; font-weight: 600; color: var(--bone);
+    border-bottom: 2px solid var(--taupe-on-dark);
+    padding: 0 2px;
+    transition: gap .25s ease, color .25s ease;
+  }
+  .doelknop:hover { gap: 1.1rem; color: var(--taupe-on-dark); }
+  @media (max-width: 1023px) {
+    .doelknop {
+      display: flex; justify-content: center; width: 100%;
+      margin-top: 1.8rem; min-height: 52px;
+      background: var(--bone); color: var(--ink);
+      border: 0; border-radius: 4px;
+      font-size: 15px; letter-spacing: .02em;
+    }
+    .doelknop:hover { color: var(--ink); }
+  }
 
   /* De staande versie van diezelfde lijnen, voor onder elkaar. Ze lopen van
      de rand van het blok naar het cijfer toe en staan daarom op de volle
@@ -375,14 +438,18 @@
      het cijfer een kan bereiken; waar ze beginnen en eindigen rekent het
      script uit. */
   .doel-lijnen-breed { display: block; width: 100%; height: 100%; }
-
-  /* Onder elkaar hoort dit blok in het midden: het cijfer staat alleen op de
-     regel, en links uitlijnen laat het scheef hangen onder de drie cijfers
-     erboven, die hun eigen kolomverdeling hebben. */
-  @media (max-width: 1023px) {
-    .doelblok { text-align: center; }
-    .doelblok > p { margin-inline: auto; }
+  /* De stip hoort niet bij het tekenen van de lijnen: hij staat er meteen,
+     het verloop eromheen zorgt dat hij mee verschijnt. */
+  .doel-eindstip {
+    fill: none; stroke: var(--taupe-on-dark);
+    stroke-width: 9; stroke-linecap: round;
+    vector-effect: non-scaling-stroke;
+    stroke-dasharray: none; stroke-dashoffset: 0;
   }
+
+  /* Het doelblok stond onder elkaar in het midden omdat er een los cijfer
+     boven stond. Dat cijfer is weg; label, kop, zin en knop lijnen nu links
+     uit, op dezelfde lijn als de cijferrijen erboven. */
 
   /* ---------- Step timeline ---------- */
   .step-dot { width: 9px; height: 9px; background: var(--taupe); border-radius: 999px; }
@@ -738,17 +805,29 @@
     position: relative;
     height: calc(var(--kw) * 1.25);
   }
+  /* De kaarten kwamen uit het voorbeeld met ronde hoeken en een zachte slagschaduw.
+     Deze site kent geen ronde hoeken buiten de knoppen en geen zachte schaduwen:
+     ze is haarlijnen en rechte sneden. Rechte hoeken dus, een haarlijn eromheen,
+     en de schaduw alleen onder de kaart die vooraan staat, want die moet loskomen
+     van de rest. */
   .vloer-kaart {
     position: absolute; top: 0; left: 50%;
     width: var(--kw); height: calc(var(--kw) * 1.25);
     margin: 0 0 0 calc(var(--kw) / -2);
-    overflow: hidden; border-radius: 14px;
+    overflow: hidden;
     background: var(--ink);
-    box-shadow: 0 20px 55px rgba(0,0,0,.6);
-    transition: transform .6s cubic-bezier(.22,.61,.36,1), opacity .6s ease;
+    border: 1px solid rgba(244,241,234,.16);
+    transition: transform .6s cubic-bezier(.22,.61,.36,1), opacity .6s ease, box-shadow .6s ease, border-color .6s ease;
     will-change: transform;
   }
-  .vloer-kaart .photo { width: 100%; height: 100%; object-fit: cover; }
+  .vloer-kaart.is-voor {
+    border-color: rgba(244,241,234,.34);
+    box-shadow: 0 26px 60px rgba(0,0,0,.65);
+  }
+  .vloer-kaart .photo {
+    width: 100%; height: 100%; object-fit: cover;
+    filter: grayscale(1) contrast(1.16);
+  }
 
   /* Zolang het script niet gedraaid heeft, is de baan een gewone rij die je
      zijwaarts kan scrollen. Zo blijft alles bereikbaar zonder JS. */
@@ -1182,14 +1261,22 @@
      hier past het woord heel en hoeft die noodgreep niet. */
   #partners .club-naam .eyebrow { overflow-wrap: normal; }
   #partners .club-naam h3 { font-size: 1.02rem; line-height: 1.05; }
-  #partners .club-naam .eyebrow { font-size: 10.5px; letter-spacing: .12em; margin-top: .3rem; }
+  /* Elf en een halve pixel is de ondergrens waaronder deze regels niet meer
+     prettig lezen; ze stonden op tien en een half om in de tegel te passen,
+     maar met een woord dat heel blijft past het ook zo. */
+  #partners .club-naam .eyebrow { font-size: 11.5px; letter-spacing: .1em; margin-top: .3rem; }
   #partners .club-tekst { padding: 0 .85rem 1rem; }
   #partners .club-tekst p { font-size: 13.5px; }
+  /* De plus stond er als los teken en las niet als iets waar je op tikt.
+     Een rondje eromheen maakt er een knop van. */
   #partners .club-plus {
-    display: block; flex: none;
-    font-size: 1.25rem; line-height: 1; color: var(--taupe-on-dark);
-    transition: transform .3s ease;
+    display: inline-flex; align-items: center; justify-content: center;
+    flex: none; width: 26px; height: 26px; border-radius: 99px;
+    border: 1px solid rgba(244,241,234,.3);
+    font-size: 1rem; line-height: 1; color: var(--taupe-on-dark);
+    transition: transform .3s ease, background-color .3s ease, color .3s ease;
   }
+  #partners .club[open] .club-plus { background: rgba(244,241,234,.12); }
   #partners .club[open] .club-plus { transform: rotate(45deg); }
 
   /* ---- 06 Ervaringen: onder elkaar, met een liggend portret ----
@@ -1230,10 +1317,20 @@
    vult hij samen met de alinea het hele scherm, zodat de knoppen
    onderaan wegvallen. Iets kleiner brengt ze mee in beeld.
    ------------------------------------------------------------------ */
+/* Het kader om de herotekst is overal weg. Het deed niets wat de drie
+   verlooplagen over het beeld niet al doen, en een haarlijn van een pixel op
+   achttien procent dekking is daarvoor de verkeerde sterkte: te zwak om een
+   doos te zijn, te aanwezig om niets te zijn. Zonder doos heeft de
+   inspringing van achtenveertig pixels ook geen reden meer, dus de tekst
+   staat op de goot van de pagina, op een lijn met het adres eronder en met
+   elke sectie daarna. */
+.hero-still .frame-dark {
+  border: 0;
+  padding-left: 0; padding-right: 0;
+}
+
 @media (max-width: 639px) {
   .hero-still .frame-dark {
-    border: 0;
-    padding-left: 0; padding-right: 0;
     padding-top: .5rem; padding-bottom: 0;
   }
   .hero-still .d-hero { font-size: clamp(2.6rem, 11.2vw, 4rem); }
@@ -1249,5 +1346,10 @@
    knoppen. Het hoort achter de zin te liggen, niet achter de actie.
    ------------------------------------------------------------------ */
 @media (max-width: 1023px) {
-  .oproep-echo { bottom: auto; top: 1rem; }
+  .oproep-echo {
+    bottom: auto; top: 1rem;
+    /* Onder elkaar staat de kop over de volle breedte, dus het woord hoort
+       er midden achter en niet tegen de linkerrand. */
+    left: 50%; transform: translateX(-50%);
+  }
 }
