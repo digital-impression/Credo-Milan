@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="nl-BE">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Credo &mdash; scherm wachtzaal</title>
+
+<!-- Dit scherm hoort niet in Google. Het is geen pagina voor bezoekers. -->
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta name="theme-color" content="#0D0D0D">
+
+<!-- Een eigen pictogram, anders vraagt de browser om de twintig minuten een
+     favicon.ico die er niet is. -->
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230D0D0D'/%3E%3Ctext x='16' y='23' font-family='Helvetica,Arial' font-size='20' font-weight='bold' fill='%23F4F1EA' text-anchor='middle'%3EC%3C/text%3E%3C/svg%3E">
+
+<!-- Op een televisie mag het scherm nooit uitgaan of in slaapstand vallen;
+     de meeste spelers luisteren hiernaar via de browser. -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+
+<!-- De lettertypes staan hier ter plaatse en niet bij Google: dit scherm moet
+     ook doordraaien als het netwerk in de praktijk wegvalt, en een bestand van
+     een andere server kan de service worker niet bewaren. -->
+<link rel="preload" as="font" type="font/woff2" href="fonts/anton-400-latin.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="fonts/inter-400-latin.woff2" crossorigin>
+<link rel="stylesheet" href="fonts/fonts.css">
+<link rel="stylesheet" href="tv.css">
+</head>
+
+<body>
+
+<div id="doek">
+  <div id="toneel">
+    <!-- de slides worden hier ingevoegd -->
+    <div id="klok"></div>
+    <div id="voet">Kapelstraat 89 &middot; 3590 Diepenbeek &middot; credokinesitherapie.be</div>
+    <div id="balk"></div>
+    <div id="melding"></div>
+  </div>
+</div>
+
+<script src="inhoud.js"></script>
+<script src="tv.js"></script>
+
+<script>
+  // Het scherm wakker houden. Niet elke browser kent dit; waar het ontbreekt
+  // zet je de slaapstand van de speler zelf uit.
+  (function () {
+    if (!('wakeLock' in navigator)) return;
+    var slot = null;
+    function pak() {
+      navigator.wakeLock.request('screen')
+        .then(function (s) { slot = s; s.addEventListener('release', function () { slot = null; }); })
+        .catch(function () {});
+    }
+    pak();
+    document.addEventListener('visibilitychange', function () {
+      if (document.visibilityState === 'visible' && !slot) pak();
+    });
+  })();
+</script>
+
+</body>
+</html>

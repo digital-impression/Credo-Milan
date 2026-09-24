@@ -1,4 +1,7 @@
 User-agent: *
 Allow: /
 
+# Het scherm in de wachtzaal is geen pagina voor bezoekers.
+Disallow: /tv/
+
 Sitemap: https://www.credokinesitherapie.be/sitemap.xml
