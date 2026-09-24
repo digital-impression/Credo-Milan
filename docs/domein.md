@@ -53,10 +53,9 @@ bewaren. GitHub controleert de DNS; dat kan even duren. Staat er een groen
 vinkje, zet dan **Enforce HTTPS** aan. Het certificaat wordt automatisch
 aangevraagd.
 
-In deze map staat het bestand `CNAME` klaar. Zet het in de wortel van de repo
-op het moment dat de DNS doorwerkt — niet eerder, want vanaf dan stuurt de
-voorbeeldlink op digital-impression.github.io door naar het echte domein, en
-dat werkt pas als de DNS klopt.
+Het bestand `CNAME` staat in de wortel van de repo en wordt bij elke publicatie
+meegestuurd. Bij een publicatie via GitHub Actions is dat nodig: zonder dat
+bestand vergeet Pages het eigen domein bij de volgende publicatie.
 
 ## 4. Nog te beslissen
 
