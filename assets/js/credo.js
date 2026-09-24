@@ -473,10 +473,19 @@
       if (btn) { btn.disabled = true; }
       setStatus(status, 'Bezig met versturen…', true);
 
+      /* Plat, niet genest: Formspree en de meeste andere diensten zetten elke
+         sleutel als een eigen regel in de mail. Een genest object belandt daar
+         als een blok JSON. De sleutels met een liggend streepje ervoor zijn
+         afspraken van Formspree: het onderwerp van de mail, en het adres waar
+         je met Beantwoorden naartoe schrijft. */
+      var lading = { _subject: subject, pagina: location.pathname };
+      Object.keys(data).forEach(function (k) { lading[k] = data[k]; });
+      if (data.email) lading._replyto = data.email;
+
       fetch(CONFIG.formEndpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-        body: JSON.stringify({ subject: subject, page: location.pathname, fields: data })
+        body: JSON.stringify(lading)
       }).then(function (r) {
         if (!r.ok) throw new Error(r.status);
         setStatus(status, 'Bedankt — we bellen je binnen twee werkdagen terug.', true);

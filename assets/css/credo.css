@@ -813,6 +813,19 @@
   .juridisch a { color: var(--bone); text-decoration: underline; text-underline-offset: 3px; }
   /* Een telefoonnummer dat middenin afbreekt leest als twee nummers. */
   .juridisch a[href^="tel:"] { white-space: nowrap; }
+  .juridisch .verwerkers {
+    margin: 0 0 1rem; padding: 0; list-style: none;
+    max-width: 68ch; display: grid; gap: .75rem;
+  }
+  .juridisch .verwerkers li {
+    padding-left: 1.1rem; position: relative;
+    font-size: 16px; line-height: 1.7; color: rgba(244,241,234,.72);
+  }
+  .juridisch .verwerkers li::before {
+    content: ""; position: absolute; left: 0; top: .72em;
+    width: 5px; height: 5px; border-radius: 99px; background: var(--taupe-on-dark);
+  }
+  .juridisch .verwerkers b { color: var(--bone); font-weight: 600; }
   .juridisch a:hover { color: var(--taupe-on-dark); }
 
   /* ---------- Voetregels ----------
