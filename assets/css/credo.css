@@ -408,13 +408,11 @@
   .doelstip { width: 8px; height: 8px; border-radius: 4px; background: var(--cij-accent); flex: none; }
   .doelkop { margin: 0; font-size: 46px; line-height: 1; color: var(--bone); }
   .doelzin { margin-top: 18px; font-size: 18px; line-height: 1.55; color: var(--cij-tekst); }
-  .doelknop {
-    display: flex; align-items: center; justify-content: center; gap: 10px;
-    margin-top: 28px; min-height: 52px;
-    background: var(--bone); color: var(--ink);
-    border-radius: 4px; font-size: 17px; font-weight: 600;
-  }
-  .doelknop svg { flex: none; }
+  /* De knop is dezelfde pil als overal elders; .doelknop bepaalt alleen nog
+     waar hij staat. Hier stond een eigen knop met een hoek van vier pixels en
+     een tekst van zeventien, en op de laptop werd hij zelfs een onderstreepte
+     tekstlink — de enige knop op de site die er anders uitzag. */
+  .doelknop { margin-top: 28px; }
 
   @media (min-width: 1024px) {
     #cijfers .eyebrow { font-size: 13px; }
@@ -435,15 +433,7 @@
     .doelstip { display: none; }
     .doelkop { font-size: 64px; }
     .doelzin { margin-top: 24px; font-size: 21px; }
-    .doelknop {
-      display: inline-flex; align-self: flex-start; justify-content: flex-start;
-      margin-top: 32px; min-height: 48px; gap: 12px;
-      background: none; color: var(--bone);
-      border: 0; border-bottom: 2px solid var(--cij-accent); border-radius: 0;
-      padding: 0 2px;
-      transition: gap .25s ease;
-    }
-    .doelknop:hover { gap: 1.1rem; }
+    .doelknop { margin-top: 32px; }
   }
 
   /* ---------- Step timeline ---------- */

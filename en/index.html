@@ -179,6 +179,30 @@
   }
 
   @media (max-width: 1023px) {
+    /* Onder elkaar staat de tekst in beide deuren onderaan, maar alleen de
+       bovenste verliest hoogte aan de kopbalk. Zo begon het performanceblok
+       tweeënveertig pixels onder de balk terwijl het revalidatieblok er
+       bijna vijfhonderd boven zich had. De vrije ruimte wordt daarom niet
+       meer gelijk verdeeld: de bovenste deur krijgt het grootste deel.
+       Dit moet met flex-grow en niet met een basis in procenten: .keuze
+       heeft een min-height en geen vaste hoogte, dus een percentage heeft
+       niets om tegen te rekenen en valt terug op de inhoud. Zo houdt elke
+       deur ook op een kort scherm eerst zijn eigen tekst heel. */
+    .door-performance { flex-grow: 2.4; }
+    .door-rehab       { flex-grow: .78; }
+
+    /* Onder de achthonderd past het niet meer: twee blokken van rond
+       de tweehonderdvijftig plus een kopbalk van drieënzeventig laten op een
+       scherm van zeshonderdzevenenzestig niets over, en het bovenste blok
+       schoof achter de balk. Daar wordt het blok zelf kleiner. De dubbele
+       klasse is nodig omdat Tailwind zijn stylesheet na deze regels invoegt
+       en een enkele klasse het dan van de utilities verliest. */
+    @media (max-height: 799px) {
+      .door .door-titel { font-size: 1.45rem; }
+      .door .door-copy  { margin-top: .5rem; font-size: 14px; line-height: 1.45; }
+      .door .door-cta   { margin-top: .85rem; }
+      .door .door-frame::before { margin-bottom: .55rem; }
+    }
     .door-performance {
       border-bottom: 0 !important;
       clip-path: polygon(0 0, 100% 0, 100% 100%, 0 calc(100% - 52px));
