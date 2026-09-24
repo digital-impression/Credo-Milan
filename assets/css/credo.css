@@ -811,6 +811,8 @@
     color: rgba(244,241,234,.72);
   }
   .juridisch a { color: var(--bone); text-decoration: underline; text-underline-offset: 3px; }
+  /* Een telefoonnummer dat middenin afbreekt leest als twee nummers. */
+  .juridisch a[href^="tel:"] { white-space: nowrap; }
   .juridisch a:hover { color: var(--taupe-on-dark); }
 
   /* ---------- Voetregels ----------
@@ -818,9 +820,14 @@
      dat te weinig om te raken, dus krijgen ze daar lucht boven en onder die
      de opmaak niet verschuift: wat ze aan vulling winnen, geven ze weer
      weg aan marge. */
-  .voet-link { display: inline-block; }
+  /* Blok, niet inline-blok: het nummer en het adres stonden als twee inline
+     blokken achter elkaar op dezelfde regel, en vielen daar met hun lucht
+     boven en onder over elkaar heen. */
+  .voet-link { display: block; width: fit-content; max-width: 100%; }
   @media (pointer: coarse) {
-    .voet-link { padding-block: 11px; margin-block: -11px; }
+    /* Elf pixels lucht boven en onder, maar de marge trekt maar zes terug:
+       met de volle elf schoven twee links onder elkaar over elkaar heen. */
+    .voet-link { padding-block: 14px; margin-block: -6px; }
   }
   /* Clubs without a logo file of their own, set as a wordmark so the strip
      keeps one rhythm. Replace with the real crest once the club supplies it. */
