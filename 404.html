@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="nl-BE">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pagina niet gevonden | Credo Rehab &amp; Performance</title>
+<meta name="robots" content="noindex, follow">
+<meta name="theme-color" content="#0D0D0D">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+<script src="https://cdn.tailwindcss.com"></script>
+<!-- Alle paden zijn absoluut: deze pagina wordt getoond voor elk adres dat
+     niet bestaat, op elke diepte. Een relatief pad zou vanaf /en/rehab/iets/
+     naar de verkeerde map wijzen. -->
+<link rel="stylesheet" href="/assets/css/credo.css">
+
+<style>
+  body { padding-bottom: 0; }
+  .verdwaald { min-height: 100svh; display: flex; flex-direction: column; }
+  .verdwaald-vak { flex: 1 1 auto; display: flex; flex-direction: column;
+                   justify-content: center; }
+  .code { font-size: clamp(5rem, 22vw, 13rem); line-height: .82;
+          color: rgba(244, 241, 234, .13); }
+  .wegen { display: grid; gap: 0; max-width: 620px; }
+  .weg { display: flex; align-items: baseline; justify-content: space-between;
+         gap: 1.5rem; padding: 1.15rem 0;
+         border-top: 1px solid rgba(244, 241, 234, .14);
+         color: rgba(244, 241, 234, .82); }
+  .weg:last-child { border-bottom: 1px solid rgba(244, 241, 234, .14); }
+  .weg:hover, .weg:focus-visible { color: var(--bone); }
+  .weg .naam { font-size: 19px; }
+  .weg .pijl { font-size: 15px; color: var(--taupe-on-dark); }
+  .weg:hover .pijl { color: var(--bone); }
+  @media (pointer: coarse) { .weg { padding: 1.35rem 0; } }
+</style>
+</head>
+
+<body class="font-body bg-ink text-bone antialiased">
+
+<header class="fixed top-0 inset-x-0 z-50 bg-ink border-b border-bone/12">
+  <div class="mx-auto max-w-[1100px] px-5 md:px-10">
+    <div class="flex items-center h-[72px] gap-4">
+      <a href="/" class="merk-link flex items-center gap-3 min-w-0">
+        <span class="display text-[19px] md:text-[22px] tracking-[0.02em] text-bone whitespace-nowrap">CREDO</span>
+        <span class="hidden sm:inline-block h-4 w-px bg-bone/25" aria-hidden="true"></span>
+        <span class="hidden sm:inline eyebrow eyebrow-light whitespace-nowrap">Rehab &amp; Performance</span>
+      </a>
+      <a href="tel:+32480628545" class="nav-link text-bone ml-auto whitespace-nowrap">+32 480 62 85 45</a>
+    </div>
+  </div>
+</header>
+
+<main class="verdwaald pt-[72px]">
+  <div class="verdwaald-vak mx-auto w-full max-w-[1100px] px-5 md:px-10 py-16 md:py-24">
+
+    <p class="display code" aria-hidden="true">404</p>
+
+    <h1 class="display text-[clamp(2rem,7vw,4rem)] leading-[0.95] text-bone mt-2">
+      Deze pagina bestaat niet
+    </h1>
+
+    <p class="mt-5 text-[17px] leading-relaxed text-bone/70 max-w-[46ch]">
+      Misschien is het adres verkeerd overgetypt, of is de pagina verhuisd.
+      Hieronder staat waar je wel terechtkunt.
+    </p>
+
+    <nav class="wegen mt-10 md:mt-12" aria-label="Verder op de site">
+      <a href="/" class="weg">
+        <span class="naam">Startpagina</span>
+        <span class="pijl" aria-hidden="true">&rarr;</span>
+      </a>
+      <a href="/rehab/" class="weg">
+        <span class="naam">Revalidatie &amp; kinesitherapie</span>
+        <span class="pijl" aria-hidden="true">&rarr;</span>
+      </a>
+      <a href="/performance/" class="weg">
+        <span class="naam">Personal training &amp; performance</span>
+        <span class="pijl" aria-hidden="true">&rarr;</span>
+      </a>
+      <a href="https://altagenda.crossuite.com/credokinesitherapie/step2"
+         target="_blank" rel="noopener noreferrer" class="weg">
+        <span class="naam">Een afspraak boeken</span>
+        <span class="pijl" aria-hidden="true">&rarr;</span>
+      </a>
+    </nav>
+
+    <p class="mt-10 eyebrow text-bone/45">
+      <span lang="en">This page does not exist.</span> &middot;
+      <span lang="fr">Cette page n&rsquo;existe pas.</span>
+    </p>
+
+  </div>
+
+  <div class="mx-auto w-full max-w-[1100px] px-5 md:px-10 pb-10">
+    <p class="eyebrow text-bone/40">
+      Kapelstraat 89 &middot; 3590 Diepenbeek &middot;
+      <a href="mailto:info@credokinesitherapie.be" class="underline underline-offset-4 hover:text-bone">info@credokinesitherapie.be</a>
+    </p>
+  </div>
+</main>
+
+</body>
+</html>
