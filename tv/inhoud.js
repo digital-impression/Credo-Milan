@@ -48,16 +48,19 @@ window.CREDO_TV = {
       onder: 'Rehab &amp; Performance',
       regel: 'Kinesitherapie · Revalidatie · Performance training' },
 
-    { soort: 'woord', duur: 11,
+    { soort: 'woord', duur: 11, oog: 'De naam',
       woord: 'Credo',
       uitspraak: '[ˈkre-do] (kray-do)',
       betekenis: 'Een plechtige of persoonlijke verklaring van geloof of '
                + 'overtuiging. Letterlijk: <em>ik geloof</em>.',
       beeld: '../assets/img/rehab/hero-still.jpg' },
 
-    { soort: 'uren', duur: 10 },
+    { soort: 'uren', duur: 10, oog: 'Openingsuren',
+      kop: 'Wanneer<br>we open zijn',
+      beeld: '../assets/img/zaal1.jpg' },
 
-    { soort: 'cijfers', duur: 10,
+    { soort: 'cijfers', duur: 10, oog: 'In cijfers',
+      beeld: '../assets/img/performance/bewegen.jpg',
       kop: 'Drie cijfers.',
       accent: 'Eén doel.',
       rijen: [
@@ -66,7 +69,8 @@ window.CREDO_TV = {
         { cijfer: '7',     naam: 'Therapeuten', sub: 'voor ieder een fit' },
       ] },
 
-    { soort: 'aanbod', duur: 12,
+    { soort: 'aanbod', duur: 12, oog: 'Ons aanbod',
+      beeld: '../assets/img/rehab/manuele-therapie.jpg',
       kop: 'Wat we doen',
       items: [
         { titel: 'Manuele therapie &amp; kinesitherapie',
@@ -155,11 +159,12 @@ window.CREDO_TV = {
       favoriet: null },
 
     // ---- de zaal ----------------------------------------------------------
-    { soort: 'beeld', duur: 8,
+    { soort: 'beeld', duur: 8, oog: 'De praktijk',
       beeld: '../assets/img/studio-oefenzaal.jpg',
       label: 'De zaal', tekst: 'Vijfhonderd vierkante meter, en alles staat er om gebruikt te worden.' },
 
-    { soort: 'partners', duur: 11,
+    { soort: 'partners', duur: 11, oog: 'Samenwerkingen',
+      beeld: '../assets/img/vloer/07.jpg',
       kop: 'Waar we mee samenwerken',
       logos: [
         { bron: '../assets/img/partners/sporting-hasselt.png',    naam: 'Sporting Hasselt' },
@@ -197,7 +202,8 @@ window.CREDO_TV = {
            + 'vertrouwen terechtkan.' },
 
     // ---- het zakelijke ----------------------------------------------------
-    { soort: 'honoraria', duur: 18,
+    { soort: 'honoraria', duur: 18, oog: 'Tarieven',
+      beeld: '../assets/img/performance/screening.jpg',
       kop: 'Honoraria',
       kolommen: ['Pathologie', 'Honorarium', 'Bijdrage patiënt',
                  'Eenmalige dossierkost', 'Bijdrage patiënt dossierkost'],
@@ -211,23 +217,24 @@ window.CREDO_TV = {
       voet: 'Wij zijn een niet-geconventioneerde praktijk. Onze tarieven kunnen '
           + 'dus afwijken van de conventietarieven.' },
 
-    { soort: 'beleid', duur: 14,
-      kop: 'Een afspraak verzetten',
+    { soort: 'beleid', duur: 14, oog: 'Je afspraak',
+      beeld: '../assets/img/vloer/09.jpg',
+      kop: 'Een afspraak<br>verzetten',
       nl: 'Laat het ons tijdig weten als je niet aanwezig kan zijn of je afspraak '
         + 'wil verplaatsen. Annulaties binnen 24 uur kunnen aangerekend worden.',
       en: 'Please let us know in good time if you cannot attend or need to '
         + 'reschedule. Cancellations within 24 hours may be subject to a fee.' },
 
-    { soort: 'merch', duur: 9,
+    { soort: 'merch', duur: 9, oog: 'In de praktijk',
       kop: 'Credo merch',
       prijs: '€20',
       per: 'per shirt',
       tekst: 'Vraag het aan een van onze therapeuten.',
       beeld: '../assets/img/vloer/04.jpg' },
 
-    { soort: 'boeken', duur: 14,
+    { soort: 'boeken', duur: 14, oog: 'Afspraak',
       beeld: '../assets/img/studio-inkom.jpg',
-      kop: 'Boek je afspraak',
+      kop: 'Boek je<br>afspraak',
       tekst: 'Scan de code, of bel ons. Online boeken kan dag en nacht.',
       qr: 'img/qr-boeken.svg',
       qrLabel: 'Afspraak maken',

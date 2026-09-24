@@ -10,7 +10,7 @@
    opgeruimd en het scherm haalt alles opnieuw op.
    ========================================================================= */
 
-var VERSIE = 'credo-tv-1';
+var VERSIE = 'credo-tv-2';
 
 var NODIG = [
   './',
@@ -32,6 +32,12 @@ var NODIG = [
   '../assets/img/studio-oefenzaal.jpg',
   '../assets/img/vloer/04.jpg',
   '../assets/img/studio-inkom.jpg',
+  '../assets/img/zaal1.jpg',
+  '../assets/img/performance/bewegen.jpg',
+  '../assets/img/performance/screening.jpg',
+  '../assets/img/rehab/manuele-therapie.jpg',
+  '../assets/img/vloer/07.jpg',
+  '../assets/img/vloer/09.jpg',
 
   '../assets/img/team/thomas.jpg',
   '../assets/img/team/milan.jpg',
