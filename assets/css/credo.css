@@ -1516,6 +1516,24 @@
   padding-left: 0; padding-right: 0;
 }
 
+/* De hero stond een maat te groot. Op een laptop van veertienhonderd liep
+   "Kom sterker terug." tot negentig procent van de breedte: de kop was dan
+   geen kop meer maar een muur, en van de opname erachter bleef een reep
+   over. Uitgezoomd zag het er meteen beter uit, en dat is precies wat hier
+   gebeurt - de kop gaat van zeven naar vijfeneenhalve rem, met de
+   tussenruimtes mee. De lopende tekst blijft wel op maat: die kleiner
+   zetten maakt hem niet mooier, alleen slechter leesbaar.
+
+   Dit staat op .hero-still en niet op .d-hero zelf: diezelfde klasse draagt
+   ook de kop boven de afsluiter onderaan, en die mag blijven staan zoals
+   hij staat. */
+@media (min-width: 640px) {
+  .hero-still .d-hero { font-size: clamp(2.6rem, 9.4vw, 5.5rem); }
+  .hero-still .frame-dark > .eyebrow { margin-bottom: 2rem; }
+  .hero-still .frame-dark > .mt-8 { margin-top: 2.25rem; }
+  .hero-still .btn-stack { margin-top: 2rem; }
+}
+
 @media (max-width: 639px) {
   .hero-still .frame-dark {
     padding-top: .5rem; padding-bottom: 0;

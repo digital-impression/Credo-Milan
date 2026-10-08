@@ -21,8 +21,12 @@
 <meta name="twitter:description" content="R&eacute;cup&eacute;rer ou performer. Choisissez votre parcours chez Credo &agrave; Diepenbeek.">
 <meta name="twitter:image" content="https://www.credorehabandperformance.com/assets/img/hero-performance-poster.jpg">
 
-<link rel="preload" as="image" fetchpriority="high" href="../assets/img/keuze-rehab.jpg">
-<link rel="preload" as="image" fetchpriority="high" href="../assets/img/keuze-performance.jpg">
+<!-- Dezelfde grens als in de picture-elementen hieronder, anders haalt een
+     telefoon de brede uitsnede alsnog op. -->
+<link rel="preload" as="image" fetchpriority="high" media="(min-width: 1024px)" href="../assets/img/keuze-rehab.jpg">
+<link rel="preload" as="image" fetchpriority="high" media="(min-width: 1024px)" href="../assets/img/keuze-performance.jpg">
+<link rel="preload" as="image" fetchpriority="high" media="(max-width: 1023px)" href="../assets/img/keuze-rehab-smal.jpg">
+<link rel="preload" as="image" fetchpriority="high" media="(max-width: 1023px)" href="../assets/img/keuze-performance-smal.jpg">
 
 <!-- Taalversies. Engels en Frans staan nu als landingspagina per taal en
      dragen noindex tot de vertaling er is; deze verwijzingen mogen blijven
@@ -72,6 +76,9 @@
     overflow: hidden; display: flex; background: var(--ink);
   }
   .helft-media { position: absolute; inset: 0; z-index: 0; overflow: hidden; }
+  /* Het picture-element mag geen doos van zichzelf maken: de maat van de
+     foto hangt aan .helft-media, niet aan de omhulling. */
+  .helft-media picture { display: contents; }
   .helft-foto {
     width: 100%; height: 100%; object-fit: cover; display: block;
     filter: grayscale(1) contrast(1.12); transform: scale(1.04);
@@ -105,17 +112,27 @@
   }
   .helft-performance .zin { margin-left: auto; }
 
+  /* De trefwoorden stonden eerst in omkaderde vakjes, zoals op het scherm in
+     de wachtzaal. Daar werkt dat, want daar staan ze alleen. Hier staan ze
+     tussen een kop en een knop, en dan zijn het drie witte blokjes die met
+     allebei vechten - en de knop is ook al een pil. Ze zijn nu wat ze horen
+     te zijn: een onderschrift. Kleiner, in het gedempte grijs van de
+     bovenregel, gescheiden door een punt in plaats van door een kader. Bij
+     het aanwijzen van de helft lichten ze mee op. */
   .helft .tags {
-    display: flex; flex-wrap: wrap; gap: clamp(.4rem, .7vw, .85rem);
-    margin-top: clamp(.9rem, 1.7vw, 1.7rem);
+    display: flex; flex-wrap: wrap; align-items: baseline;
+    gap: 0 .5rem; margin-top: clamp(.75rem, 1.4vw, 1.3rem);
   }
   .helft .tag {
-    font-size: clamp(10px, .95vw, 14px); font-weight: 500;
-    letter-spacing: .13em; text-transform: uppercase; color: var(--bone);
-    padding: .72em 1.1em; border: 1px solid rgba(244, 241, 234, .45);
-    transition: border-color .3s ease, background-color .3s ease, color .3s ease;
+    font-size: clamp(9.5px, .72vw, 11.5px); font-weight: 500;
+    letter-spacing: .16em; text-transform: uppercase;
+    color: var(--taupe-on-dark);
+    transition: color .3s ease;
   }
-  .helft:hover .tag, .helft:focus-visible .tag { border-color: rgba(244, 241, 234, .8); }
+  .helft .tag + .tag::before {
+    content: '\00b7'; margin-right: .5rem; color: rgba(173, 165, 149, .55);
+  }
+  .helft:hover .tag, .helft:focus-visible .tag { color: rgba(244, 241, 234, .85); }
   /* De knop vangt zelf geen muis - de hele helft is de link - dus zijn
      vulling en zijn maat hangen aan de helft. */
   .helft .helft-cta {
@@ -159,24 +176,26 @@
     .helft-rehab .helft-blok { padding-top: calc(var(--rand) + 52px);
                                padding-bottom: calc(var(--rand) + 2.2rem); }
 
-    /* Rechtsboven en linksonder, ook staand. De performancefoto heeft haar
-       onderwerp rechts, dus daar keert het beeld om zodat het hoofd naast
-       de tekst valt in plaats van erachter. */
+    /* Rechtsboven en linksonder, ook staand. Het beeld stond hier gespiegeld
+       omdat de vorige foto haar onderwerp aan de rechterkant had; de staande
+       uitsnede van nu heeft het in het midden, dus de spiegeling kan eruit -
+       en daarmee ook een omgekeerd logo op het shirt. */
     .helft-performance .helft-blok { text-align: right; }
     .helft-performance .tags { justify-content: flex-end; }
-    .helft-performance .helft-foto { transform: scaleX(-1) scale(1.04); }
-    .helft-performance:hover .helft-foto { transform: scaleX(-1) scale(1.08); }
 
+    /* De sluier blijft zwaar waar de tekst staat en laat daarboven meer van
+       de opname door dan eerst: met drie lagen van zestig procent over een
+       halve telefoon bleef er van de foto een donkere vlek over. */
     .helft-rehab .helft-sluier {
       background:
-        linear-gradient(to top,   rgba(13,13,13,.95) 0%, rgba(13,13,13,.45) 42%, rgba(13,13,13,0) 76%),
-        linear-gradient(to right, rgba(13,13,13,.6) 0%, rgba(13,13,13,0) 58%);
+        linear-gradient(to top,   rgba(13,13,13,.94) 0%, rgba(13,13,13,.4) 38%, rgba(13,13,13,0) 72%),
+        linear-gradient(to right, rgba(13,13,13,.45) 0%, rgba(13,13,13,0) 52%);
     }
     .helft-performance .helft-sluier {
       background:
-        linear-gradient(to top,  rgba(13,13,13,.95) 0%, rgba(13,13,13,.45) 42%, rgba(13,13,13,0) 76%),
-        linear-gradient(to left, rgba(13,13,13,.6) 0%, rgba(13,13,13,0) 58%),
-        linear-gradient(to bottom, rgba(13,13,13,.6) 0%, rgba(13,13,13,0) 22%);
+        linear-gradient(to top,  rgba(13,13,13,.94) 0%, rgba(13,13,13,.4) 38%, rgba(13,13,13,0) 72%),
+        linear-gradient(to left, rgba(13,13,13,.45) 0%, rgba(13,13,13,0) 52%),
+        linear-gradient(to bottom, rgba(13,13,13,.55) 0%, rgba(13,13,13,0) 22%);
     }
     /* Staand is een halve telefoon een stuk krapper dan een halve laptop.
        Alles gaat een maat omlaag; zonder dit duwt het blok op een scherm van
@@ -185,38 +204,28 @@
     .helft .kop  { font-size: clamp(1.55rem, 6.8vw, 2.3rem); line-height: .96; }
     .helft .zin  { margin-top: .5rem; font-size: 12.5px; line-height: 1.5;
                    max-width: 34ch; }
-    .helft .tags { margin-top: .6rem; gap: .3rem; }
-    .helft .tag  { font-size: 9.5px; letter-spacing: .1em; padding: .5em .75em; }
+    .helft .tags { margin-top: .55rem; }
+    .helft .tag  { font-size: 9.5px; letter-spacing: .13em; }
     .helft .helft-cta { margin-top: .75rem; }
 
   }
 
-  /* Onder de zevenhonderdtwintig past het niet meer: twee halve schermen van
-     honderdzesenzestig pixels dragen geen bovenregel, een kop van twee
-     regels, vier omkaderde labels en een knop. De kaders om de labels gaan
-     er dan af - dat scheelt het meeste hoogte en de woorden blijven staan. */
-  @media (max-width: 1023px) and (max-height: 720px) {
-    .helft .kop  { font-size: clamp(1.3rem, 6.2vw, 2rem); }
+  /* Onder de achthonderdtwintig past het niet meer: twee halve schermen
+     dragen geen bovenregel, een kop van twee regels, een zin, de
+     trefwoorden en een knop. In die orde gaat het eruit: eerst de zin,
+     dan de ruimte. De woorden zelf blijven staan - die zijn nu klein
+     genoeg om overal mee te kunnen. */
+  @media (max-width: 1023px) and (max-height: 819px) {
+    .helft .kop  { font-size: clamp(1.35rem, 6.4vw, 2.1rem); }
     .helft .oog  { margin-bottom: .35rem; }
-    .helft .tags { margin-top: .45rem; gap: 0 .45rem; }
-    .helft .tag  { border: 0; padding: 0; font-size: 10px; }
-    .helft .tag + .tag::before { content: '\00b7\00a0'; color: var(--taupe-on-dark); }
+    .helft .tags { margin-top: .4rem; }
     .helft .helft-cta { margin-top: .6rem; min-height: 32px;
                         padding: .45rem .9rem; font-size: 10px; }
   }
 
-  /* Onder de achthonderdtwintig past het niet meer: twee halve schermen dragen geen
-     bovenregel, een kop van twee regels, een zin, vier omkaderde labels en
-     een knop. In die orde gaat het eruit: eerst de kaders om de labels, dan
-     de zin. De woorden zelf blijven staan. */
-  @media (max-width: 1023px) and (max-height: 819px) {
-    .helft .kop  { font-size: clamp(1.35rem, 6.4vw, 2.1rem); }
-    .helft .oog  { margin-bottom: .35rem; }
-    .helft .tags { margin-top: .45rem; gap: 0 .45rem; }
-    .helft .tag  { border: 0; padding: 0; font-size: 10px; }
-    .helft .tag + .tag::before { content: '\00b7\00a0'; color: var(--taupe-on-dark); }
-    .helft .helft-cta { margin-top: .6rem; min-height: 32px;
-                        padding: .45rem .9rem; font-size: 10px; }
+  /* En onder de zevenhonderdtwintig nog een maat kleiner. */
+  @media (max-width: 1023px) and (max-height: 720px) {
+    .helft .kop  { font-size: clamp(1.3rem, 6.2vw, 2rem); }
   }
   @media (max-width: 1023px) and (max-height: 729px) {
     .helft .zin { display: none; }
@@ -234,8 +243,17 @@
     .helft-rehab       { clip-path: polygon(0 0, 57% 0, 43% 100%, 0 100%); }
     .helft-performance { clip-path: polygon(57% 0, 100% 0, 100% 100%, 43% 100%); }
 
-    .helft-rehab .helft-foto       { object-position: 34% 38%; }
-    .helft-performance .helft-foto { object-position: 42% 26%; }
+    /* De foto vult niet het hele scherm maar de kolom waarin de helft ligt.
+       Over de volle breedte wordt het beeld door een smalle hoge driehoek
+       bekeken, en dan staat het onderwerp er altijd veel te groot in - dat
+       is wat er mis was: een kop van driehonderdzestig pixels breed. In een
+       kolom van tweeënzestig procent klopt de maat wel. De twee kolommen
+       overlappen elkaar in het midden, want de snede loopt schuin; de
+       clip-path snijdt weg wat te veel is. */
+    .helft-rehab .helft-media       { right: 38%; }
+    .helft-performance .helft-media { left: 38%; }
+    .helft-rehab .helft-foto       { object-position: 50% 45%; }
+    .helft-performance .helft-foto { object-position: 50% 50%; }
 
     .helft-rehab .helft-sluier {
       background:
@@ -388,9 +406,15 @@
 
     <a href="rehab/" class="helft helft-rehab" aria-label="Vers Credo Revalidation et Kin&eacute;sith&eacute;rapie">
       <span class="helft-media">
-        <img class="helft-foto" src="../assets/img/keuze-rehab.jpg"
-             alt="Une patiente est allong&eacute;e sur la table de traitement au cabinet."
-             loading="eager" decoding="async" fetchpriority="high">
+        <!-- Twee uitsneden: liggend zodra de helften naast elkaar staan,
+             staand eronder. Met alleen de staande werd het beeld op een
+             laptop bijna twee keer uitvergroot, en dat zag je. -->
+        <picture>
+          <source media="(min-width: 1024px)" srcset="../assets/img/keuze-rehab.jpg">
+          <img class="helft-foto" src="../assets/img/keuze-rehab-smal.jpg"
+               alt="Un genou avec une cicatrice opératoire, posé sur la table de traitement."
+               loading="eager" decoding="async" fetchpriority="high">
+        </picture>
         <span class="helft-sluier" aria-hidden="true"></span>
       </span>
 
@@ -412,9 +436,12 @@
 
     <a href="performance/" class="helft helft-performance" aria-label="Vers Credo Personal Training et Performance">
       <span class="helft-media">
-        <img class="helft-foto" src="../assets/img/keuze-performance.jpg"
-             alt="Un athl&egrave;te sous la barre dans le power rack."
-             loading="eager" decoding="async" fetchpriority="high">
+        <picture>
+          <source media="(min-width: 1024px)" srcset="../assets/img/keuze-performance.jpg">
+          <img class="helft-foto" src="../assets/img/keuze-performance-smal.jpg"
+               alt="Un athlète pousse le traîneau sur la piste."
+               loading="eager" decoding="async" fetchpriority="high">
+        </picture>
         <span class="helft-sluier" aria-hidden="true"></span>
       </span>
 
