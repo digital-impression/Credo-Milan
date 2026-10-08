@@ -215,11 +215,11 @@
   .btn-ghost-dark::before { background: var(--ink); }
   .btn-ghost-dark:hover { color: var(--bone); border-color: var(--ink); }
 
-  /* De knop in een deur op de keuzepagina vangt zelf geen muis - de deur is
-     de link - dus de vulling hangt aan de deur. */
-  .door:hover .door-cta::before,
-  .door:focus-visible .door-cta::before { transform: none; }
-  .door:hover .door-cta, .door:focus-visible .door-cta {
+  /* De knop op de keuzepagina vangt zelf geen muis - de hele helft is de
+     link - dus de vulling hangt aan de helft. */
+  .helft:hover .helft-cta::before,
+  .helft:focus-visible .helft-cta::before { transform: none; }
+  .helft:hover .helft-cta, .helft:focus-visible .helft-cta {
     color: var(--ink); border-color: var(--bone);
   }
 

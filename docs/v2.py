@@ -285,4 +285,6 @@ V2 = {
 "EN": ("EN","EN"),
 "FR": ("FR","FR"),
 "NL": ("NL","NL"),
+"Heb je pijn, een blessure of een operatie achter de rug? We helpen je sterker terug dan voordien, met een aanpak op maat.": ("In pain, injured, or recovering from surgery? We get you back stronger than before, with an approach built around you.", "Douleur, blessure ou op\u00e9ration r\u00e9cente\u00a0? Nous vous ramenons plus fort qu\u2019avant, avec une approche sur mesure."),
+"Ontwikkel je algemene fitheid of atletisch vermogen, met begeleiding die bij jou past.": ("Build your general fitness or athletic capacity, with coaching that fits you.", "D\u00e9veloppez votre condition physique ou vos capacit\u00e9s athl\u00e9tiques, avec un accompagnement adapt\u00e9."),
 }

@@ -46,248 +46,274 @@
   body { padding-bottom: 0; }
 
   /* ============================================================
-     DE KEUZE — één scherm
-     Twee halve hero's naast elkaar, in dezelfde opmaak als de hero waar ze
-     naartoe leiden: full-bleed beeld, scrim, en de tekst in een frame linksonder.
+     DE KEUZE — één scherm, schuin gedeeld
+
+     Dezelfde opmaak als de scène "wat we doen" op het scherm in de
+     wachtzaal: één schuine naad over het hele vlak, revalidatie linksonder
+     en performance rechtsboven. De trefwoorden eronder zeggen in drie
+     woorden wat elk van de twee inhoudt, wat de lopende tekst die hier
+     stond overbodig maakt — op een deurpagina leest niemand een alinea,
+     die hoort op de pagina erachter.
+
      Er staat bewust niets onder: de pagina heeft één taak.
      ============================================================ */
-  /* The section owns the viewport; the doors take what is left after the rule,
-     so the whole choice lands on one screen with nothing to scroll to. */
-  .keuze { display: flex; flex-direction: column; min-height: 100svh; }
-  .doors { display: flex; flex-direction: column; flex: 1 1 auto; min-height: 0; }
-  .door {
-    position: relative; display: flex; align-items: flex-end;
-    flex: 1 1 50%; min-height: 0; overflow: hidden; background: var(--ink);
+  .keuze {
+    --rand: clamp(1.25rem, 4.2vw, 5rem);
+    position: relative;
+    min-height: 100svh;
+    display: flex; flex-direction: column;
+    overflow: hidden;
   }
-  @media (min-width: 1024px) {
-    .doors { flex-direction: row; }
-    .door { min-height: 0; transition: flex-grow .6s cubic-bezier(.22,.61,.36,1); }
-    .doors:hover .door { flex-grow: .84; }
-    .doors .door:hover { flex-grow: 1.32; }
-    .door + .door { border-left: 1px solid rgba(244,241,234,.22); }
-  }
-  .door + .door { border-top: 1px solid rgba(244,241,234,.22); }
-  @media (min-width: 1024px) { .door + .door { border-top: 0; } }
+  .helften { position: relative; flex: 1 1 auto; min-height: 0;
+             display: flex; flex-direction: column; }
 
-  /* Onder elkaar staat performance bovenaan. De scheidingslijn verhuist dan
-     mee: hij hoort tussen de twee deuren, niet boven de bovenste. */
-  @media (max-width: 1023px) {
-    .door-performance { order: -1; border-bottom: 1px solid rgba(244,241,234,.22); }
-    .door + .door { border-top: 0; }
+  .helft {
+    position: relative; flex: 1 1 50%; min-height: 0;
+    overflow: hidden; display: flex; background: var(--ink);
   }
-
-  .door-media { position: absolute; inset: 0; z-index: 0; overflow: hidden; }
-  .door-photo {
+  .helft-media { position: absolute; inset: 0; z-index: 0; overflow: hidden; }
+  .helft-foto {
     width: 100%; height: 100%; object-fit: cover; display: block;
-    filter: grayscale(1) contrast(1.12); transform: scale(1.03);
-    transition: filter .6s ease; will-change: transform;
+    filter: grayscale(1) contrast(1.12); transform: scale(1.04);
+    transition: filter .6s ease, transform 1.2s cubic-bezier(.22,.61,.36,1);
+    will-change: transform;
   }
-  /* De twee foto's zijn opnieuw gesneden zodat het hoofd rechts van de tekst
-     valt, in de open ruimte. Met de oude uitsnede lag er maar zesenvijftig
-     pixels speling tussen beeld en kader: te weinig om iets mee te sturen.
-     Verticaal blijft er wel speling, en die bepaalt hier waar het hoofd staat. */
-  .door-rehab .door-photo       { object-position: 50% 34%; }
-  /* De atleet moest een vijfde van de deurbreedte naar rechts en een tiende
-     naar beneden. Horizontaal valt daar met object-position niets aan te
-     doen: de foto is smaller dan de deur, dus hij wordt op breedte geschaald
-     en er blijft geen speling over. Wat wel werkt is het vak zelf breder
-     maken - hij staat links vast, dus alles in het beeld schuift evenredig
-     mee naar rechts: 61 procent maal 1,33 is 81. De foto wordt daardoor ook
-     een derde hoger, en dus telt het percentage hieronder anders dan de
-     tweeënveertig van vroeger; hij staat nu tien procent van de deurhoogte
-     lager dan toen.
-     Let op: Tailwind zet in zijn grondslag max-width 100% op elk beeld, dus
-     zonder max-width none blijft het vak toch op de deurbreedte staan. */
-  .door-performance .door-photo { width: 133%; max-width: none; object-position: 50% 29%; }
-  @media (min-width: 1024px) { .door-performance .door-photo { object-position: 50% 24%; } }
-  .door:hover .door-photo, .door:focus-visible .door-photo { filter: grayscale(0) contrast(1.02); }
+  .helft:hover .helft-foto, .helft:focus-visible .helft-foto {
+    filter: grayscale(0) contrast(1.02); transform: scale(1.08);
+  }
+  .helft-sluier { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
+  .helft-blok { position: relative; z-index: 2; width: 100%; padding: var(--rand); }
 
-  /* The rehab door has no footage behind it, so the photograph itself moves —
-     shallow and slow, and only while the door is pointed at. */
-  .door-push { animation: door-push 20s ease-in-out infinite alternate; animation-play-state: paused; }
-  .door:hover .door-push, .door:focus-visible .door-push { animation-play-state: running; }
-  @keyframes door-push { from { transform: scale(1.03); } to { transform: scale(1.085); } }
-  @media (hover: none) { .door-push { animation-play-state: running; } }
-  @media (prefers-reduced-motion: reduce) { .door-push { animation: none !important; } }
+  /* ---- de tekst in een helft ---- */
+  .helft .oog {
+    display: block; font-size: clamp(11px, 1vw, 14px); font-weight: 600;
+    letter-spacing: .22em; text-transform: uppercase; color: var(--taupe-on-dark);
+    margin-bottom: clamp(.7rem, 1.4vw, 1.4rem);
+  }
+  .helft .kop {
+    display: block; font-size: clamp(2.1rem, 4.4vw, 4.4rem); line-height: .94;
+    color: var(--bone);
+  }
+  /* De lopende tekst die hier vroeger stond, ingekort tot één zin. Op een
+     deurpagina leest niemand een alinea, maar helemaal niets zeggen is ook
+     zonde: dit is de enige plek waar staat waarvoor je bij welk van de twee
+     moet zijn. */
+  .helft .zin {
+    display: block; margin-top: clamp(.8rem, 1.5vw, 1.4rem);
+    max-width: 42ch; font-size: clamp(13px, 1.05vw, 16px); line-height: 1.6;
+    color: rgba(244, 241, 234, .78);
+  }
+  .helft-performance .zin { margin-left: auto; }
 
-  /* Same three-pass scrim as the heroes: bottom for the type, a wash from the
-     left, and a veil at the top so the transparent header stays readable. */
-  .door-scrim {
-    position: absolute; inset: 0; z-index: 1; pointer-events: none;
-    background:
-      linear-gradient(to top,  rgba(13,13,13,.96) 0%, rgba(13,13,13,.45) 38%, rgba(13,13,13,0) 72%),
-      linear-gradient(to right, rgba(13,13,13,.55) 0%, rgba(13,13,13,0) 55%),
-      linear-gradient(to bottom, rgba(13,13,13,.6) 0%, rgba(13,13,13,0) 22%);
-    transition: opacity .5s ease;
+  .helft .tags {
+    display: flex; flex-wrap: wrap; gap: clamp(.4rem, .7vw, .85rem);
+    margin-top: clamp(.9rem, 1.7vw, 1.7rem);
   }
-  .door:hover .door-scrim { opacity: .86; }
-
-  .door-body {
-    position: relative; z-index: 2; width: 100%;
-    padding: .9rem clamp(1rem, 3vw, 2.5rem) clamp(1rem, 3vw, 2.5rem);
+  .helft .tag {
+    font-size: clamp(10px, .95vw, 14px); font-weight: 500;
+    letter-spacing: .13em; text-transform: uppercase; color: var(--bone);
+    padding: .72em 1.1em; border: 1px solid rgba(244, 241, 234, .45);
+    transition: border-color .3s ease, background-color .3s ease, color .3s ease;
   }
-  .door-frame {
-    display: flex; flex-direction: column; align-items: flex-start;
-    padding: clamp(.95rem, 2.4vw, 2.25rem);
-  }
-  /* Dezelfde maat voor beide woorden en een vaste hoogte voor de tekst eronder:
-     anders staan de twee kaders op verschillende hoogte omdat ze onderaan
-     uitgelijnd zijn en verschillend hoog uitvallen. */
-  .door-titel {
-    display: block;
-    font-size: clamp(1.65rem, 3.6vw, 3.4rem);
-    line-height: .92;
-  }
-  @media (min-width: 1024px) { .door-copy { min-height: 4.9em; } }
-
-  /* De balk staat vast en dekt de bovenkant af, dus de deuren beginnen eronder. */
-  /* De kop is doorzichtig en ligt over de deuren, net als over de hero's.
-     Het verloop bovenaan de scrim houdt hem leesbaar; ruimte vrijhouden zou
-     een zwarte balk boven het beeld zetten. */
-  /* De knop is kleiner en omlijnd in plaats van massief. Massief bone was het
-     lichtste vlak op de pagina na de koppen, en met de boekknop in de kopbalk
-     stonden er drie van dezelfde pil op één scherm. De hele deur is bovendien
-     zelf de link, dus deze knop hoeft alleen te zeggen dat er iets te klikken
-     valt - niet om aandacht te vragen.
-     Dubbele klasse: Tailwind voegt zijn stylesheet na deze regels toe. */
-  .door .door-cta {
-    padding: .62rem 1.15rem;
-    min-height: 38px;
-    font-size: 11px;
-    letter-spacing: .2em;
-  }
-  .door-cta { pointer-events: none; }          /* the whole door is the link */
-  .door-cta svg { transition: transform .4s cubic-bezier(.22,.61,.36,1); }
-  .door:hover .door-cta svg { transform: translateX(5px); }
-  .door:focus-visible { outline: 2px solid var(--bone); outline-offset: -6px; }
-  @media (prefers-reduced-motion: reduce) {
-    .door, .door-photo, .door-scrim, .door-cta svg { transition: none !important; }
-    .doors:hover .door, .doors .door:hover { flex-grow: 1; }
+  .helft:hover .tag, .helft:focus-visible .tag { border-color: rgba(244, 241, 234, .8); }
+  /* De knop vangt zelf geen muis - de hele helft is de link - dus zijn
+     vulling en zijn maat hangen aan de helft. */
+  .helft .helft-cta {
+    margin-top: clamp(1rem, 2vw, 2rem);
+    padding: .62rem 1.15rem; min-height: 38px;
+    font-size: 11px; letter-spacing: .2em;
+    pointer-events: none;
   }
 
-  /* ==============================================================
-     De schuine naad tussen de twee deuren
-     Elke deur knipt zijn eigen hoek weg en de tweede schuift met een
-     negatieve marge over de eerste heen, zodat de twee sneden op
-     elkaar passen en er geen streep of gat tussen valt. De tekst
-     blijft in beide deuren linksonder staan, want daar snijdt geen
-     van beide; wel krijgt elk blok ruimte aan de snijzijde.
-     ============================================================== */
-  .door + .door { border-top: 0 !important; border-left: 0 !important; }
-
+  /* ---- de naad ---- */
+  /* Niet een gedraaide lijn maar dezelfde snede, twee pixels breed. Op het
+     scherm in de wachtzaal kan een hoek van 13,97 graden: dat toneel is
+     altijd 1920 bij 1080. Op het web niet - op een laptop van 1440 bij 900
+     is de juiste hoek 12,65 graden, en een vaste draaiing loopt dan weg van
+     de werkelijke snede. Met dezelfde percentages als de helften klopt hij
+     op elk formaat, zonder rekenwerk.
+     Hij vangt geen muis: anders is er een strook in het midden waar klikken
+     niets doet. */
+  .keuze-naad { display: none; }
   @media (min-width: 1024px) {
-    .door-rehab {
-      clip-path: polygon(0 0, 100% 0, calc(100% - 110px) 100%, 0 100%);
+    .keuze-naad {
+      display: block; position: absolute; inset: 0; z-index: 3;
+      background: var(--bone); pointer-events: none;
+      clip-path: polygon(calc(57% - 1px) 0, calc(57% + 1px) 0,
+                         calc(43% + 1px) 100%, calc(43% - 1px) 100%);
     }
-    .door-performance {
-      margin-left: -110px;
-      clip-path: polygon(110px 0, 100% 0, 100% 100%, 0 100%);
-    }
-    .door-rehab .door-body { padding-right: 150px; }
-    /* Naast elkaar staat het adres rechtsonder, in de hoek van deze deur.
-       De knop eronderdoor laten lopen gaf een botsing tussen 1024 en 1180,
-       waar de deur het smalst is; deze extra lucht houdt de regel vrij. */
-    .door-performance .door-body { padding-left: 150px; padding-bottom: calc(clamp(1rem, 3vw, 2.5rem) + 1.9rem); }
   }
 
+  /* ============================================================
+     ONDER ELKAAR (tot 1024)
+     De schuine naad van de wachtzaal werkt alleen in de breedte. Staand
+     wordt het een horizontale snede, maar de verdeling blijft dezelfde
+     gedachte: performance rechtsboven, revalidatie linksonder.
+     ============================================================ */
   @media (max-width: 1023px) {
-    /* Onder elkaar staat de tekst in beide deuren onderaan, maar alleen de
-       bovenste verliest hoogte aan de kopbalk. Zo begon het performanceblok
-       tweeënveertig pixels onder de balk terwijl het revalidatieblok er
-       bijna vijfhonderd boven zich had. De vrije ruimte wordt daarom niet
-       meer gelijk verdeeld: de bovenste deur krijgt het grootste deel.
-       Dit moet met flex-grow en niet met een basis in procenten: .keuze
-       heeft een min-height en geen vaste hoogte, dus een percentage heeft
-       niets om tegen te rekenen en valt terug op de inhoud. Zo houdt elke
-       deur ook op een kort scherm eerst zijn eigen tekst heel. */
-    .door-performance { flex-grow: 2.4; }
-    .door-rehab       { flex-grow: .78; }
+    .helft-performance { order: -1; }
+    .helft { align-items: flex-end; }
+    .helft-performance { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 calc(100% - 52px)); }
+    .helft-rehab { margin-top: -52px; clip-path: polygon(0 52px, 100% 0, 100% 100%, 0 100%); }
+    .helft-performance .helft-blok { padding-bottom: calc(var(--rand) + 52px); }
+    .helft-rehab .helft-blok { padding-top: calc(var(--rand) + 52px);
+                               padding-bottom: calc(var(--rand) + 2.2rem); }
 
-    /* Onder de achthonderd past het niet meer: twee blokken van rond
-       de tweehonderdvijftig plus een kopbalk van drieënzeventig laten op een
-       scherm van zeshonderdzevenenzestig niets over, en het bovenste blok
-       schoof achter de balk. Daar wordt het blok zelf kleiner. De dubbele
-       klasse is nodig omdat Tailwind zijn stylesheet na deze regels invoegt
-       en een enkele klasse het dan van de utilities verliest. */
-    @media (max-height: 799px) {
-      .door .door-titel { font-size: 1.45rem; }
-      .door .door-copy  { margin-top: .5rem; font-size: 14px; line-height: 1.45; }
-      .door .door-cta   { margin-top: .85rem; }
-      .door .door-frame::before { margin-bottom: .55rem; }
-    }
-    .door-performance {
-      border-bottom: 0 !important;
-      clip-path: polygon(0 0, 100% 0, 100% 100%, 0 calc(100% - 52px));
-    }
-    .door-rehab {
-      margin-top: -52px;
-      clip-path: polygon(0 52px, 100% 0, 100% 100%, 0 100%);
-    }
-    .door-performance .door-body { padding-bottom: 66px; }
-    .door-rehab .door-body { padding-top: 66px; }
-  }
+    /* Rechtsboven en linksonder, ook staand. De performancefoto heeft haar
+       onderwerp rechts, dus daar keert het beeld om zodat het hoofd naast
+       de tekst valt in plaats van erachter. */
+    .helft-performance .helft-blok { text-align: right; }
+    .helft-performance .tags { justify-content: flex-end; }
+    .helft-performance .helft-foto { transform: scaleX(-1) scale(1.04); }
+    .helft-performance:hover .helft-foto { transform: scaleX(-1) scale(1.08); }
 
-  /* ==============================================================
-     Geen doos om de tekst
-     Het kader deed niets wat de scrim niet al doet - tot 96 procent
-     inkt onderaan, 55 van links, 60 van boven - en tekende binnen een
-     deur die zelf al een vlak met een rand is een tweede rechthoek.
-     Wat blijft is een kort streepje boven de titel: dat groepeert
-     titel, tekst en knop nog steeds als een blok.
-     ============================================================== */
-  .door-frame { border: 0; padding: 0; }
-  .door-frame::before {
-    content: ""; display: block;
-    width: clamp(48px, 6vw, 84px); height: 1px;
-    background: rgba(244, 241, 234, .6);
-    margin-bottom: clamp(.9rem, 2vw, 1.5rem);
-  }
-  .door-frame > span:first-of-type { margin-top: 0; }
-
-  /* ==============================================================
-     Twee deuren die elkaars spiegelbeeld zijn
-     Beide foto's hadden hun onderwerp rechts en beide tekstblokken
-     stonden linksonder: twee keer dezelfde compositie onder elkaar.
-     Op gsm keert de revalidatiefoto nu om en verhuist zijn tekst mee
-     naar rechts, zodat de twee deuren tegenover elkaar staan in
-     plaats van naast elkaar hetzelfde te doen.
-     ============================================================== */
-  @media (max-width: 1023px) {
-    .door-rehab .door-photo { transform: scaleX(-1) scale(1.03); }
-    .door-rehab .door-frame { align-items: flex-end; text-align: right; }
-    /* De scrim wast vanaf links in; gespiegeld hoort hij vanaf rechts. */
-    .door-rehab .door-scrim {
+    .helft-rehab .helft-sluier {
       background:
-        linear-gradient(to top,  rgba(13,13,13,.96) 0%, rgba(13,13,13,.45) 38%, rgba(13,13,13,0) 72%),
-        linear-gradient(to left, rgba(13,13,13,.55) 0%, rgba(13,13,13,0) 55%),
+        linear-gradient(to top,   rgba(13,13,13,.95) 0%, rgba(13,13,13,.45) 42%, rgba(13,13,13,0) 76%),
+        linear-gradient(to right, rgba(13,13,13,.6) 0%, rgba(13,13,13,0) 58%);
+    }
+    .helft-performance .helft-sluier {
+      background:
+        linear-gradient(to top,  rgba(13,13,13,.95) 0%, rgba(13,13,13,.45) 42%, rgba(13,13,13,0) 76%),
+        linear-gradient(to left, rgba(13,13,13,.6) 0%, rgba(13,13,13,0) 58%),
         linear-gradient(to bottom, rgba(13,13,13,.6) 0%, rgba(13,13,13,0) 22%);
     }
+    /* Staand is een halve telefoon een stuk krapper dan een halve laptop.
+       Alles gaat een maat omlaag; zonder dit duwt het blok op een scherm van
+       zeshonderdzevenenzestig de kop achter de balkbalk. */
+    .helft .oog  { font-size: 10.5px; letter-spacing: .18em; margin-bottom: .5rem; }
+    .helft .kop  { font-size: clamp(1.55rem, 6.8vw, 2.3rem); line-height: .96; }
+    .helft .zin  { margin-top: .5rem; font-size: 12.5px; line-height: 1.5;
+                   max-width: 34ch; }
+    .helft .tags { margin-top: .6rem; gap: .3rem; }
+    .helft .tag  { font-size: 9.5px; letter-spacing: .1em; padding: .5em .75em; }
+    .helft .helft-cta { margin-top: .75rem; }
+
   }
 
-  /* ==============================================================
-     Het adres
-     De balk onderaan was een zwarte strook onder twee foto's, met
-     drie dingen erin die er alle drie al stonden: het nummer staat
-     in de kop, de drie woorden staan op beide subpagina's. Wat
-     overblijft is het adres, en dat past in de vrije hoek van de
-     onderste deur: op gsm links (de tekst is daar naar rechts
-     gegaan), op laptop rechts (de tekst staat daar links).
-     ============================================================== */
-  .keuze { position: relative; }
-  .keuze-adres {
-    position: absolute; z-index: 3; pointer-events: none;
-    bottom: clamp(.7rem, 2vw, 1.4rem);
-    left: clamp(1rem, 3vw, 2.5rem);
-    color: rgba(244, 241, 234, .55);
+  /* Onder de zevenhonderdtwintig past het niet meer: twee halve schermen van
+     honderdzesenzestig pixels dragen geen bovenregel, een kop van twee
+     regels, vier omkaderde labels en een knop. De kaders om de labels gaan
+     er dan af - dat scheelt het meeste hoogte en de woorden blijven staan. */
+  @media (max-width: 1023px) and (max-height: 720px) {
+    .helft .kop  { font-size: clamp(1.3rem, 6.2vw, 2rem); }
+    .helft .oog  { margin-bottom: .35rem; }
+    .helft .tags { margin-top: .45rem; gap: 0 .45rem; }
+    .helft .tag  { border: 0; padding: 0; font-size: 10px; }
+    .helft .tag + .tag::before { content: '\00b7\00a0'; color: var(--taupe-on-dark); }
+    .helft .helft-cta { margin-top: .6rem; min-height: 32px;
+                        padding: .45rem .9rem; font-size: 10px; }
   }
+
+  /* Onder de achthonderdtwintig past het niet meer: twee halve schermen dragen geen
+     bovenregel, een kop van twee regels, een zin, vier omkaderde labels en
+     een knop. In die orde gaat het eruit: eerst de kaders om de labels, dan
+     de zin. De woorden zelf blijven staan. */
+  @media (max-width: 1023px) and (max-height: 819px) {
+    .helft .kop  { font-size: clamp(1.35rem, 6.4vw, 2.1rem); }
+    .helft .oog  { margin-bottom: .35rem; }
+    .helft .tags { margin-top: .45rem; gap: 0 .45rem; }
+    .helft .tag  { border: 0; padding: 0; font-size: 10px; }
+    .helft .tag + .tag::before { content: '\00b7\00a0'; color: var(--taupe-on-dark); }
+    .helft .helft-cta { margin-top: .6rem; min-height: 32px;
+                        padding: .45rem .9rem; font-size: 10px; }
+  }
+  @media (max-width: 1023px) and (max-height: 729px) {
+    .helft .zin { display: none; }
+  }
+
+  /* ============================================================
+     NAAST ELKAAR (vanaf 1024)
+     De snede van de wachtzaal, letterlijk: van 57 procent bovenaan naar
+     43 procent onderaan. De blokken staan in de twee hoeken die vrij
+     blijven.
+     ============================================================ */
   @media (min-width: 1024px) {
-    .keuze-adres { left: auto; right: clamp(1rem, 3vw, 2.5rem); }
+    .helften { flex-direction: row; }
+    .helft { position: absolute; inset: 0; flex: none; }
+    .helft-rehab       { clip-path: polygon(0 0, 57% 0, 43% 100%, 0 100%); }
+    .helft-performance { clip-path: polygon(57% 0, 100% 0, 100% 100%, 43% 100%); }
+
+    .helft-rehab .helft-foto       { object-position: 34% 38%; }
+    .helft-performance .helft-foto { object-position: 42% 26%; }
+
+    .helft-rehab .helft-sluier {
+      background:
+        linear-gradient(to top,   rgba(13,13,13,.94) 0%, rgba(13,13,13,.34) 52%, rgba(13,13,13,.12) 100%),
+        linear-gradient(to right, rgba(13,13,13,.5) 0%, rgba(13,13,13,0) 60%);
+    }
+    .helft-performance .helft-sluier {
+      background:
+        linear-gradient(to bottom, rgba(13,13,13,.94) 0%, rgba(13,13,13,.34) 54%, rgba(13,13,13,.12) 100%),
+        linear-gradient(to left,   rgba(13,13,13,.5) 0%, rgba(13,13,13,0) 60%);
+    }
+
+    .helft-blok { position: absolute; width: min(44vw, 700px); padding: 0; }
+    .helft-rehab .helft-blok {
+      left: var(--rand); bottom: clamp(4.5rem, 9vh, 9rem);
+    }
+    .helft-performance .helft-blok {
+      right: var(--rand); top: clamp(6.6rem, 11vh, 10rem); text-align: right;
+    }
+    .helft-performance .tags { justify-content: flex-end; }
+
   }
-  /* Onder elkaar staat de revalidatieknop rechtsonder in dezelfde hoek waar
-     het adres begint. De tekst van die deur schuift daarom een regelhoogte
-     omhoog, zodat het adres eronder vrij blijft. */
-  @media (max-width: 1023px) {
-    .door-rehab .door-body { padding-bottom: 3.25rem; }
+
+  /* ============================================================
+     HET INTRO
+     Hetzelfde kunstje als de opening op het scherm in de wachtzaal: het
+     woord staat wit in een zwart vlak dat op multiply staat, en wit laat
+     de film eronder door. Daarna zoomt het vlak in tot alleen nog film
+     overblijft en vervaagt het.
+
+     Het staat op hidden tot het script het aanzet. Draait er geen script,
+     dan is er geen intro - en niet een zwart scherm dat blijft staan.
+     ============================================================ */
+  #intro {
+    position: fixed; inset: 0; z-index: 200;
+    background: var(--ink); overflow: hidden;
+  }
+  #intro video {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    object-fit: cover; filter: grayscale(1) contrast(1.12);
+  }
+  #intro-masker {
+    position: absolute; inset: 0; background: var(--ink);
+    mix-blend-mode: multiply;                 /* wit laat door, zwart niet */
+    display: flex; align-items: center; justify-content: center;
+    will-change: transform;
+  }
+  /* Kan de browser niet door het masker heen kijken, dan staat het woord er
+     gewoon in het bot. Beter dan een zwart vlak. */
+  #intro.plat #intro-masker { mix-blend-mode: normal; background: none; }
+  #intro.plat #intro-woord  { color: var(--bone); }
+  #intro-woord {
+    color: #fff; display: flex; white-space: nowrap;
+    font-size: clamp(4.5rem, 25vw, 22rem); line-height: .8; letter-spacing: .01em;
+  }
+  #intro-woord .letter { display: block; overflow: hidden; padding: .03em 0; }
+  #intro-woord .letter i { display: block; font-style: normal; transform: translateY(106%); }
+  #intro.speelt .letter i {
+    transform: none;
+    transition: transform .6s cubic-bezier(.22,.61,.36,1);
+  }
+  #intro.weg #intro-masker {
+    transform: scale(30);
+    transition: transform .72s cubic-bezier(.55,0,.78,.16);
+  }
+  #intro.weg { opacity: 0; transition: opacity .26s ease .5s; }
+  @media (prefers-reduced-motion: reduce) { #intro { display: none; } }
+
+  /* ============================================================
+     Het adres
+     Het enige dat buiten de twee blokken staat. Rechtsonder, want daar is
+     in beide indelingen de hoek vrij.
+     ============================================================ */
+  .keuze-adres {
+    position: absolute; z-index: 4; pointer-events: none;
+    bottom: clamp(.7rem, 2vw, 1.4rem);
+    right: clamp(1rem, 3vw, 2.5rem);
+    color: rgba(244, 241, 234, .55);
   }
 </style>
 </head>
@@ -295,6 +321,17 @@
 <body class="font-body bg-ink text-bone antialiased">
 
 <a href="#main" class="skip-link">Aller au contenu principal</a>
+
+<!-- Het intro. Staat op hidden tot het script het aanzet; zonder script
+     slaat de bezoeker het dus gewoon over. -->
+<div id="intro" hidden aria-hidden="true">
+  <video id="intro-film" muted playsinline autoplay loop preload="auto"
+         poster="../assets/img/rehab/hero-still.jpg">
+    <source src="../assets/video/hero-rehab.webm" type="video/webm">
+    <source src="../assets/video/hero-rehab.mp4" type="video/mp4">
+  </video>
+  <div id="intro-masker"><div id="intro-woord" class="display"></div></div>
+</div>
 
 <!-- ============================================================
      HEADER — no section nav here; the homepage has one job.
@@ -347,57 +384,61 @@
 
   <h1 id="keuze-title" class="sr-only">Credo Rehab &amp; Performance&nbsp;: kin&eacute;sith&eacute;rapie, revalidation et entra&icirc;nement de performance &agrave; Diepenbeek</h1>
 
-  <div class="doors">
+  <div class="helften grain-pin">
 
-    <a href="rehab/" class="door door-rehab group" aria-label="Vers Credo Revalidation et Kin&eacute;sith&eacute;rapie">
-
-      <span class="door-media">
-        <img class="door-photo" src="../assets/img/keuze-rehab.jpg"
-             alt="Une patiente est allong&eacute;e sur la table de traitement au cabinet." loading="eager" decoding="async" fetchpriority="high">
-        <span class="door-scrim" aria-hidden="true"></span>
+    <a href="rehab/" class="helft helft-rehab" aria-label="Vers Credo Revalidation et Kin&eacute;sith&eacute;rapie">
+      <span class="helft-media">
+        <img class="helft-foto" src="../assets/img/keuze-rehab.jpg"
+             alt="Une patiente est allong&eacute;e sur la table de traitement au cabinet."
+             loading="eager" decoding="async" fetchpriority="high">
+        <span class="helft-sluier" aria-hidden="true"></span>
       </span>
 
-      <span class="door-body">
-        <span class="frame-dark door-frame">
-          <span class="display block mt-3 md:mt-8 text-bone leading-[0.94]
-                       door-titel">Revalidation &amp;<br>Kin&eacute;sith&eacute;rapie</span>
-
-          <span class="door-copy block mt-3 md:mt-8 max-w-[36ch] text-[15px] text-bone/75 prose-body">Vous avez mal, vous vous &ecirc;tes bless&eacute; ou vous sortez d&rsquo;une op&eacute;ration&nbsp;? Nous vous aidons volontiers &agrave; revenir meilleur et plus fort qu&rsquo;avant, gr&acirc;ce &agrave; notre approche individualis&eacute;e.</span>
-
-          <span class="btn btn-ghost mt-5 md:mt-10 door-cta">Vers revalidation
-            <svg width="16" height="9" viewBox="0 0 16 9" fill="none" aria-hidden="true">
-              <path d="M0 4.5h14M10.5 1L14 4.5 10.5 8" stroke="currentColor" stroke-width="1.4"/></svg>
-          </span>
+      <span class="helft-blok">
+        <span class="oog">Revalidation &amp; kin&eacute;sith&eacute;rapie</span>
+        <span class="display kop">R&eacute;cup&eacute;rez.<br>Revenez plus fort.</span>
+        <span class="zin">Douleur, blessure ou opération récente ? Nous vous ramenons plus fort qu’avant, avec une approche sur mesure.</span>
+        <span class="tags">
+          <span class="tag">Th&eacute;rapie manuelle</span>
+          <span class="tag">Th&eacute;rapie par l&rsquo;exercice</span>
+          <span class="tag">Dry needling</span>
+        </span>
+        <span class="btn btn-ghost helft-cta door-cta">Vers revalidation
+          <svg width="16" height="9" viewBox="0 0 16 9" fill="none" aria-hidden="true">
+            <path d="M0 4.5h14M10.5 1L14 4.5 10.5 8" stroke="currentColor" stroke-width="1.4"/></svg>
         </span>
       </span>
     </a>
 
-    <a href="performance/" class="door door-performance group" aria-label="Vers Credo Personal Training et Performance">
-
-      <span class="door-media">
-        <img class="door-photo" src="../assets/img/keuze-performance.jpg"
-             alt="Un athl&egrave;te sous la barre dans le power rack." loading="eager" decoding="async" fetchpriority="high">
-        <span class="door-scrim" aria-hidden="true"></span>
+    <a href="performance/" class="helft helft-performance" aria-label="Vers Credo Personal Training et Performance">
+      <span class="helft-media">
+        <img class="helft-foto" src="../assets/img/keuze-performance.jpg"
+             alt="Un athl&egrave;te sous la barre dans le power rack."
+             loading="eager" decoding="async" fetchpriority="high">
+        <span class="helft-sluier" aria-hidden="true"></span>
       </span>
 
-      <span class="door-body">
-        <span class="frame-dark door-frame">
-          <span class="display block mt-3 md:mt-8 text-bone leading-[0.94]
-                       door-titel">Personal Training<br>&amp; Performance</span>
-
-          <span class="door-copy block mt-3 md:mt-8 max-w-[36ch] text-[15px] text-bone/75 prose-body">D&eacute;veloppez votre condition physique g&eacute;n&eacute;rale ou vos capacit&eacute;s athl&eacute;tiques avec un accompagnement qui vous convient. Faites aujourd&rsquo;hui le pas vers un corps plus fort et plus en forme.</span>
-
-          <span class="btn btn-ghost mt-5 md:mt-10 door-cta">Vers performance
-            <svg width="16" height="9" viewBox="0 0 16 9" fill="none" aria-hidden="true">
-              <path d="M0 4.5h14M10.5 1L14 4.5 10.5 8" stroke="currentColor" stroke-width="1.4"/></svg>
-          </span>
+      <span class="helft-blok">
+        <span class="oog">Personal training &amp; performance</span>
+        <span class="display kop">Au-del&agrave; de votre<br>ancien niveau.</span>
+        <span class="zin">Développez votre condition physique ou vos capacités athlétiques, avec un accompagnement adapté.</span>
+        <span class="tags">
+          <span class="tag">Screening</span>
+          <span class="tag">Entra&icirc;nement fonctionnel</span>
+          <span class="tag">Nutrition sportive</span>
+          <span class="tag">Mode de vie</span>
+        </span>
+        <span class="btn btn-ghost helft-cta door-cta">Vers performance
+          <svg width="16" height="9" viewBox="0 0 16 9" fill="none" aria-hidden="true">
+            <path d="M0 4.5h14M10.5 1L14 4.5 10.5 8" stroke="currentColor" stroke-width="1.4"/></svg>
         </span>
       </span>
     </a>
+
+    <span class="keuze-naad" aria-hidden="true"></span>
 
   </div>
 
-  <!-- grain-pin: anders zet de korrellaag dit blok terug in de stroom. -->
   <p class="keuze-adres grain-pin eyebrow">Kapelstraat 89 &middot; 3590 Diepenbeek</p>
 </section>
 
@@ -476,6 +517,59 @@
 </script>
 
 <script src="../assets/js/credo.js" defer></script>
+
+<script>
+  /* Het intro van twee seconden. Eenmaal per sessie: wie van een subpagina
+     terugkomt wil niet opnieuw twee seconden wachten voor hij kan kiezen. */
+  (function () {
+    var vak = document.getElementById('intro');
+    if (!vak) return;
+    var traag = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var alGezien;
+    try { alGezien = sessionStorage.getItem('credo-intro'); } catch (e) { alGezien = null; }
+    if (traag || alGezien) { vak.remove(); return; }
+    try { sessionStorage.setItem('credo-intro', '1'); } catch (e) {}
+
+    var woord = document.getElementById('intro-woord');
+    'Credo'.split('').forEach(function (ch, i) {
+      var l = document.createElement('span');
+      l.className = 'letter';
+      var b = document.createElement('i');
+      b.textContent = ch;
+      b.style.transitionDelay = (0.05 + i * 0.06).toFixed(2) + 's';
+      l.appendChild(b);
+      woord.appendChild(l);
+    });
+
+    if (!(window.CSS && CSS.supports && CSS.supports('mix-blend-mode', 'multiply'))) {
+      vak.classList.add('plat');
+    }
+    vak.hidden = false;
+    document.documentElement.style.overflow = 'hidden';
+
+    var film = document.getElementById('intro-film');
+    if (film) { var pr = film.play(); if (pr && pr.catch) pr.catch(function () {}); }
+
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () { vak.classList.add('speelt'); });
+    });
+
+    // Waar we induiken: midden in de derde letter. Daar is het masker wit,
+    // dus na het inzoomen is het hele scherm film en valt de overgang niet op.
+    var derde = woord.children[2];
+    if (derde) {
+      var r = derde.getBoundingClientRect();
+      document.getElementById('intro-masker').style.transformOrigin =
+        (r.left + r.width / 2) + 'px ' + (r.top + r.height / 2) + 'px';
+    }
+
+    setTimeout(function () { vak.classList.add('weg'); }, 1150);
+    setTimeout(function () {
+      document.documentElement.style.overflow = '';
+      vak.remove();
+    }, 2050);
+  })();
+</script>
 
 </body>
 </html>
