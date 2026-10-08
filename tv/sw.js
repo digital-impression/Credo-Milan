@@ -69,12 +69,17 @@ self.addEventListener('activate', function (e) {
 
 self.addEventListener('fetch', function (e) {
   if (e.request.method !== 'GET') return;
-  // Een video vraagt stukken op (Range). Die gaan uit de cache als geheel
-  // bestand, wat elke browser aanvaardt; het netwerk wordt dan niet gevraagd.
   var url = e.request.url.split('#')[0];
+
+  // Een videospeler vraagt geen heel bestand op maar stukken ervan, met een
+  // Range-kop, en verwacht een 206 terug. Hier wordt het gevraagde stuk uit
+  // het gecachete bestand gesneden, zoals een server zou doen; anders blijft
+  // de video offline zwart.
+  var bereik = e.request.headers.get('range');
+  if (bereik) { e.respondWith(uitBereik(e.request, url, bereik)); return; }
+
   e.respondWith(
     caches.match(url, { ignoreSearch: true }).then(function (hit) {
-      if (hit && e.request.headers.has('range')) return hit;
       // Uit de cache serveren en ondertussen op de achtergrond verversen.
       var net = fetch(e.request).then(function (r) {
         if (r && r.status === 200 && r.type === 'basic') {
@@ -87,3 +92,29 @@ self.addEventListener('fetch', function (e) {
     })
   );
 });
+
+function uitBereik(verzoek, url, bereik) {
+  // "bytes=12345-", "bytes=12345-23456" of "bytes=-500" (de laatste 500)
+  var m = /bytes=(\d*)-(\d*)/.exec(bereik);
+  return caches.match(url, { ignoreSearch: true }).then(function (hit) {
+    if (!hit || !m) return fetch(verzoek);
+    return hit.arrayBuffer().then(function (buf) {
+      var totaal = buf.byteLength, start, eind;
+      if (m[1] === '' && m[2] !== '') { start = Math.max(0, totaal - parseInt(m[2], 10)); eind = totaal - 1; }
+      else { start = parseInt(m[1] || '0', 10); eind = m[2] ? Math.min(parseInt(m[2], 10), totaal - 1) : totaal - 1; }
+      if (start > eind) {
+        return new Response(null, { status: 416, headers: { 'Content-Range': 'bytes */' + totaal } });
+      }
+      return new Response(buf.slice(start, eind + 1), {
+        status: 206,
+        statusText: 'Partial Content',
+        headers: {
+          'Content-Type': hit.headers.get('Content-Type') || 'application/octet-stream',
+          'Content-Length': String(eind - start + 1),
+          'Content-Range': 'bytes ' + start + '-' + eind + '/' + totaal,
+          'Accept-Ranges': 'bytes',
+        },
+      });
+    });
+  }).catch(function () { return fetch(verzoek); });
+}
