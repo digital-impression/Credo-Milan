@@ -34,86 +34,97 @@ Zet in alle gevallen de slaapstand en de screensaver van het toestel uit. De
 pagina vraagt zelf om het scherm wakker te houden, maar niet elke speler
 luistert daarnaar.
 
-## Geen dia's maar shots
+## Geen dia's maar een film
 
-Het scherm is een montage, geen diavoorstelling. Dat zit in vier keuzes, en wie
-eraan werkt doet er goed aan ze niet terug te draaien:
+Het scherm is een film in scènes, geen diavoorstelling. Dat zit in een paar
+keuzes, en wie eraan werkt doet er goed aan ze niet terug te draaien:
 
-1. **Beeld is de hoofdzaak.** Elk shot is beeld dat beweegt; tekst is een
-   lower-third die kort komt en weer gaat. Geen koppen in het midden.
-2. **Harde cuts.** Honderd milliseconden, geen overvloeier van een seconde.
-3. **Geen meubilair.** Geen voortgangsbalk, geen teller, geen sectiekoppen met
-   nummers. Dat is de taal van een presentatie en precies wat verraadt dat het
-   er een is.
-4. **Ritme.** De shots duren niet allemaal even lang: twee seconden, dan vijf,
-   dan anderhalf. Gelijke lengtes voelen meteen als een diareeks.
+1. **Eén idee per scène, groot.** Geen kop met een opsomming eronder.
+2. **Typografie als beeld.** Woorden die uit een naad omhoog komen, cijfers
+   gevuld met fotografie, een naam die de breedte van het scherm pakt.
+3. **Montage in plaats van overvloeiers.** Een schuine baan veegt over het
+   beeld, met dezelfde helling als de naad op de site.
+4. **Alles beweegt, ook als er niets gebeurt.** De foto's drijven, de korrel
+   leeft, de banden lopen.
+5. **Geen meubilair.** Geen voortgangsbalk, geen teller, geen genummerde
+   koppen. Dat is de taal van een presentatie.
 
-Het beeld staat in een kader van **2:1** met zwarte balken erboven en eronder.
-Niet 2.39:1, al is dat filmischer: de hele fotobibliotheek is vierkant of
-staand, en in scope zou een portret tweederde van zijn hoogte kwijt zijn.
+Alles wordt getekend op een vast toneel van 1920 bij 1080 en in zijn geheel
+geschaald, zodat de verhoudingen op elke televisie kloppen. De kleinste tekst
+is 24 pixels op die 1080: gezet voor kijkafstand, niet voor een laptop.
+
+## De letters
+
+Drie lettertypes, alle drie in `tv/fonts/` en niet bij Google, want een bestand
+van een andere server kan niet mee bewaard worden voor als het netwerk wegvalt.
+
+- **Anton** voor alles wat groot is: koppen, namen, cijfers, de klok.
+- **Newsreader** voor de lopende tekst en de citaten. Een serif met een
+  optische as; op deze maten tekent hij als een krantenkop. De citaten staan
+  in zijn cursief.
+- **Inter** alleen nog voor wat in kapitalen met spatiëring staat: de labels,
+  het hoofdstuk, de tabel met de tarieven.
 
 ## De inhoud wijzigen
 
 Alles staat in **`tv/inhoud.js`**. Dat is het enige bestand dat je aanraakt.
-Bovenaan staan de praktijkgegevens en de openingsuren, daaronder de shotlijst
-in de volgorde waarin ze voorbijkomen.
+Bovenaan staan de praktijkgegevens en de openingsuren, daaronder de scènes in
+de volgorde waarin ze voorbijkomen.
 
-Een shot is een van deze drie:
+Elke scène heeft een `soort`, en die bepaalt hoe ze beweegt: `opening`,
+`manifest`, `waarden`, `twee`, `nu`, `persoon`, `recensie`, `cijfers`, `zaal`,
+`partners`, `honoraria`, `beleid`, `merch`, `bericht`. Welke velden elke soort
+gebruikt, staat opgesomd onderaan `inhoud.js`. `duur` is in seconden;
+`hoofdstuk` is de naam die linksonder in het kader staat.
 
-| | |
-|---|---|
-| `beeld:` | een still die beweegt |
-| `video:` | een stuk uit een filmbestand, met `van` als in-punt in seconden |
-| `kaart:` | een tussentitel op zwart |
+Twee soorten staan klaar maar zijn niet in gebruik: `teamintro` (een rij
+portretten met een kop erover) en `boeken` (QR-codes om een afspraak te maken).
+Ze zijn op vraag van de praktijk uit de lus gehaald; wie ze terug wil, zet een
+scène van die soort in de lijst.
 
-`duur` is in seconden. `beweging` is `in`, `uit`, `links`, `rechts`, `op`,
-`neer` of `stil`; de beweging wordt automatisch precies zo lang gemaakt als het
-shot, zodat hij uitgespeeld is op de cut.
+Een scène verplaatsen doe je door ze in de lijst te verplaatsen; weghalen
+door ze te verwijderen of met `//` uit te commentariëren.
 
-**Kadreren.** Bij een vierkante of staande foto in een breedbeeldkader bepaalt
-`positie` (bijvoorbeeld `'50% 38%'`) of je het onderwerp ziet of zijn
-schouders. Voor gezichten is er `portret: true`: de foto staat dan rechts op
-zijn eigen hoogte met de naam ernaast, zodat het hoofd heel blijft.
-
-**Tekst.** `reuze`, `groot`, `mid`, `citaat`, `onder`, `regel` en `extra`, van
-groot naar klein. `tekstVan` bepaalt wanneer de tekst opkomt, `tekstTot`
-wanneer hij weer weggaat — laat dat laatste weg en hij blijft tot de cut. Tekst
-die vóór de cut weggaat laat het beeld even alleen, en dat is precies het
-verschil met een dia.
-
-De velden staan allemaal opgesomd in de kop van `inhoud.js`.
-
-**Een tijdelijk bericht** — geef een shot `van` en `tot` (JJJJ-MM-DD) mee. Het
-verschijnt dan alleen in die periode en verdwijnt daarna vanzelf. Bijvoorbeeld
-een sluitingsbericht voor het bouwverlof.
+**Een tijdelijk bericht** — geef een scène `van` en `tot` (JJJJ-MM-DD) mee.
+Ze verschijnt dan alleen in die periode en verdwijnt daarna vanzelf. Onderaan
+de lijst staat een voorbeeld voor het bouwverlof, uitgecommentarieerd.
 
 **De video's.** Er is een kleine vijftien seconden echt beeldmateriaal
-(`hero-performance` en `hero-rehab`). Door met `van` verschillende in-punten te
-kiezen levert één bestand meerdere shots op. Elk videoshot krijgt twee bronnen,
-webm eerst en mp4 erachter: niet elke tv-browser heeft H.264, en niet elke
-browser kent webm.
+(`hero-rehab` en `hero-performance`). Een video staat zonder extensie in de
+inhoud; het scherm zet er zelf twee bronnen achter, **mp4 eerst** en webm
+erachter. Dat is bewust: op een televisie of een Raspberry Pi wordt H.264 door
+de chip gedecodeerd en VP9 vaak door de processor, en dat laatste hapert op
+1080p. De webm blijft staan voor een browser zonder H.264.
 
-**Na een wijziging:** verhoog `VERSIE` bovenaan `tv/sw.js` (`credo-tv-1` wordt
-`credo-tv-2`). Anders blijft het scherm de oude versie uit zijn eigen geheugen
-tonen.
+**Na een wijziging:** verhoog `VERSIE` bovenaan `tv/sw.js` (`credo-tv-7` wordt
+`credo-tv-8`). Anders blijft het scherm de oude versie uit zijn eigen geheugen
+tonen. Een nieuwe foto of video in `inhoud.js` komt vanzelf mee in dat
+geheugen; een nieuw lettertype of een nieuw bestand buiten de inhoud zet je
+ook in de lijst `VAST` in `sw.js`.
 
 ## Wat het scherm zelf bijhoudt
 
 - De klok rechtsboven en de dag van de week.
-- "Nu open, tot 21:00" of "Vandaag gesloten", berekend uit de openingsuren.
+- "Open tot 21:00" of "Gesloten", berekend uit de openingsuren.
 - De dag van vandaag staat gemarkeerd in het urenoverzicht.
-- Bij de dagwissel bouwt het scherm zichzelf opnieuw op, zodat periodeslides en
+- Bij de dagwissel bouwt het scherm zichzelf opnieuw op, zodat periodescènes en
   de gemarkeerde dag meegaan. Dat gebeurt tijdens een overgang, dus onzichtbaar.
 
 ## Als het netwerk wegvalt
 
-Alles wat het scherm nodig heeft — de pagina, de foto's, de lettertypes, de
-QR-codes — wordt bij de eerste keer lokaal bewaard. Valt de wifi weg, dan blijft
-de lus gewoon doordraaien. Komt het netwerk terug, dan haalt het op de
+Alles wat het scherm nodig heeft — de pagina, de foto's, de video's, de
+lettertypes — wordt bij de eerste keer lokaal bewaard. Valt de wifi weg, dan
+blijft de lus gewoon doordraaien. Komt het netwerk terug, dan haalt het op de
 achtergrond de nieuwste versie op.
 
-Daarom staan de lettertypes ook in `tv/fonts/` en niet bij Google: een bestand
-van een andere server kan niet mee bewaard worden.
+## Vloeiend houden
+
+Het scherm begint pas als de film van de opening helemaal binnen is; eerder
+speelde hij terwijl hij nog laadde, en dat waren precies de seconden waarin hij
+hokte. Verder staat er bewust niets op de film dat de televisie elk beeldje
+opnieuw moet rekenen: geen mengmodus op de korrel, geen filter op de twee
+films (die zijn al zwart-wit), en in de opening beweegt alleen wat moet
+bewegen. Komt er ooit een scène bij met video, hou dat zo.
 
 ## Bediening
 
@@ -122,19 +133,12 @@ toetsenbord of afstandsbediening kan het wel:
 
 | | |
 |---|---|
-| Pijl links / rechts | een slide terug of verder |
+| Pijl links / rechts | een scène terug of verder |
 | Spatie | pauzeren en hervatten |
 | F | volledig scherm aan of uit |
-| Klik of tik | een slide verder |
+| Klik of tik | een scène verder |
 
-## Wat er bij een wijziging mee moet
-
-Verander je een kaart, let dan op de hoogte: het kader is 960 pixels hoog en
-niet 1080, dus er past minder dan je zou denken. Loopt er iets buiten, dan valt
-dat op in de doorloop maar niet per se op de televisie zelf.
-
-Voeg je beeld of video toe, zet het bestand dan ook in de lijst `NODIG` in
-`tv/sw.js`, anders is het er offline niet.
+Voor het nakijken: `/tv/?scene=7` begint bij de achtste scène.
 
 ## Nog in te vullen
 
@@ -151,8 +155,5 @@ waarde en verhoog je `VERSIE` in `sw.js`.
 
 ## Wat er nog bij kan
 
-- **Bas Van Bael** heeft nog geen favorieten; zijn slide toont nu alleen zijn
+- **Bas Van Bael** heeft nog geen favorieten; zijn scène toont nu alleen zijn
   naam en diploma's. Vul `favoriet` in zijn blok aan zoals bij de anderen.
-- De oude slideshow had de teamfoto's in kleur met het Credo-logo op de
-  achtergrond. Hier staan de zwart-witportretten van de website, zodat het
-  scherm en de site één geheel zijn.

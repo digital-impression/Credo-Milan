@@ -85,10 +85,6 @@ window.CREDO_TV = {
     { soort: 'nu', duur: 10, hoofdstuk: 'Openingsuren' },
 
     // ---- het team ---------------------------------------------------------
-    { soort: 'teamintro', duur: 7, hoofdstuk: 'Ons team',
-      kop: ['Zeven masters.', 'Eén standaard.'],
-      tekst: 'Iedereen hier heeft een master revalidatiewetenschappen en kinesitherapie.' },
-
     { soort: 'persoon', duur: 11, hoofdstuk: 'Ons team',
       nummer: '01', voornaam: 'Thomas', achternaam: 'Casier', rol: 'Kinesist &amp; zaakvoerder',
       beeld: '../assets/img/team/thomas.jpg',
@@ -163,9 +159,9 @@ window.CREDO_TV = {
                   'Eten': 'Sushi', 'Artiest': 'Jul',
                   'Nummer': 'Effe Serieus – Baila de Gasolina', 'Reisbestemming': 'Ibiza' } },
 
+    // Alleen de zaal, zonder woorden erover: de beelden zeggen het zelf.
+    // Wil je er toch iets bij, geef dan kop: '500 m²' en een tekst mee.
     { soort: 'zaal', duur: 11, hoofdstuk: 'De praktijk',
-      kop: '500 m²',
-      tekst: 'Vijfhonderd vierkante meter, en alles staat er om gebruikt te worden.',
       beelden: ['../assets/img/vloer/01.jpg', '../assets/img/vloer/02.jpg',
                 '../assets/img/vloer/05.jpg', '../assets/img/vloer/06.jpg',
                 '../assets/img/vloer/08.jpg', '../assets/img/vloer/09.jpg',
@@ -201,8 +197,6 @@ window.CREDO_TV = {
       favoriet: null },
 
     { soort: 'partners', duur: 12, hoofdstuk: 'Samenwerkingen',
-      namen: ['Sporting Hasselt', 'KRC Genk Ladies', 'Red Flames', 'OH Leuven',
-              'Lommel SK', 'Torpedo Hasselt'],
       tekst: 'Verschillende van onze therapeuten staan wekelijks op het veld, '
            + 'als physical of strength coach.',
       // stijl: 'wit' maakt het logo een witte vorm, 'negatief' keert de kleuren
@@ -259,15 +253,6 @@ window.CREDO_TV = {
       tekst: 'Vraag ernaar bij je therapeut.',
       beeld: '../assets/img/team/bas.jpg' },
 
-    { soort: 'boeken', duur: 14, hoofdstuk: 'Afspraak',
-      beeld: '../assets/img/studio-inkom.jpg',
-      kop: ['Boek je', 'afspraak.'],
-      tekst: 'Scan de code, of bel ons. Online boeken kan dag en nacht.',
-      qr: [
-        { bron: 'img/qr-boeken.svg', label: 'Afspraak maken' },
-        { bron: 'img/qr-site.svg',   label: 'Onze website' },
-      ] },
-
     // Een voorbeeld van een tijdelijk bericht. Haal de // weg, pas de datums
     // en de tekst aan, en het verschijnt alleen in die periode.
     // { soort: 'bericht', duur: 10, hoofdstuk: 'Mededeling',
@@ -292,17 +277,17 @@ window.CREDO_TV = {
    twee       links{...} en rechts{video, poster, oog, kop[], items[]}
               Revalidatie en performance naast elkaar, gescheiden door de naad.
    nu         (geen velden - leest de klok en de openingsuren hierboven)
-   teamintro  kop[], tekst
+   teamintro  kop[], tekst (niet in gebruik, maar beschikbaar)
    persoon    nummer, voornaam, achternaam, rol, beeld, credentials[],
               favoriet{} of null
    recensie   beeld, naam, rol, tekst
    cijfers    beeld, vulling, rijen[{van, tot, achter, naam, sub} of {reeks:[a,b], ...}]
-   zaal       kop, tekst, beelden[]
-   partners   namen[], tekst, logos[{bron, naam, stijl}]
+   zaal       beelden[], en eventueel kop en tekst
+   partners   logos[{bron, naam, stijl}], en eventueel tekst
    honoraria  beeld, kop, kolommen[], nadruk, rijen[[]], voet
    beleid     groot, kop, nl, en
    merch      oog, prijs, per, tekst, beeld
-   boeken     beeld, kop[], tekst, qr[{bron, label}]
+   boeken     beeld, kop[], tekst, qr[{bron, label}] (niet in gebruik, maar beschikbaar)
    bericht    oog, kop[], tekst (bedoeld voor een tijdelijke mededeling)
 
    Een waarde die letterlijk [TE BEVESTIGEN] is, wordt op het scherm gemarkeerd

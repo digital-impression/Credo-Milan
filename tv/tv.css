@@ -222,7 +222,10 @@ html, body {
 #korrel {
   position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
   z-index: 60; pointer-events: none;
-  opacity: .07; mix-blend-mode: overlay;
+  /* Geen mengmodus meer: 'overlay' over een spelende film betekent dat de
+     televisie elk beeldje opnieuw door de korrel moet rekenen. Op deze
+     donkere achtergrond ziet gewone doorzichtigheid er hetzelfde uit. */
+  opacity: .06;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)'/%3E%3C/svg%3E");
   animation: korrel 1s steps(5) infinite;
 }
@@ -293,7 +296,8 @@ html, body {
 .s-twee .helft { position: absolute; inset: 0; overflow: hidden; }
 .s-twee .helft.links  { clip-path: polygon(0 0, 57% 0, 43% 100%, 0 100%); }
 .s-twee .helft.rechts { clip-path: polygon(57% 0, 100% 0, 100% 100%, 43% 100%); }
-.s-twee .helft .film  { filter: grayscale(1) contrast(1.05); }
+/* Geen filter op de twee films: de opnames zijn al zwart-wit, en een filter
+   op een spelende video is werk voor elk beeldje, zonder dat je het ziet. */
 .s-twee .helft.links .film  { object-position: 70% 50%; }
 .s-twee .helft.rechts .film { object-position: 40% 50%; }
 .s-twee .helft.links .sluier  { background: linear-gradient(to top, rgba(13,13,13,.92) 0%, rgba(13,13,13,.35) 48%, rgba(13,13,13,.15) 100%); }
@@ -403,7 +407,7 @@ html, body {
 }
 .s-recensie .portret .foto { object-position: 50% 25%; --drijf-x: 1%; --drijf-y: 0%; }
 .s-recensie .aanhaling { position: absolute; left: 880px; top: 120px; font-size: 400px; line-height: 1; color: transparent; -webkit-text-stroke: 2px rgba(244,241,234,.3); }
-.s-recensie .citaat { position: absolute; left: 880px; right: var(--rand); top: 300px; font-size: 50px; font-weight: 300; line-height: 1.34; letter-spacing: -.012em; }
+.s-recensie .citaat { position: absolute; left: 880px; right: var(--rand); top: 300px; font-size: 56px; font-style: italic; line-height: 1.28; color: var(--bone); }
 .s-recensie .wie { position: absolute; left: 880px; bottom: 150px; }
 .s-recensie .wie .naam { font-size: 70px; }
 .s-recensie .wie .oog { margin-top: 16px; }
@@ -439,28 +443,34 @@ html, body {
 .s-zaal .rol.r2 { top: 776px; --band-duur: 80s; }
 .s-zaal .rol img { width: 520px; height: 520px; object-fit: cover; filter: grayscale(1) contrast(1.1) brightness(.85); margin-right: 16px; }
 .s-zaal .sluier { background: linear-gradient(to right, rgba(13,13,13,.97) 0%, rgba(13,13,13,.9) 34%, rgba(13,13,13,.2) 64%, rgba(13,13,13,0) 100%); }
+/* Zonder kop en tekst is de zaal zelf het shot: alleen boven en onder een
+   zweem, zodat de klok en het merk leesbaar blijven. */
+.s-zaal.stil .sluier { background: linear-gradient(to bottom, rgba(13,13,13,.6) 0%, rgba(13,13,13,0) 24%, rgba(13,13,13,0) 74%, rgba(13,13,13,.65) 100%); }
 .s-zaal .kop { position: absolute; left: calc(var(--rand) - 8px); top: 250px; font-size: 330px; text-transform: none; }
 .s-zaal .kop sup { font-size: .42em; vertical-align: .9em; margin-left: .03em; }
 .s-zaal .tekst { position: absolute; left: var(--rand); top: 640px; width: 680px; font-size: 42px; font-weight: 300; line-height: 1.3; }
 
 /* --------------------------------------------------------------- partners */
 
-.s-partners .houder { position: absolute; inset: 0; }
-.s-partners .namen { top: 210px; height: 260px; align-items: center; --band-duur: 46s; }
-.s-partners .namen span { font-size: 230px; padding-right: 70px; }
-.s-partners .namen span.hol { -webkit-text-stroke: 2.5px rgba(244,241,234,.8); }
-.s-partners .namen span.ster { font-size: 80px; color: var(--zacht); padding-right: 70px; transform: translateY(-.6em); }
-/* De band is een eigen laag (hij beweegt); zonder eigen achtergrond heeft
-   'screen' daarbinnen niets om mee te mengen en blijft zwart gewoon zwart. */
-.s-partners .logos { top: 560px; height: 170px; align-items: center; --band-duur: 36s; background: var(--ink); }
-.s-partners .logos .logo { width: 300px; height: 150px; display: grid; place-items: center; border-left: 1px solid var(--lijn); }
-.s-partners .logos img { max-width: 190px; max-height: 120px; opacity: .92; }
-.s-partners .logos img.wit      { filter: grayscale(1) brightness(0) invert(1); }
+/* Een stil raster van vier bij twee, met haarlijnen ertussen. De logo's zijn
+   het enige op het scherm; het hoofdstuk linksonder zegt al wat ze zijn. */
+.s-partners .raster {
+  position: absolute; left: var(--rand); right: var(--rand); top: 200px; bottom: 260px;
+  display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: repeat(2, 1fr);
+}
+/* Elk vak heeft zijn eigen achtergrond: het komt bewegend op en is dan een
+   eigen laag, en 'screen' op het omgekeerde logo heeft binnen die laag iets
+   nodig om mee te mengen - anders blijft zwart gewoon zwart. */
+.s-partners .logo { display: grid; place-items: center; background: var(--ink); border-left: 1px solid var(--lijn); border-top: 1px solid var(--lijn); }
+.s-partners .logo:nth-child(4n + 1) { border-left: 0; }
+.s-partners .logo:nth-child(-n + 4) { border-top: 0; }
+.s-partners .logo img { max-width: 250px; max-height: 150px; opacity: .92; }
+.s-partners img.wit      { filter: grayscale(1) brightness(0) invert(1); }
 /* Omgekeerd wordt een witte achtergrond bijna-zwart; het extra contrast maakt
    er echt zwart van, zodat er geen grijs vierkant achter het logo blijft. */
-.s-partners .logos img.negatief { filter: grayscale(1) invert(1) contrast(1.5) brightness(1.05); mix-blend-mode: screen; }
-.s-partners .logos img.grijs    { filter: grayscale(1) brightness(1.15); }
-.s-partners .tekst { position: absolute; left: var(--rand); bottom: 150px; width: 1100px; font-size: 42px; font-weight: 300; line-height: 1.3; }
+.s-partners img.negatief { filter: grayscale(1) invert(1) contrast(1.5) brightness(1.05); mix-blend-mode: screen; }
+.s-partners img.grijs    { filter: grayscale(1) brightness(1.15); }
+.s-partners .tekst { position: absolute; left: var(--rand); bottom: 150px; width: 1100px; font-size: 32px; line-height: 1.35; color: var(--zacht); }
 
 /* -------------------------------------------------------------- honoraria */
 
@@ -533,3 +543,22 @@ html, body {
 .s-bericht .oog { margin-bottom: 30px; }
 .s-bericht .kop { font-size: 190px; }
 .s-bericht .tekst { margin-top: 40px; font-size: 44px; font-weight: 300; width: 1200px; line-height: 1.3; }
+
+/* ======================================================= de lopende tekst */
+
+/* Lopende tekst in een serif. De grotesk blijft voor alles wat in kapitalen
+   met spatiëring staat - de labels, de klok, het hoofdstuk, de tabel - maar
+   als lopende tekst op kijkafstand oogde hij vlak en kil, een formulier op
+   een televisie. Newsreader heeft een optische as: op deze maten tekent hij
+   als een krantenkop, met contrast in de lijn, niet als een voetnoot.
+   Dit staat onderaan zodat het wint van het gewicht en de spatiëring die de
+   scènes hierboven elk voor zich zetten. */
+.s-manifest .boven, .s-waarden .tekst, .s-nu .zij .stand, .s-persoon .fav .waarde,
+.s-persoon .diplomas li, .s-recensie .citaat, .s-cijfers .sub, .s-partners .tekst,
+.s-honoraria .voet, .s-beleid .nl, .s-beleid .en, .s-merch .tekst, .s-bericht .tekst,
+.s-teamintro .tekst, .s-zaal .tekst, .s-boeken .tekst {
+  font-family: Newsreader, Georgia, 'Times New Roman', serif;
+  font-weight: 400;
+  letter-spacing: 0;
+}
+.s-nu .zij .stand strong { font-weight: 600; }

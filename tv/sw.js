@@ -13,7 +13,7 @@
    opgeruimd en het scherm haalt alles opnieuw op.
    ========================================================================= */
 
-var VERSIE = 'credo-tv-6';
+var VERSIE = 'credo-tv-7';
 
 var VAST = [
   './',
@@ -26,6 +26,10 @@ var VAST = [
   'fonts/anton-400-latin-ext.woff2',
   'fonts/inter-400-latin.woff2',
   'fonts/inter-400-latin-ext.woff2',
+  'fonts/newsreader-latin.woff2',
+  'fonts/newsreader-latin-ext.woff2',
+  'fonts/newsreader-italic-latin.woff2',
+  'fonts/newsreader-italic-latin-ext.woff2',
 ];
 
 // inhoud.js schrijft naar window.CREDO_TV; in een service worker heet dat self.

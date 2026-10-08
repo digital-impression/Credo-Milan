@@ -81,7 +81,10 @@
     v.setAttribute('muted', ''); v.setAttribute('playsinline', '');
     v.preload = 'auto';
     if (poster) v.poster = poster;
-    [['webm', 'video/webm'], ['mp4', 'video/mp4']].forEach(function (s) {
+    // mp4 eerst. Op een televisie of een Raspberry Pi wordt H.264 door de
+    // chip gedecodeerd en VP9 vaak door de processor, en dat laatste hapert
+    // op 1080p. De webm blijft erachter staan voor een browser zonder H.264.
+    [['mp4', 'video/mp4'], ['webm', 'video/webm']].forEach(function (s) {
       var b = el('source'); b.src = basis + '.' + s[0]; b.type = s[1]; v.appendChild(b);
     });
     return v;
@@ -273,20 +276,24 @@
             spel.anim(l.firstChild, [{ transform: 'translate3d(0, 105%, 0)' }, { transform: 'translate3d(0, 0, 0)' }],
               { delay: 350 + k * 90, duration: 1300 });
           });
-          spel.anim(woord, [{ transform: 'scale(1)' }, { transform: 'scale(1.06)' }],
-            { delay: 0, duration: 4800, easing: 'linear' });
+          // Het woord ademt niet meer mee. Dat was een tweede beweging op een
+          // laag die al met de film gemengd wordt, en op een televisie is
+          // elke laag die daar bovenop beweegt een haper erbij.
 
           // Waar we induiken: midden in de linkse poot van de derde letter.
           // Daar is de letter wit, dus na het inzoomen is het hele scherm film.
+          // De duik is iets langer en rondt af in een vervaging die al begint
+          // voor het vlak op zijn grootst staat: zo zie je nooit de ruwe rand
+          // van een zesendertig keer uitvergrote letter.
           var l = letters[Math.min(2, letters.length - 1)];
           var plek = binnen(l, uit);
           var ox = plek.x + l.offsetWidth * 0.2;
           var oy = plek.y + l.offsetHeight * 0.5;
           uit.style.transformOrigin = ox + 'px ' + oy + 'px';
-          spel.anim(uit, [{ transform: 'scale(1)' }, { transform: 'scale(48)' }],
-            { delay: 4700, duration: 1250, easing: IN_ });
+          spel.anim(uit, [{ transform: 'scale(1)' }, { transform: 'scale(36)' }],
+            { delay: 4600, duration: 1500, easing: 'cubic-bezier(.6, 0, .9, .3)' });
           spel.anim(uit, [{ opacity: 1 }, { opacity: 0 }],
-            { delay: 5850, duration: 250, easing: 'linear' });
+            { delay: 5550, duration: 550, easing: 'ease-in' });
           spel.na(6150, function () { uit.style.display = 'none'; });
 
           spel.anim(sluier, [{ opacity: 0 }, { opacity: 1 }], { delay: 5900, duration: 1200 });
@@ -586,7 +593,9 @@
       };
     },
 
-    /* Een recensie die zich laat lezen terwijl ze verschijnt. */
+    /* Een recensie, gezet als een citaat in een tijdschrift: in één keer in
+       beeld, en dan rust. Hij kwam eerst woord voor woord op, maar dat
+       trekt het oog mee over de regel alsof iemand voorleest. */
     recensie: function (d) {
       var s = scene('recensie');
       var portret = el('div', 'portret');
@@ -594,10 +603,7 @@
       s.appendChild(portret);
       var aan = el('div', 'aanhaling display', '“');
       s.appendChild(aan);
-      var citaat = el('div', 'citaat');
-      var woorden = String(d.tekst || '').split(/\s+/).map(function (w) {
-        var x = el('span', 'w', w); citaat.appendChild(x); citaat.appendChild(document.createTextNode(' ')); return x;
-      });
+      var citaat = el('div', 'citaat', d.tekst || '');
       s.appendChild(citaat);
       var wie = el('div', 'wie');
       var naam = regel(d.naam || '', 'display naam');
@@ -612,12 +618,8 @@
             { delay: 0, duration: 1400 });
           spel.anim(aan, [{ opacity: 0, transform: 'scale(.7)' }, { opacity: 1, transform: 'scale(1)' }],
             { delay: 250, duration: 1300 });
-          // Woord voor woord oplichten, op leestempo, klaar ruim voor het einde.
-          var stap = Math.min(170, (duur * 0.62) / Math.max(1, woorden.length));
-          woorden.forEach(function (w, k) {
-            spel.anim(w, [{ opacity: .16 }, { opacity: 1 }], { delay: 700 + k * stap, duration: 380, easing: 'ease-out' });
-          });
-          op(spel, [naam, rol], 900, 160, 1100);
+          in_(spel, citaat, 600, 0, 28);
+          op(spel, [naam, rol], 1100, 160, 1100);
         },
       };
     },
@@ -701,63 +703,46 @@
       });
       s.appendChild(rollen);
       s.appendChild(el('div', 'sluier'));
-      var m2 = String(d.kop || '').replace(/m²/, 'm<sup>2</sup>');
-      var kop = regel(m2, 'display kop');
-      var t = regel(d.tekst || '', 'tekst');
-      t.firstChild.style.whiteSpace = 'normal';
-      s.appendChild(kop); s.appendChild(t);
+      // Kop en tekst zijn er alleen als de inhoud ze geeft. Zonder tekst is de
+      // zaal zelf het shot, en dan hoeft de sluier geen plaats vrij te houden.
+      var kop = null, t = null;
+      if (d.kop) { kop = regel(String(d.kop).replace(/m²/, 'm<sup>2</sup>'), 'display kop'); s.appendChild(kop); }
+      if (d.tekst) { t = regel(d.tekst, 'tekst'); t.firstChild.style.whiteSpace = 'normal'; s.appendChild(t); }
+      if (!kop && !t) s.classList.add('stil');
       return {
         node: s,
         speel: function (spel) {
           spel.anim(rollen, [{ opacity: 0, transform: 'rotate(-8deg) scale(1.15)' }, { opacity: 1, transform: 'rotate(-8deg) scale(1)' }],
             { delay: 0, duration: 2000 });
-          op(spel, [kop], 300, 0, 1300);
-          op(spel, [t], 700, 0, 1100);
+          if (kop) op(spel, [kop], 300, 0, 1300);
+          if (t) op(spel, [t], 700, 0, 1100);
         },
       };
     },
 
-    /* De clubs als lopende band, in letters zo groot als het scherm. */
+    /* De clubs: hun logo's, stil in een raster, een voor een opkomend. De
+       lopende band met de namen in reuzenletters is weg - met de logo's
+       eronder en een tekst erbij was dat drie dingen die om aandacht vochten. */
     partners: function (d) {
       var s = scene('partners');
-      var h1 = el('div', 'houder');
-      var namen = el('div', 'band namen');
-      var reeks = function () {
-        (d.namen || []).forEach(function (n, k) {
-          namen.appendChild(el('span', 'display' + (k % 2 ? ' hol' : ''), n));
-          namen.appendChild(el('span', 'display ster', '/'));
-        });
-      };
-      reeks(); reeks();
-      h1.appendChild(namen);
-      s.appendChild(h1);
-
-      var h2 = el('div', 'houder');
-      var logos = el('div', 'band logos terug');
-      var lreeks = function () {
-        (d.logos || []).forEach(function (l) {
-          var v = el('div', 'logo');
-          var i = el('img', l.stijl || 'wit'); i.src = l.bron; i.alt = l.naam || '';
-          v.appendChild(i); logos.appendChild(v);
-        });
-      };
-      lreeks(); lreeks();
-      h2.appendChild(logos);
-      s.appendChild(h2);
-
-      var t = el('div', 'tekst', d.tekst || '');
-      s.appendChild(t);
+      var raster = el('div', 'raster');
+      var logos = (d.logos || []).map(function (l) {
+        var v = el('div', 'logo');
+        var i = el('img', l.stijl || 'wit'); i.src = l.bron; i.alt = l.naam || '';
+        v.appendChild(i); raster.appendChild(v);
+        return v;
+      });
+      s.appendChild(raster);
+      var t = d.tekst ? el('div', 'tekst', d.tekst) : null;
+      if (t) s.appendChild(t);
       return {
         node: s,
-        klaar: function () {
-          if (logos.scrollWidth / 2 < 1920) { lreeks(); lreeks(); }
-        },
         speel: function (spel) {
-          spel.anim(h1, [{ opacity: 0, transform: 'translate3d(400px, 0, 0)' }, { opacity: 1, transform: 'translate3d(0, 0, 0)' }],
-            { delay: 100, duration: 1800 });
-          spel.anim(h2, [{ opacity: 0, transform: 'translate3d(-400px, 0, 0)' }, { opacity: 1, transform: 'translate3d(0, 0, 0)' }],
-            { delay: 350, duration: 1800 });
-          in_(spel, t, 900, 0, 24);
+          logos.forEach(function (v, k) {
+            spel.anim(v, [{ opacity: 0, transform: 'translate3d(0, 30px, 0)' }, { opacity: 1, transform: 'translate3d(0, 0, 0)' }],
+              { delay: 200 + k * 140, duration: 1200 });
+          });
+          if (t) in_(spel, t, 200 + logos.length * 140 + 300, 0, 20);
         },
       };
     },
@@ -1098,6 +1083,23 @@
     setTimeout(function () { if (!afgerond) { afgerond = true; klaar(); } }, 10000);
   }
 
+  // De film van de eerste scène moet in zijn geheel binnen zijn voor hij
+  // begint. Hij speelde eerder terwijl hij nog aan het laden was, en de eerste
+  // seconden van de opening waren dan precies de seconden waarin hij hokte.
+  function filmsKlaar(x, klaar) {
+    var films = (x && x.films) || [];
+    var over = films.length, afgerond = false;
+    function eentje() { if (--over <= 0 && !afgerond) { afgerond = true; klaar(); } }
+    if (!over) { klaar(); return; }
+    films.forEach(function (v) {
+      if (v.readyState >= 4) { eentje(); return; }
+      v.addEventListener('canplaythrough', eentje, { once: true });
+      v.addEventListener('error', eentje, { once: true });
+      try { v.load(); } catch (e) {}
+    });
+    setTimeout(function () { if (!afgerond) { afgerond = true; klaar(); } }, 8000);
+  }
+
   var startDag = vandaag();
 
   // Voor het nakijken: ?scene=7 begint bij de achtste scène.
@@ -1109,7 +1111,7 @@
     ververs();
     setInterval(ververs, 10000);
     inladen(function () {
-      toon(begin, true);
+      filmsKlaar(lijst[(begin % lijst.length + lijst.length) % lijst.length], function () { toon(begin, true); });
       // Bij de dagwissel opnieuw opbouwen, zodat periodescènes en "vandaag"
       // meegaan. Dat gebeurt bij de volgende overgang, dus onzichtbaar.
       setInterval(function () {
