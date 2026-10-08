@@ -18,23 +18,37 @@
   /* ---------- Mobile menu ---------- */
   var menuBtn   = document.getElementById('menu-btn');
   var menu      = document.getElementById('mobile-menu');
-  var iconOpen  = document.getElementById('menu-icon-open');
-  var iconClose = document.getElementById('menu-icon-close');
+  var menuTimer = null;
 
+  // De lade schuift open en de regels komen er een voor een achteraan. Dat
+  // kan niet vanaf display none, dus het hidden-attribuut gaat er eerst af
+  // en pas een frame later komt de klasse erop die de overgang start. Bij
+  // het sluiten andersom: eerst de klasse eraf, en pas als de overgang klaar
+  // is weer hidden, anders springt de lade dicht.
   function setMenu(open) {
     if (!menu || !menuBtn) return;
-    menu.hidden = !open;
+    clearTimeout(menuTimer);
+
+    if (open) {
+      menu.hidden = false;
+      requestAnimationFrame(function () {
+        requestAnimationFrame(function () { menu.classList.add('is-open'); });
+      });
+    } else {
+      menu.classList.remove('is-open');
+      var traag = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      menuTimer = setTimeout(function () { menu.hidden = true; }, traag ? 0 : 420);
+    }
+
     menuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
     menuBtn.setAttribute('aria-label', open ? 'Menu sluiten' : 'Menu openen');
-    if (iconOpen)  iconOpen.classList.toggle('hidden', open);
-    if (iconClose) iconClose.classList.toggle('hidden', !open);
     if (header && open) header.classList.add('is-solid');
     else onScrollHeader();
   }
 
   if (menuBtn) {
     menuBtn.addEventListener('click', function () {
-      setMenu(menu.hidden);
+      setMenu(!menu.classList.contains('is-open'));
     });
   }
   if (menu) {
@@ -43,15 +57,54 @@
     });
   }
   document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape' && menu && !menu.hidden) {
+    if (e.key === 'Escape' && menu && menu.classList.contains('is-open')) {
       setMenu(false);
       menuBtn.focus();
     }
   });
   // Close the menu if the viewport grows past the lg breakpoint
   window.addEventListener('resize', function () {
-    if (window.innerWidth >= 1024 && menu && !menu.hidden) setMenu(false);
+    if (window.innerWidth >= 1024 && menu && menu.classList.contains('is-open')) setMenu(false);
   });
+
+  /* ---------- Waar je bent in de pagina ----------
+     Deze pagina's zijn lang. Zonder markering in de navigatie weet je niet
+     welk stuk je leest. De regel: het laatste stuk waarvan de bovenkant al
+     onder de kopbalk door is, is het stuk waar je bent. Dat is met een
+     IntersectionObserver lastiger te krijgen dan het lijkt, want twee
+     secties kunnen tegelijk in beeld staan; een rechtstreekse meting is
+     hier korter en zegt precies wat ze doet. ------------------------- */
+  var spyLinks = [];
+  document.querySelectorAll('nav[aria-label="Hoofdnavigatie"] .nav-link').forEach(function (a) {
+    var h = a.getAttribute('href') || '';
+    if (h.charAt(0) !== '#' || h.length < 2) return;
+    var sec = document.getElementById(h.slice(1));
+    if (sec) spyLinks.push({ a: a, sec: sec });
+  });
+
+  function spy() {
+    if (!spyLinks.length) return;
+    var grens = (header ? header.offsetHeight : 72) + 28;
+
+    // Op volgorde van de pagina, niet op volgorde van het menu. Die twee
+    // lopen hier uiteen: in de pagina staat "wat we doen" vóór "team", in
+    // het menu erna. Zonder deze sortering wijst "de laatste die voorbij is"
+    // het verkeerde stuk aan zodra je in team bent.
+    var op = spyLinks.map(function (d) {
+      return { a: d.a, top: d.sec.getBoundingClientRect().top };
+    }).sort(function (x, y) { return x.top - y.top; });
+
+    var hier = null;
+    op.forEach(function (d) { if (d.top <= grens) hier = d; });
+    // Helemaal onderaan hoort het laatste stuk aan te staan, ook als de
+    // bovenkant ervan nog onder de grens zit omdat de pagina ophoudt.
+    if (window.innerHeight + window.scrollY >= document.body.scrollHeight - 4) {
+      hier = op[op.length - 1];
+    }
+    spyLinks.forEach(function (d) {
+      d.a.classList.toggle('is-hier', !!hier && d.a === hier.a);
+    });
+  }
 
   /* ---------- Scroll reveal ---------- */
   var revealEls = document.querySelectorAll('.reveal');
@@ -155,11 +208,14 @@
     requestAnimationFrame(function () {
       onScrollHeader();
       parallax();
+      spy();
       ticking = false;
     });
   }
   window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', spy, { passive: true });
   parallax();
+  spy();
 
   /* De drie lijnen bij de cijfers zijn nu een vaste tekening in de opmaak:
      de rijen staan op een vaste hoogte, dus hun midden ligt vast en er valt

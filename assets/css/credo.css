@@ -184,18 +184,44 @@
     min-height: 46px;
     font-size: 12px; font-weight: 600;
     text-transform: uppercase; letter-spacing: .16em;
-    transition: background-color .25s ease, color .25s ease, border-color .25s ease;
+    transition: color .25s ease, border-color .3s ease, transform .14s ease;
     text-align: center;
     white-space: nowrap;
+    /* De vulling komt van onderen op in plaats van dat de kleur verspringt.
+       isolation houdt het laagje binnen de knop: zonder dat zou z-index -1
+       het achter de knop zelf schuiven in plaats van achter de tekst. */
+    position: relative; overflow: hidden; isolation: isolate;
   }
+  .btn::before {
+    content: ''; position: absolute; inset: 0; z-index: -1;
+    transform: translateY(100%);
+    transition: transform .44s cubic-bezier(.22,.61,.36,1);
+  }
+  .btn:hover::before, .btn:focus-visible::before { transform: none; }
+  /* Een indrukje. Op een telefoon is dit de enige bevestiging dat je raak
+     tikte, want daar bestaat hover niet. */
+  .btn:active { transform: scale(.975); }
+
   .btn-bone   { background: var(--bone); color: var(--ink); border: 1px solid var(--bone); }
-  .btn-bone:hover   { background: var(--taupe); border-color: var(--taupe); color: var(--bone); }
+  .btn-bone::before { background: var(--taupe); }
+  .btn-bone:hover   { border-color: var(--taupe); color: var(--bone); }
   .btn-ink    { background: var(--ink); color: var(--bone); border: 1px solid var(--ink); }
-  .btn-ink:hover    { background: var(--taupe); border-color: var(--taupe); }
+  .btn-ink::before  { background: var(--taupe); }
+  .btn-ink:hover    { border-color: var(--taupe); }
   .btn-ghost  { background: transparent; color: var(--bone); border: 1px solid rgba(244,241,234,.45); }
-  .btn-ghost:hover  { background: var(--bone); color: var(--ink); border-color: var(--bone); }
+  .btn-ghost::before { background: var(--bone); }
+  .btn-ghost:hover  { color: var(--ink); border-color: var(--bone); }
   .btn-ghost-dark { background: transparent; color: var(--ink); border: 1px solid rgba(13,13,13,.4); }
-  .btn-ghost-dark:hover { background: var(--ink); color: var(--bone); }
+  .btn-ghost-dark::before { background: var(--ink); }
+  .btn-ghost-dark:hover { color: var(--bone); border-color: var(--ink); }
+
+  /* De knop in een deur op de keuzepagina vangt zelf geen muis - de deur is
+     de link - dus de vulling hangt aan de deur. */
+  .door:hover .door-cta::before,
+  .door:focus-visible .door-cta::before { transform: none; }
+  .door:hover .door-cta, .door:focus-visible .door-cta {
+    color: var(--ink); border-color: var(--bone);
+  }
 
   /* Text link with a hairline underline that slides */
   .link-line {
@@ -264,6 +290,25 @@
   .nav-link {
     white-space: nowrap; font-size: 11px; text-transform: uppercase; letter-spacing: .2em; font-weight: 500; transition: color .2s ease; }
   .nav-link:hover { color: var(--taupe2); }
+
+  /* Een haarlijn die van links inveegt, en een markering van het stuk dat je
+     nu leest. Dat tweede is het nut: deze pagina's zijn lang, en zonder
+     markering weet je niet waar in het verhaal je zit. Alleen in de
+     hoofdnavigatie - .nav-link wordt elders ook gebruikt, en daar is een
+     onderstreping onder een gecentreerde tikdoelstelling van 44 pixels
+     alleen maar vreemd. */
+  nav[aria-label="Hoofdnavigatie"] .nav-link { position: relative; }
+  nav[aria-label="Hoofdnavigatie"] .nav-link::after {
+    content: ''; position: absolute; left: 0; right: 0; bottom: -5px; height: 1px;
+    background: currentColor; transform: scaleX(0); transform-origin: left center;
+    transition: transform .42s cubic-bezier(.22,.61,.36,1), background-color .3s ease;
+  }
+  nav[aria-label="Hoofdnavigatie"] .nav-link:hover::after,
+  nav[aria-label="Hoofdnavigatie"] .nav-link:focus-visible::after { transform: scaleX(1); }
+  nav[aria-label="Hoofdnavigatie"] .nav-link.is-hier { color: var(--bone); }
+  nav[aria-label="Hoofdnavigatie"] .nav-link.is-hier::after {
+    transform: scaleX(1); background: var(--taupe-on-dark);
+  }
 
   /* ---------- Team cards ---------- */
   .team-card .team-photo { filter: grayscale(1) contrast(1.1); transition: filter .5s ease, transform .8s cubic-bezier(.22,.61,.36,1); }
@@ -971,10 +1016,11 @@
     font-size: 10.5px; font-weight: 600;
     text-transform: uppercase; letter-spacing: .14em;
     white-space: nowrap; color: rgba(244,241,234,.6);
-    transition: background-color .3s ease, color .3s ease;
+    transition: background-color .3s ease, color .3s ease, transform .14s ease;
   }
   @media (min-width: 640px) { .switch-opt { padding: .5rem 1.05rem; font-size: 11px; } }
   .switch-opt:hover { color: var(--bone); }
+  .switch-opt:active { transform: scale(.94); }
   .switch-opt.is-actief { background: var(--bone); color: var(--ink); }
   .switch-opt.is-actief:hover { color: var(--ink); }
   .switch-opt:focus-visible { outline: 2px solid var(--bone); outline-offset: 2px; }
@@ -1015,6 +1061,58 @@
 }
 
 /* ------------------------------------------------------------------
+   De lade op gsm
+   Klapte vroeger zonder meer open: het hidden-attribuut eraf en de hele
+   lijst stond er. Nu schuift de lade open en komen de regels er een voor
+   een achteraan, wat het verschil maakt tussen een menu dat verschijnt en
+   een menu dat opengaat. credo.js zet .is-open een frame nadat hidden
+   eraf is, anders valt er niets te animeren vanaf display none.
+   ------------------------------------------------------------------ */
+#mobile-menu {
+  opacity: 0; transform: translateY(-8px);
+  transition: opacity .3s ease, transform .42s cubic-bezier(.22,.61,.36,1);
+}
+#mobile-menu.is-open { opacity: 1; transform: none; }
+#mobile-menu nav > * {
+  opacity: 0; transform: translateY(16px);
+  transition: opacity .5s cubic-bezier(.22,.61,.36,1),
+              transform .5s cubic-bezier(.22,.61,.36,1);
+}
+#mobile-menu.is-open nav > * { opacity: 1; transform: none; }
+#mobile-menu.is-open nav > *:nth-child(1) { transition-delay: .05s; }
+#mobile-menu.is-open nav > *:nth-child(2) { transition-delay: .10s; }
+#mobile-menu.is-open nav > *:nth-child(3) { transition-delay: .15s; }
+#mobile-menu.is-open nav > *:nth-child(4) { transition-delay: .20s; }
+#mobile-menu.is-open nav > *:nth-child(5) { transition-delay: .25s; }
+#mobile-menu.is-open nav > *:nth-child(6) { transition-delay: .30s; }
+#mobile-menu.is-open nav > *:nth-child(7) { transition-delay: .34s; }
+#mobile-menu.is-open nav > *:nth-child(8) { transition-delay: .38s; }
+#mobile-menu.is-open nav > *:nth-child(9) { transition-delay: .42s; }
+
+.mob-link { transition: color .25s ease, transform .3s cubic-bezier(.22,.61,.36,1); }
+.mob-link:active { color: var(--taupe-on-dark); transform: translateX(6px); }
+
+/* ------------------------------------------------------------------
+   De hamburger vouwt in een kruis
+   Was twee iconen die elkaar afwisselden, wat als een haperende wissel
+   leest. Nu drie streepjes die draaien: de bovenste en de onderste komen
+   naar het midden en kruisen, de middelste verdwijnt.
+   ------------------------------------------------------------------ */
+.menu-streep { position: relative; display: block; width: 20px; height: 14px; }
+.menu-streep i {
+  position: absolute; left: 0; right: 0; height: 1.4px; background: currentColor;
+  transition: transform .42s cubic-bezier(.22,.61,.36,1), opacity .2s ease;
+}
+.menu-streep i:nth-child(1) { top: 0; }
+.menu-streep i:nth-child(2) { top: 6.3px; }
+.menu-streep i:nth-child(3) { top: 12.6px; }
+[aria-expanded="true"] .menu-streep i:nth-child(1) { transform: translateY(6.3px) rotate(45deg); }
+[aria-expanded="true"] .menu-streep i:nth-child(2) { opacity: 0; transform: scaleX(.3); }
+[aria-expanded="true"] .menu-streep i:nth-child(3) { transform: translateY(-6.3px) rotate(-45deg); }
+#menu-btn { transition: background-color .25s ease, transform .14s ease; }
+#menu-btn:active { transform: scale(.93); }
+
+/* ------------------------------------------------------------------
    Taalkeuze
    Drie afkortingen naast elkaar, zelfde vorm als de schakelaar tussen
    revalidatie en performance, maar kleiner: het is een hulpmiddel, geen
@@ -1032,9 +1130,10 @@
   min-width: 34px; padding: .38rem .5rem; border-radius: 999px;
   font-size: 10.5px; font-weight: 600; letter-spacing: .1em;
   text-transform: uppercase; color: rgba(244, 241, 234, .6);
-  transition: background .25s ease, color .25s ease;
+  transition: background .25s ease, color .25s ease, transform .14s ease;
 }
 .taal-opt:hover { color: var(--bone); }
+.taal-opt:active { transform: scale(.92); }
 .taal-opt.is-actief { background: var(--bone); color: var(--ink); }
 .taal-opt.is-actief:hover { color: var(--ink); }
 .taal-opt:focus-visible { outline: 2px solid var(--bone); outline-offset: 2px; }
@@ -1478,4 +1577,18 @@
     width: max-content;
     font-size: clamp(7rem, 38vw, 13rem);
   }
+}
+
+
+/* ------------------------------------------------------------------
+   Wie beweging liever niet heeft, krijgt de staten wel en de animatie niet.
+   ------------------------------------------------------------------ */
+@media (prefers-reduced-motion: reduce) {
+  .btn::before { transition: none; }
+  .btn:active, #menu-btn:active, .taal-opt:active, .switch-opt:active { transform: none; }
+  nav[aria-label="Hoofdnavigatie"] .nav-link::after { transition: none; }
+  #mobile-menu, #mobile-menu nav > * { transition: opacity .2s ease; transform: none; }
+  #mobile-menu nav > * { transition-delay: 0s !important; }
+  .menu-streep i { transition: opacity .15s ease; }
+  .mob-link:active { transform: none; }
 }
