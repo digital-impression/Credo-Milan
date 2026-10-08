@@ -929,6 +929,24 @@
     .eyebrow { letter-spacing: .14em; }
   }
 
+  /* De vaste actiebalk op gsm staat onder de hero vandaan. Daar staan de
+     twee acties al - boeken in de hero en in de kopbalk, bellen in de
+     kopbalk - en dan staat hetzelfde drie keer onder elkaar. credo.js zet
+     .aan erop zodra de hero uit beeld is. Valt IntersectionObserver weg, dan
+     zet hij de klasse meteen, zodat de balk nooit onbereikbaar blijft.
+     Het voorvoegsel body is nodig: Tailwind voegt zijn stylesheet na deze
+     toe, en dan verliest een enkele klasse het van een utility. */
+  body .actiebalk {
+    transform: translateY(100%);
+    opacity: 0;
+    pointer-events: none;
+    transition: transform .5s cubic-bezier(.22,.61,.36,1), opacity .4s ease;
+  }
+  body .actiebalk.aan { transform: none; opacity: 1; pointer-events: auto; }
+  @media (prefers-reduced-motion: reduce) {
+    body .actiebalk { transition: opacity .25s ease; transform: none; }
+  }
+
   /* Onder de vaste actiebalk hoort ruimte, anders valt de laatste regel eronder. */
   @media (max-width: 767px) {
     body { padding-bottom: calc(64px + env(safe-area-inset-bottom, 0px)); }

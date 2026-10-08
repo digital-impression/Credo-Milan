@@ -540,6 +540,23 @@
     });
   }
 
+  /* ---------- De vaste actiebalk komt pas na de hero ----------
+     Tijdens de hero staan dezelfde twee acties al in beeld: boeken staat in
+     de hero en in de kopbalk, bellen in de kopbalk. De balk schuift daarom
+     pas op zodra de hero voorbij is. ------------------------------------- */
+  var actiebalk = document.getElementById('actiebalk');
+  if (actiebalk) {
+    var heroVlak = document.querySelector('.hero-still');
+    if (!heroVlak || !('IntersectionObserver' in window)) {
+      // Geen hero of geen observer: dan hoort de balk er gewoon te staan.
+      actiebalk.classList.add('aan');
+    } else {
+      new IntersectionObserver(function (entries) {
+        actiebalk.classList.toggle('aan', !entries[0].isIntersecting);
+      }, { threshold: 0 }).observe(heroVlak);
+    }
+  }
+
   /* ---------- Smooth anchor scrolling with header offset ---------- */
   document.querySelectorAll('a[href^="#"]').forEach(function (a) {
     a.addEventListener('click', function (e) {
