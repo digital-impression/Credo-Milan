@@ -144,6 +144,18 @@
   /* De kop is doorzichtig en ligt over de deuren, net als over de hero's.
      Het verloop bovenaan de scrim houdt hem leesbaar; ruimte vrijhouden zou
      een zwarte balk boven het beeld zetten. */
+  /* De knop is kleiner en omlijnd in plaats van massief. Massief bone was het
+     lichtste vlak op de pagina na de koppen, en met de boekknop in de kopbalk
+     stonden er drie van dezelfde pil op één scherm. De hele deur is bovendien
+     zelf de link, dus deze knop hoeft alleen te zeggen dat er iets te klikken
+     valt - niet om aandacht te vragen.
+     Dubbele klasse: Tailwind voegt zijn stylesheet na deze regels toe. */
+  .door .door-cta {
+    padding: .62rem 1.15rem;
+    min-height: 38px;
+    font-size: 11px;
+    letter-spacing: .2em;
+  }
   .door-cta { pointer-events: none; }          /* the whole door is the link */
   .door-cta svg { transition: transform .4s cubic-bezier(.22,.61,.36,1); }
   .door:hover .door-cta svg { transform: translateX(5px); }
@@ -352,7 +364,7 @@
 
           <span class="door-copy block mt-3 md:mt-8 max-w-[36ch] text-[15px] text-bone/75 prose-body">Are you in pain, have you picked up an injury or had surgery? We are glad to help you come back better and stronger than before, through our individualised approach.</span>
 
-          <span class="btn btn-bone mt-5 md:mt-10 door-cta">To rehabilitation
+          <span class="btn btn-ghost mt-5 md:mt-10 door-cta">To rehabilitation
             <svg width="16" height="9" viewBox="0 0 16 9" fill="none" aria-hidden="true">
               <path d="M0 4.5h14M10.5 1L14 4.5 10.5 8" stroke="currentColor" stroke-width="1.4"/></svg>
           </span>
@@ -375,7 +387,7 @@
 
           <span class="door-copy block mt-3 md:mt-8 max-w-[36ch] text-[15px] text-bone/75 prose-body">Develop your general fitness or your athletic capacity with guidance that suits you. Take the step today towards a stronger, fitter body.</span>
 
-          <span class="btn btn-bone mt-5 md:mt-10 door-cta">To performance
+          <span class="btn btn-ghost mt-5 md:mt-10 door-cta">To performance
             <svg width="16" height="9" viewBox="0 0 16 9" fill="none" aria-hidden="true">
               <path d="M0 4.5h14M10.5 1L14 4.5 10.5 8" stroke="currentColor" stroke-width="1.4"/></svg>
           </span>
