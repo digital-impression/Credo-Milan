@@ -13,7 +13,7 @@
    opgeruimd en het scherm haalt alles opnieuw op.
    ========================================================================= */
 
-var VERSIE = 'credo-tv-3';
+var VERSIE = 'credo-tv-6';
 
 var VAST = [
   './',

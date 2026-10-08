@@ -70,8 +70,8 @@ haal de `//` weg en pas de datums aan.
 **De favorieten van een therapeut**: bij elke persoon staan ze allemaal, maar er
 komen er vier voorbij. Welke, staat bovenaan in `instellingen.favorieten`.
 
-**Na een wijziging:** verhoog `VERSIE` bovenaan `tv/sw.js` (`credo-tv-3` wordt
-`credo-tv-4`). Anders blijft het scherm de oude versie uit zijn eigen geheugen
+**Na een wijziging:** verhoog `VERSIE` bovenaan `tv/sw.js` (`credo-tv-6` wordt
+`credo-tv-7`). Anders blijft het scherm de oude versie uit zijn eigen geheugen
 tonen.
 
 ## Wat het scherm zelf bijhoudt
