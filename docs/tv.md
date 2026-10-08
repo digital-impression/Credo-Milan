@@ -1,22 +1,8 @@
 # Het scherm in de wachtzaal
 
-Het scherm draait op `credorehabandperformance.com/tv/`. Het is een gewone
+De slideshow draait op `credorehabandperformance.com/tv/`. Het is een gewone
 webpagina: de televisie opent dat adres en speelt vanzelf af, in een lus, zonder
 geluid en zonder dat er iemand aan te pas komt.
-
-Het is geen reeks dia's maar een film van ongeveer vierenhalve minuut, in de
-huisstijl van de site. Wat het anders maakt dan een presentatie:
-
-- **Eén idee per scène, groot.** Geen kop met een opsomming eronder.
-- **Typografie als beeld.** Het woord CREDO vult zich met de sprintvideo en het
-  scherm duikt erdoorheen; de cijfers zijn gevuld met fotografie; een naam pakt
-  de breedte van het scherm.
-- **Montage in plaats van overvloeiers.** Een schuine baan met dezelfde helling
-  als de naad op de site veegt over het beeld, of er wordt hard gesneden.
-- **Alles beweegt.** Foto's drijven, de korrel leeft, de clubs en de diploma's
-  lopen als een band voorbij, een citaat licht woord voor woord op.
-- **Een vast kader zoals bij een sportzender.** Het merk linksboven, rechtsboven
-  de klok en of de praktijk nu open is, linksonder het hoofdstuk.
 
 Het adres staat niet in Google (`noindex` op de pagina, `Disallow: /tv/` in
 robots.txt) en er verwijst geen enkele link naartoe. Wie het adres niet kent,
@@ -48,48 +34,83 @@ Zet in alle gevallen de slaapstand en de screensaver van het toestel uit. De
 pagina vraagt zelf om het scherm wakker te houden, maar niet elke speler
 luistert daarnaar.
 
+## Geen dia's maar shots
+
+Het scherm is een montage, geen diavoorstelling. Dat zit in vier keuzes, en wie
+eraan werkt doet er goed aan ze niet terug te draaien:
+
+1. **Beeld is de hoofdzaak.** Elk shot is beeld dat beweegt; tekst is een
+   lower-third die kort komt en weer gaat. Geen koppen in het midden.
+2. **Harde cuts.** Honderd milliseconden, geen overvloeier van een seconde.
+3. **Geen meubilair.** Geen voortgangsbalk, geen teller, geen sectiekoppen met
+   nummers. Dat is de taal van een presentatie en precies wat verraadt dat het
+   er een is.
+4. **Ritme.** De shots duren niet allemaal even lang: twee seconden, dan vijf,
+   dan anderhalf. Gelijke lengtes voelen meteen als een diareeks.
+
+Het beeld staat in een kader van **2:1** met zwarte balken erboven en eronder.
+Niet 2.39:1, al is dat filmischer: de hele fotobibliotheek is vierkant of
+staand, en in scope zou een portret tweederde van zijn hoogte kwijt zijn.
+
 ## De inhoud wijzigen
 
 Alles staat in **`tv/inhoud.js`**. Dat is het enige bestand dat je aanraakt.
-Bovenaan staan de instellingen, de praktijkgegevens en de openingsuren,
-daaronder de scènes, in de volgorde waarin ze voorbijkomen.
+Bovenaan staan de praktijkgegevens en de openingsuren, daaronder de shotlijst
+in de volgorde waarin ze voorbijkomen.
 
-Elke scène heeft een `soort` die bepaalt hoe ze beweegt. De soorten staan
-onderaan dat bestand opgesomd, met per soort welke velden ze gebruikt. Een
-scène verplaatsen doe je door ze in de lijst te verplaatsen; weghalen door ze
-te verwijderen of met `//` uit te commentariëren.
+Een shot is een van deze drie:
 
-`duur` is in seconden. `hoofdstuk` is de naam die linksonder in beeld staat;
-scènes met dezelfde naam krijgen hetzelfde nummer.
+| | |
+|---|---|
+| `beeld:` | een still die beweegt |
+| `video:` | een stuk uit een filmbestand, met `van` als in-punt in seconden |
+| `kaart:` | een tussentitel op zwart |
 
-**Een tijdelijk bericht**: geef een scène `van` en `tot` (JJJJ-MM-DD) mee. Ze
-verschijnt dan alleen in die periode en verdwijnt daarna vanzelf. Onderaan de
-lijst staat een uitgeschakeld voorbeeld voor het bouwverlof (soort `bericht`);
-haal de `//` weg en pas de datums aan.
+`duur` is in seconden. `beweging` is `in`, `uit`, `links`, `rechts`, `op`,
+`neer` of `stil`; de beweging wordt automatisch precies zo lang gemaakt als het
+shot, zodat hij uitgespeeld is op de cut.
 
-**De favorieten van een therapeut**: bij elke persoon staan ze allemaal, maar er
-komen er vier voorbij. Welke, staat bovenaan in `instellingen.favorieten`.
+**Kadreren.** Bij een vierkante of staande foto in een breedbeeldkader bepaalt
+`positie` (bijvoorbeeld `'50% 38%'`) of je het onderwerp ziet of zijn
+schouders. Voor gezichten is er `portret: true`: de foto staat dan rechts op
+zijn eigen hoogte met de naam ernaast, zodat het hoofd heel blijft.
 
-**Na een wijziging:** verhoog `VERSIE` bovenaan `tv/sw.js` (`credo-tv-6` wordt
-`credo-tv-7`). Anders blijft het scherm de oude versie uit zijn eigen geheugen
+**Tekst.** `reuze`, `groot`, `mid`, `citaat`, `onder`, `regel` en `extra`, van
+groot naar klein. `tekstVan` bepaalt wanneer de tekst opkomt, `tekstTot`
+wanneer hij weer weggaat — laat dat laatste weg en hij blijft tot de cut. Tekst
+die vóór de cut weggaat laat het beeld even alleen, en dat is precies het
+verschil met een dia.
+
+De velden staan allemaal opgesomd in de kop van `inhoud.js`.
+
+**Een tijdelijk bericht** — geef een shot `van` en `tot` (JJJJ-MM-DD) mee. Het
+verschijnt dan alleen in die periode en verdwijnt daarna vanzelf. Bijvoorbeeld
+een sluitingsbericht voor het bouwverlof.
+
+**De video's.** Er is een kleine vijftien seconden echt beeldmateriaal
+(`hero-performance` en `hero-rehab`). Door met `van` verschillende in-punten te
+kiezen levert één bestand meerdere shots op. Elk videoshot krijgt twee bronnen,
+webm eerst en mp4 erachter: niet elke tv-browser heeft H.264, en niet elke
+browser kent webm.
+
+**Na een wijziging:** verhoog `VERSIE` bovenaan `tv/sw.js` (`credo-tv-1` wordt
+`credo-tv-2`). Anders blijft het scherm de oude versie uit zijn eigen geheugen
 tonen.
 
 ## Wat het scherm zelf bijhoudt
 
 - De klok rechtsboven en de dag van de week.
-- "Open tot 21:00" of "Gesloten", berekend uit de openingsuren.
-- Een scène met de grote klok, de status en de week, met vandaag uitgelicht.
-- Bij de dagwissel bouwt het scherm zichzelf opnieuw op, zodat periodescènes en
+- "Nu open, tot 21:00" of "Vandaag gesloten", berekend uit de openingsuren.
+- De dag van vandaag staat gemarkeerd in het urenoverzicht.
+- Bij de dagwissel bouwt het scherm zichzelf opnieuw op, zodat periodeslides en
   de gemarkeerde dag meegaan. Dat gebeurt tijdens een overgang, dus onzichtbaar.
 
 ## Als het netwerk wegvalt
 
-Alles wat het scherm nodig heeft (de pagina, de foto's, de twee video's, de
-lettertypes en de QR-codes) wordt bij de eerste keer lokaal bewaard. Welke foto's
-en video's dat zijn, leest `sw.js` zelf uit `inhoud.js`: een nieuwe foto in de
-inhoud komt dus vanzelf mee. Valt de wifi weg, dan blijft de lus gewoon
-doordraaien. Komt het netwerk terug, dan haalt het op de achtergrond de nieuwste
-versie op.
+Alles wat het scherm nodig heeft — de pagina, de foto's, de lettertypes, de
+QR-codes — wordt bij de eerste keer lokaal bewaard. Valt de wifi weg, dan blijft
+de lus gewoon doordraaien. Komt het netwerk terug, dan haalt het op de
+achtergrond de nieuwste versie op.
 
 Daarom staan de lettertypes ook in `tv/fonts/` en niet bij Google: een bestand
 van een andere server kan niet mee bewaard worden.
@@ -101,22 +122,19 @@ toetsenbord of afstandsbediening kan het wel:
 
 | | |
 |---|---|
-| Pijl links / rechts | een scène terug of verder |
+| Pijl links / rechts | een slide terug of verder |
 | Spatie | pauzeren en hervatten |
 | F | volledig scherm aan of uit |
-| Klik of tik | een scène verder |
+| Klik of tik | een slide verder |
 
-Om één scène na te kijken zonder de hele film af te wachten, zet je
-`?scene=` achter het adres, met het nummer van de scène (de eerste is 0):
-`/tv/?scene=7` begint bij de achtste.
+## Wat er bij een wijziging mee moet
 
-## Tekst die te lang wordt
+Verander je een kaart, let dan op de hoogte: het kader is 960 pixels hoog en
+niet 1080, dus er past minder dan je zou denken. Loopt er iets buiten, dan valt
+dat op in de doorloop maar niet per se op de televisie zelf.
 
-Koppen en namen meten zichzelf: een lange naam als Vandecaetsbeek wordt net zo
-veel kleiner als nodig om naast het portret te passen. Een citaat dat te lang
-is, krimpt tot het boven de naam past. Moet het kleiner dan leesbaar, dan
-schrijft het scherm een waarschuwing in de console van de browser. Dat is het
-teken dat er echt te veel tekst staat.
+Voeg je beeld of video toe, zet het bestand dan ook in de lijst `NODIG` in
+`tv/sw.js`, anders is het er offline niet.
 
 ## Nog in te vullen
 
@@ -133,9 +151,8 @@ waarde en verhoog je `VERSIE` in `sw.js`.
 
 ## Wat er nog bij kan
 
-- **Bas Van Bael** heeft nog geen favorieten; zijn scène toont nu zijn
-  diploma's op de plaats waar bij de anderen de favorieten wisselen. Vul
-  `favoriet` in zijn blok aan zoals bij de anderen.
+- **Bas Van Bael** heeft nog geen favorieten; zijn slide toont nu alleen zijn
+  naam en diploma's. Vul `favoriet` in zijn blok aan zoals bij de anderen.
 - De oude slideshow had de teamfoto's in kleur met het Credo-logo op de
   achtergrond. Hier staan de zwart-witportretten van de website, zodat het
   scherm en de site één geheel zijn.
