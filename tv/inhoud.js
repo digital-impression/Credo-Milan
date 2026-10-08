@@ -26,7 +26,7 @@ window.CREDO_TV = {
     adres:  'Kapelstraat 89 · 3590 Diepenbeek',
     tel:    '+32 480 62 85 45',
     mail:   'info@credokinesitherapie.be',
-    site:   'credokinesitherapie.be',
+    site:   'credorehabandperformance.com',
     btw:    'BTW BE 0756.834.184',
     // 0 = zondag, 1 = maandag ... 6 = zaterdag
     uren: [

@@ -93,7 +93,7 @@ def taalkop(html, taal, diepte, bronpad):
                   r'\1 is-actief" aria-current="page"', html)
 
     # canonical, og:url en hreflang
-    basis = 'https://www.credokinesitherapie.be/'
+    basis = 'https://www.credorehabandperformance.com/'
     sec = '' if diepte == 1 else bronpad.replace('index.html', '')
     html = re.sub(r'(<link rel="canonical" href=")[^"]*(")',
                   r'\g<1>%s%s/%s\g<2>' % (basis, taal, sec), html)

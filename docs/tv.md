@@ -1,6 +1,6 @@
 # Het scherm in de wachtzaal
 
-De slideshow draait op `credokinesitherapie.be/tv/`. Het is een gewone
+De slideshow draait op `credorehabandperformance.com/tv/`. Het is een gewone
 webpagina: de televisie opent dat adres en speelt vanzelf af, in een lus, zonder
 geluid en zonder dat er iemand aan te pas komt.
 
@@ -13,7 +13,7 @@ komt er niet.
 Welke van de drie het wordt, hangt af van wat er hangt.
 
 **Heeft de tv een browser** (Samsung Tizen, LG webOS, Android TV) — open
-`credokinesitherapie.be/tv/` en zet hem op volledig scherm. Werkt, maar de
+`credorehabandperformance.com/tv/` en zet hem op volledig scherm. Werkt, maar de
 meeste tv-browsers vergeten de pagina na een herstart; dan moet iemand hem
 elke ochtend opnieuw openen.
 
@@ -27,7 +27,7 @@ kioskmodus, ingesteld om bij het opstarten te beginnen:
 ```
 chromium-browser --kiosk --noerrdialogs --disable-infobars \
   --check-for-update-interval=31536000 \
-  https://www.credokinesitherapie.be/tv/
+  https://www.credorehabandperformance.com/tv/
 ```
 
 Zet in alle gevallen de slaapstand en de screensaver van het toestel uit. De
