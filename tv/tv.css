@@ -1,38 +1,31 @@
 /* ============================================================================
    CREDO — het scherm in de wachtzaal
 
-   Geen dia's maar shots. Het verschil zit in vier dingen:
+   Geen presentatie maar een film. Wat het verschil maakt:
 
-   1. BEELD IS DE HOOFDZAAK. Elk shot is beeld dat beweegt; tekst is een
-      lower-third die kort komt en weer gaat. Geen koppen in het midden.
-   2. HARDE CUTS. Honderd milliseconden, geen overvloeier van een seconde.
-      Een documentaire cut, hij vloeit niet over.
-   3. GEEN MEUBILAIR. Geen voortgangsbalk, geen teller, geen sectiekoppen met
-      nummers. Dat is de taal van een presentatie en precies wat verraadt dat
-      het er een is.
-   4. RITME. Shots duren niet allemaal even lang: twee seconden, dan vijf, dan
-      anderhalf. Gelijke lengtes voelen als een diavoorstelling.
+   - Eén idee per scène, groot. Geen kop met een opsomming eronder.
+   - Typografie als beeld: woorden die uit een naad omhoog komen, cijfers
+     gevuld met fotografie, een naam die de breedte van het scherm pakt.
+   - Montage in plaats van overvloeiers: een schuine baan veegt over het
+     beeld (dezelfde helling als de naad op de site), of er wordt hard
+     gesneden op het ritme.
+   - Alles beweegt, ook als er niets gebeurt: de foto's drijven, de korrel
+     leeft, de lopende banden lopen.
+   - Een vast kader zoals bij een sportzender: merk, klok, of de praktijk nu
+     open is, en het hoofdstuk waar de film zit.
 
    Alles wordt getekend op een vast toneel van 1920 bij 1080 en in zijn geheel
-   geschaald, zodat het klopt op elke televisie. Het beeld zelf staat in een
-   kader van 2.39:1 met zwarte balken erboven en eronder - de snelste manier
-   om te zeggen dat dit film is en geen scherm vol informatie.
+   geschaald, zodat de verhoudingen op elke televisie kloppen. De maten zijn
+   gezet voor kijkafstand: de kleinste tekst is 24 pixels op 1080.
    ========================================================================= */
 
 :root {
   --ink:    #0D0D0D;
   --bone:   #F4F1EA;
-  --taupe:  #7C7466;
-  --zacht:  #ADA595;
+  --zacht:  #ADA595;          /* 8,3:1 op ink */
   --accent: #C9BFA8;
-  --soepel: cubic-bezier(.16, .8, .3, 1);
-
-  /* 2.00:1. Niet 2.39, want de hele fotobibliotheek is vierkant of staand:
-     in scope zou een portret tweederde van zijn hoogte kwijt zijn en viel het
-     hoofd buiten beeld. Op twee-op-een blijft het kader duidelijk breedbeeld
-     en houdt een staande foto veertig procent in plaats van drieëndertig. */
-  --kader-h: 960px;
-  --balk-h:  60px;
+  --lijn:   rgba(244, 241, 234, .22);
+  --rand:   112px;            /* de zijmarge van het toneel */
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -42,291 +35,501 @@ html, body {
   background: #000;
   color: var(--bone);
   font-family: Inter, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  font-weight: 400;
   overflow: hidden;
-  cursor: none;
+  cursor: none;                       /* geen muisaanwijzer op een televisie */
   -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
 .display {
   font-family: Anton, Impact, 'Arial Narrow Bold', sans-serif;
   font-weight: 400;
   text-transform: uppercase;
-  letter-spacing: .005em;
-  line-height: .92;
+  line-height: .88;
+  letter-spacing: .004em;
+}
+
+.oog {
+  font-size: 26px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: .24em;
+  color: var(--zacht);
+}
+
+/* Holle letters: alleen de omtrek, voor het tweede woord of de achtergrond. */
+.hol {
+  color: transparent;
+  -webkit-text-stroke: 2px rgba(244, 241, 234, .9);
 }
 
 /* ---------------------------------------------------------------- het toneel */
 
-#doek { position: fixed; inset: 0; display: grid; place-items: center; }
+#doek { position: fixed; inset: 0; overflow: hidden; }
 
+/* Het toneel staat met zijn midden op het midden van het scherm en wordt van
+   daaruit geschaald. Een raster met place-items: center werkt hier niet: op
+   een scherm kleiner dan 1920 bij 1080 zet de browser een te groot vak dan
+   linksboven, en na het schalen viel driekwart van het beeld weg. */
 #toneel {
-  position: relative;
+  position: absolute; left: 50%; top: 50%;
   width: 1920px; height: 1080px;
+  transform: translate(-50%, -50%);
   transform-origin: center center;
-  background: #000;
+  background: var(--ink);
   overflow: hidden;
 }
 
-/* Het kader waarin alles gebeurt. Wat erboven en eronder overblijft is zwart. */
-#kader {
-  position: absolute; left: 0; right: 0;
-  top: var(--balk-h); height: var(--kader-h);
+#scenes { position: absolute; inset: 0; }
+
+.scene {
+  position: absolute; inset: 0;
   overflow: hidden;
   background: var(--ink);
+  visibility: hidden;
 }
+.scene.aan { visibility: visible; }
 
-/* ------------------------------------------------------------------ de shots */
+/* ------------------------------------------------------------ de bouwstenen */
 
-.shot {
-  position: absolute; inset: 0;
-  opacity: 0; visibility: hidden;
-  /* Honderd milliseconden: te kort om als overvloeier te zien, lang genoeg
-     om geen flikkering te geven. Een scene-overgang mag langer, die zet
-     tv.js per shot. */
-  transition: opacity 100ms linear;
-}
-.shot.aan { opacity: 1; visibility: visible; }
+/* Een maskerregel: de tekst schuift omhoog uit een naad. De binnenste span
+   wordt geanimeerd; de buitenste knipt af. De ruimte bovenaan is er voor de
+   accenten op hoofdletters (ÉÉN, PATIËNTEN, VALÉRIE), die anders mee
+   afgeknipt worden; de negatieve marge zet de regel terug op zijn plaats. */
+.m  { display: block; overflow: hidden; padding: .2em 0 .08em; margin: -.2em 0 -.08em; }
+.mi { display: block; will-change: transform; }
 
-.shot > .beeld {
+/* Fotografie: zwart-wit en iets harder, zoals op de site. */
+.foto {
   position: absolute; inset: 0;
   width: 100%; height: 100%;
   object-fit: cover;
-  /* Zwaarder gegradeerd dan op de site: op een televisie in een lichte ruimte
-     valt een vlak beeld uit elkaar. */
-  filter: grayscale(1) contrast(1.16) brightness(.94);
+  filter: grayscale(1) contrast(1.1) brightness(.92);
   will-change: transform;
 }
 
-/* ---------------------------------------------------------------- portret */
-
-/* Gezichten gaan niet full-bleed. Een staande foto over de volle breedte van
-   een breedbeeldkader laat een strook over waar net het hoofd buiten valt.
-   Het portret staat daarom rechts op zijn eigen hoogte, loopt rechts van het
-   kader af, en veert links uit naar zwart - geen paneel met een rand, maar
-   een gekadreerd beeld met ruimte voor de naam ernaast. */
-.shot.portret > .beeld {
-  left: auto; right: 0; width: 62%;
-  object-position: 50% 24%;
+.film {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
 }
-/* De veer naar zwart. In meer stappen dan je zou denken nodig is: met twee
-   stops valt er een zichtbare verticale lijn in het beeld, precies waar het
-   verloop begint. */
-.shot.portret .wig {
-  position: absolute; inset: 0; z-index: 3; pointer-events: none;
-  background: linear-gradient(to right,
-    rgba(13,13,13,1) 0%,
-    rgba(13,13,13,1) 20%,
-    rgba(13,13,13,.97) 28%,
-    rgba(13,13,13,.86) 36%,
-    rgba(13,13,13,.62) 44%,
-    rgba(13,13,13,.34) 53%,
-    rgba(13,13,13,.12) 62%,
-    rgba(13,13,13,0) 72%);
-}
-.shot.portret .onderregel { right: 54%; bottom: auto; top: 50%;
-                            transform: translateY(-50%); }
-.shot.portret .scrim { display: none; }
 
-/* De vignettering. Houdt het oog in het midden en maakt de randen van het
-   kader zacht, zoals een lens doet. */
-#vignet {
-  position: absolute; inset: 0; z-index: 6; pointer-events: none;
+/* De foto drijft zolang zijn scène speelt. Richting en afstand per scène via
+   variabelen, zodat niet elk beeld dezelfde kant op schuift. */
+.drijf { transform: scale(1.06); }
+.speelt .drijf { animation: drijf var(--drijf-duur, 16s) linear forwards; }
+@keyframes drijf {
+  from { transform: scale(var(--drijf-van, 1.04)) translate3d(0, 0, 0); }
+  to   { transform: scale(var(--drijf-tot, 1.16)) translate3d(var(--drijf-x, -1.5%), var(--drijf-y, -1%), 0); }
+}
+
+.sluier { position: absolute; inset: 0; pointer-events: none; }
+.sluier-onder {
   background:
-    radial-gradient(130% 100% at 50% 45%, rgba(0,0,0,0) 38%, rgba(0,0,0,.52) 100%);
+    linear-gradient(to top, rgba(13,13,13,.94) 0%, rgba(13,13,13,.55) 40%, rgba(13,13,13,0) 72%),
+    linear-gradient(to bottom, rgba(13,13,13,.55) 0%, rgba(13,13,13,0) 20%);
+}
+.sluier-links {
+  background:
+    linear-gradient(to right, rgba(13,13,13,.92) 0%, rgba(13,13,13,.6) 38%, rgba(13,13,13,0) 70%),
+    linear-gradient(to bottom, rgba(13,13,13,.55) 0%, rgba(13,13,13,0) 20%),
+    linear-gradient(to top, rgba(13,13,13,.6) 0%, rgba(13,13,13,0) 25%);
+}
+.sluier-zwaar { background: rgba(13,13,13,.78); }
+
+/* Een lopende band: twee keer dezelfde inhoud achter elkaar, en de hele rij
+   schuift precies één inhoud op. Zo loopt hij naadloos rond. */
+.band { position: absolute; left: 0; display: flex; white-space: nowrap; will-change: transform; }
+.band > * { flex: none; }
+.speelt .band { animation: band var(--band-duur, 40s) linear infinite; }
+.speelt .band.terug { animation-direction: reverse; }
+@keyframes band { from { transform: translate3d(0, 0, 0); } to { transform: translate3d(-50%, 0, 0); } }
+
+/* ------------------------------------------------------------- de overgang */
+
+/* Eén donkere baan, schuin zoals de naad, met aan beide kanten een smalle
+   lichte rand. Bij het opkomen loopt de rand voorop, bij het weggaan sleept
+   hij achteraan. Net breed genoeg om het scherm even helemaal te bedekken,
+   zodat er geen zwart moment tussen twee scènes valt. */
+#gordijn { position: absolute; inset: 0; z-index: 40; pointer-events: none; }
+.baan {
+  position: absolute; top: -12%; left: -10%;
+  width: 120%; height: 124%;
+  background: var(--ink);
+  transform: translateX(-115%) skewX(-14deg);
+  will-change: transform;
+}
+.baan::before, .baan::after {
+  content: ''; position: absolute; top: 0; bottom: 0; width: 34px;
+  background: var(--bone);
+}
+.baan::before { left: -34px; }
+.baan::after  { right: -34px; }
+
+/* ------------------------------------------------------------ het vaste kader */
+
+#kader { position: absolute; inset: 0; z-index: 50; pointer-events: none; }
+#kader > * { z-index: 1; }
+#kader > * { transition: opacity .8s ease; }
+
+/* Een zachte schaduw boven- en onderaan, zodat de klok en het merk ook over
+   een lichte foto leesbaar blijven. Zoals de rand van een tv-uitzending. */
+#kader::before, #kader::after {
+  content: ''; position: absolute; left: 0; right: 0; height: 190px;
+  transition: opacity .8s ease;
+}
+#kader::before { top: 0;    background: linear-gradient(to bottom, rgba(13,13,13,.62), rgba(13,13,13,0)); }
+#kader::after  { bottom: 0; background: linear-gradient(to top,    rgba(13,13,13,.62), rgba(13,13,13,0)); }
+#kader.kaal::before, #kader.kaal::after { opacity: 0; }
+#kader.kaal > * { opacity: 0; }
+
+#merk {
+  position: absolute; top: 54px; left: var(--rand);
+  display: flex; align-items: center; gap: 22px;
+}
+.merk-woord { font-family: Anton, Impact, sans-serif; font-size: 40px; letter-spacing: .03em; text-transform: uppercase; line-height: 1; }
+.merk-streep { width: 1px; height: 26px; background: rgba(244,241,234,.35); }
+.merk-onder { font-size: 20px; font-weight: 600; letter-spacing: .26em; text-transform: uppercase; color: var(--bone); opacity: .82; }
+
+#live {
+  position: absolute; top: 54px; right: var(--rand);
+  display: flex; align-items: center; gap: 30px;
+  font-size: 24px; font-weight: 500; letter-spacing: .14em; text-transform: uppercase;
+}
+#status { display: flex; align-items: center; gap: 14px; color: var(--bone); opacity: .88; }
+#status i { width: 12px; height: 12px; border-radius: 50%; background: #8FD19E; box-shadow: 0 0 0 0 rgba(143,209,158,.6); animation: puls 2.4s ease-out infinite; }
+#status.dicht i { background: var(--zacht); animation: none; }
+@keyframes puls { 0% { box-shadow: 0 0 0 0 rgba(143,209,158,.55); } 70%, 100% { box-shadow: 0 0 0 14px rgba(143,209,158,0); } }
+#klok { font-family: Anton, Impact, sans-serif; font-size: 40px; letter-spacing: .04em; line-height: 1; font-variant-numeric: tabular-nums; }
+
+#hoofdstuk {
+  position: absolute; bottom: 52px; left: var(--rand);
+  display: flex; align-items: center; gap: 20px;
+  font-size: 24px; font-weight: 600; letter-spacing: .22em; text-transform: uppercase;
+}
+#hoofdstuk-nr { font-family: Anton, Impact, sans-serif; font-size: 30px; letter-spacing: .06em; color: var(--zacht); font-weight: 400; }
+#hoofdstuk-spoor { position: relative; width: 120px; height: 2px; background: rgba(244,241,234,.2); overflow: hidden; }
+#hoofdstuk-balk { position: absolute; inset: 0; background: var(--bone); transform-origin: left; transform: scaleX(0); }
+
+#adres {
+  position: absolute; bottom: 52px; right: var(--rand);
+  font-size: 22px; font-weight: 500; letter-spacing: .2em; text-transform: uppercase; color: var(--zacht);
 }
 
-/* De korrel van de site. Over bewegend beeld is hij lager gezet, anders
-   verspringt hij met elk frame en gaat het ruisen. */
+/* De korrel van de site, over het hele toneel. Hij verspringt een paar keer
+   per seconde, zoals filmkorrel; dat houdt zelfs een stilstaand beeld levend.
+   Het vlak is groter dan het toneel en verschuift alleen, dus het kost de
+   televisie niets om te tekenen. */
 #korrel {
-  position: absolute; inset: 0; z-index: 7; pointer-events: none;
-  opacity: .04; mix-blend-mode: overlay;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
+  position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+  z-index: 60; pointer-events: none;
+  opacity: .07; mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation: korrel 1s steps(5) infinite;
 }
-
-/* ----------------------------------------------------------- de bewegingen */
-
-/* Elk shot beweegt. Welke beweging staat in inhoud.js; de duur wordt door
-   tv.js gelijkgezet aan de duur van het shot, zodat de beweging precies
-   uitgespeeld is op de cut. */
-@keyframes tv-in     { from { transform: scale(1.02) } to { transform: scale(1.15) } }
-@keyframes tv-uit    { from { transform: scale(1.16) } to { transform: scale(1.03) } }
-@keyframes tv-links  { from { transform: scale(1.12) translate3d(2.2%,0,0) }
-                       to   { transform: scale(1.12) translate3d(-2.2%,0,0) } }
-@keyframes tv-rechts { from { transform: scale(1.12) translate3d(-2.2%,0,0) }
-                       to   { transform: scale(1.12) translate3d(2.2%,0,0) } }
-@keyframes tv-op     { from { transform: scale(1.13) translate3d(0,2.4%,0) }
-                       to   { transform: scale(1.13) translate3d(0,-1.4%,0) } }
-@keyframes tv-neer   { from { transform: scale(1.13) translate3d(0,-1.8%,0) }
-                       to   { transform: scale(1.13) translate3d(0,2%,0) } }
-@keyframes tv-stil   { from { transform: scale(1.06) } to { transform: scale(1.085) } }
-
-/* ------------------------------------------------------------ de lower-third */
-
-/* Tekst staat linksonder in het kader, klein. Niet in het midden en niet
-   groot: een documentaire zet een naam onder in beeld en laat de rest aan
-   het beeld. */
-.onderregel {
-  position: absolute; z-index: 5;
-  left: 92px; right: 300px; bottom: 74px;
-  /* het beeld eronder wegdrukken zodat de tekst leesbaar blijft */
-  text-shadow: 0 2px 30px rgba(0,0,0,.85), 0 1px 4px rgba(0,0,0,.6);
-}
-.onderregel .balkje {
-  width: 0; height: 2px; background: var(--accent);
-  margin-bottom: 20px;
-}
-.onderregel .reuze { font-size: 152px; line-height: .86; }
-.onderregel .groot { font-size: 86px; line-height: .94; }
-/* Een citaat is geen kop: niet in hoofdletters en niet in Anton, want dan
-   leest het als een slogan in plaats van als iets wat iemand gezegd heeft. */
-.onderregel .citaat { font-size: 43px; line-height: 1.34; max-width: 27ch;
-                      color: var(--bone); }
-/* Eén persoonlijk detail onder een portret. Klein en gedempt: het is een
-   voetnoot bij de persoon, geen tweede kop. */
-.onderregel .extra { margin-top: 13px; font-size: 24px; color: var(--taupe); }
-.onderregel .mid   { font-size: 52px; line-height: 1.02; }
-.onderregel .regel { margin-top: 16px; font-size: 31px; line-height: 1.4;
-                     max-width: 30ch; color: rgba(244,241,234,.9); }
-.onderregel .onder { margin-top: 14px; font-size: 25px; letter-spacing: .2em;
-                     text-transform: uppercase; color: var(--zacht); }
-
-/* Komt van onder op, gaat recht weg. tv.js zet de vertraging en, waar het
-   shot dat vraagt, het weggaan ervoor. */
-.onderregel > * {
-  opacity: 0; transform: translateY(22px);
-  transition: opacity .62s var(--soepel), transform .62s var(--soepel);
-}
-.shot.tekst-aan .onderregel > * { opacity: 1; transform: none; }
-.shot.tekst-aan .onderregel .balkje { width: 72px; transition: width .7s var(--soepel); }
-.shot.tekst-uit .onderregel > * { opacity: 0; transform: none;
-                                  transition: opacity .5s ease; }
-
-/* Een onderscrim onder de lower-third: zonder dit valt tekst op een licht
-   stuk beeld weg, en net dat gebeurt op een televisie in een lichte ruimte. */
-.shot .scrim {
-  position: absolute; inset: 0; z-index: 4; pointer-events: none;
-  opacity: 0; transition: opacity .5s ease;
-  background: linear-gradient(to top,
-    rgba(13,13,13,.88) 0%, rgba(13,13,13,.5) 26%, rgba(13,13,13,0) 54%);
-}
-.shot.tekst-aan .scrim { opacity: 1; }
-.shot.tekst-uit .scrim { opacity: 0; }
-
-/* ================================================================== KAARTEN */
-
-/* Een tussentitel: zwart, tekst, niets anders. Dat is hoe een documentaire
-   iets zegt wat niet in beeld te vatten is - de tarieven, het
-   annulatiebeleid. Geen dia maar een kaart, en daarom vlak, links uitgelijnd
-   en zonder foto erachter. */
-.shot.kaart > .beeld { display: none; }
-.shot.kaart { background: var(--ink); }
-.kaartvlak {
-  position: absolute; inset: 0; z-index: 5;
-  display: flex; flex-direction: column; justify-content: center;
-  padding: 0 120px;
-}
-.kaartvlak > * {
-  opacity: 0; transform: translateY(18px);
-  transition: opacity .7s var(--soepel), transform .7s var(--soepel);
-}
-.shot.tekst-aan .kaartvlak > * { opacity: 1; transform: none; }
-
-.kaartvlak .oog { font-size: 25px; letter-spacing: .3em; text-transform: uppercase;
-                  color: var(--taupe); margin-bottom: 26px; }
-.kaartvlak .kop { font-size: 76px; line-height: .98; margin-bottom: 40px; }
-.kaartvlak .zin { font-size: 40px; line-height: 1.44; max-width: 30ch;
-                  color: rgba(244,241,234,.92); }
-.kaartvlak .zin + .zin { margin-top: 28px; font-size: 29px; color: var(--zacht);
-                         max-width: 42ch; }
-
-/* het woord credo */
-.kaart-woord .woord { font-size: 190px; line-height: .86; }
-.kaart-woord .spreek { margin-top: 22px; font-size: 38px; color: var(--zacht);
-                       font-style: italic; }
-.kaart-woord .uitleg { margin-top: 34px; font-size: 44px; line-height: 1.38;
-                       max-width: 22ch; }
-.kaart-woord .uitleg em { color: var(--accent); font-style: italic; }
-
-/* de tarieven */
-.kaart-tarieven table { width: 100%; border-collapse: collapse;
-                        font-variant-numeric: tabular-nums; }
-.kaart-tarieven th { text-align: right; padding: 0 0 20px; vertical-align: bottom;
-                     font-size: 23px; font-weight: 600; letter-spacing: .14em;
-                     text-transform: uppercase; color: var(--taupe); line-height: 1.3; }
-.kaart-tarieven th:first-child, .kaart-tarieven td:first-child { text-align: left; }
-.kaart-tarieven td { text-align: right; padding: 21px 0; font-size: 37px;
-                     color: rgba(244,241,234,.92);
-                     border-top: 1px solid rgba(244,241,234,.14); }
-.kaart-tarieven tr:last-child td { border-bottom: 1px solid rgba(244,241,234,.14); }
-.kaart-tarieven td:first-child { font-size: 33px; color: var(--bone); }
-.kaart-tarieven .voet { margin-top: 32px; font-size: 27px; line-height: 1.45;
-                        color: var(--zacht); max-width: 64ch; }
-.tebevestigen { color: #E8B04B; border-bottom: 2px dotted #E8B04B; }
-
-/* de uren */
-.kaart-uren { }
-.kaart-uren .rijen { display: grid; gap: 0; max-width: 820px; }
-.kaart-uren .rij { display: flex; justify-content: space-between; align-items: baseline;
-                   padding: 20px 0; font-size: 38px;
-                   border-top: 1px solid rgba(244,241,234,.14); }
-.kaart-uren .rij:last-child { border-bottom: 1px solid rgba(244,241,234,.14); }
-.kaart-uren .rij .dag  { color: rgba(244,241,234,.7); }
-.kaart-uren .rij .tijd { color: rgba(244,241,234,.5); font-variant-numeric: tabular-nums; }
-.kaart-uren .rij.vandaag .dag,
-.kaart-uren .rij.vandaag .tijd { color: var(--bone); font-weight: 600; }
-.kaart-uren .nu { margin-top: 34px; font-size: 36px; color: var(--zacht); }
-.kaart-uren .nu strong { color: var(--bone); font-weight: 600; }
-.kaart-uren .stip { display: inline-block; width: 15px; height: 15px; border-radius: 99px;
-                    background: var(--accent); margin-right: 14px; vertical-align: middle; }
-.kaart-uren .stip.dicht { background: var(--taupe); }
-
-/* de prijs van een shirt */
-.kaart-prijs .prijs { font-size: 170px; line-height: .88; color: var(--accent); }
-.kaart-prijs .per { margin-top: 8px; font-size: 30px; letter-spacing: .24em;
-                    text-transform: uppercase; color: var(--zacht); }
-
-/* boeken, met de codes */
-.kaart-boeken { flex-direction: row !important; align-items: center; gap: 110px; }
-.kaart-boeken .links { flex: 1 1 auto; }
-.kaart-boeken .codes { display: flex; gap: 52px; flex: none; }
-.kaart-boeken .code { text-align: center; }
-.kaart-boeken .code .vak { width: 268px; height: 268px; background: var(--bone);
-                           padding: 16px; display: grid; place-items: center; }
-.kaart-boeken .code img { width: 100%; height: 100%; image-rendering: pixelated; }
-.kaart-boeken .code .cap { margin-top: 18px; font-size: 23px; letter-spacing: .2em;
-                           text-transform: uppercase; color: var(--zacht); }
-.kaart-boeken .contact { margin-top: 38px; font-size: 34px; line-height: 1.5;
-                         color: var(--zacht); }
-.kaart-boeken .contact strong { color: var(--bone); font-weight: 600; }
-
-/* ------------------------------------------------------- in de zwarte balk */
-
-/* Alleen dit mag erbuiten staan, en zo klein dat je het pas ziet als je
-   ernaar zoekt: waar de praktijk is, en hoe laat het is. Geen teller en geen
-   voortgangsbalk - dat is wat een scherm tot een presentatie maakt. */
-#slug {
-  position: absolute; left: 92px; bottom: 50px; z-index: 40;
-  font-size: 21px; letter-spacing: .24em; text-transform: uppercase;
-  color: rgba(244,241,234,.26);
-}
-#tijd {
-  position: absolute; right: 92px; bottom: 50px; z-index: 40;
-  font-size: 21px; letter-spacing: .18em;
-  color: rgba(244,241,234,.26);
-  font-variant-numeric: tabular-nums;
+@keyframes korrel {
+  0%   { transform: translate3d(0, 0, 0); }
+  20%  { transform: translate3d(-4%, 3%, 0); }
+  40%  { transform: translate3d(3%, -5%, 0); }
+  60%  { transform: translate3d(-6%, -2%, 0); }
+  80%  { transform: translate3d(5%, 4%, 0); }
+  100% { transform: translate3d(0, 0, 0); }
 }
 
 #melding {
-  position: absolute; left: 50%; top: 50%; z-index: 90;
+  position: absolute; left: 50%; top: 50%; z-index: 70;
   transform: translate(-50%, -50%);
-  padding: 34px 54px; background: rgba(13,13,13,.92);
-  border: 1px solid rgba(244,241,234,.3);
-  font-size: 34px; letter-spacing: .14em; text-transform: uppercase;
-  opacity: 0; transition: opacity .25s ease;
+  padding: 22px 40px; background: rgba(13,13,13,.86);
+  font-size: 30px; letter-spacing: .2em; text-transform: uppercase;
+  opacity: 0; transition: opacity .3s ease;
 }
 #melding.aan { opacity: 1; }
 
-@media (prefers-reduced-motion: reduce) {
-  .shot > .beeld { animation: none !important; transform: scale(1.04) !important; }
-  .onderregel > *, .kaartvlak > * { transition: opacity .3s ease; transform: none; }
+/* =========================================================== DE SCÈNES */
+
+/* ---------------------------------------------------------------- opening */
+
+.s-opening .uitsparing {
+  position: absolute; inset: 0;
+  background: #0D0D0D;
+  mix-blend-mode: multiply;           /* wit laat de film door, zwart niet */
+  display: flex; align-items: center; justify-content: center;
+  will-change: transform;
 }
+.s-opening .uitsparing .woord {
+  color: #fff;
+  font-size: 600px; line-height: .8;
+  letter-spacing: .01em;
+  white-space: nowrap;
+  display: flex;
+}
+.s-opening .uitsparing .letter { display: block; overflow: hidden; padding: .02em 0; }
+.s-opening .uitsparing .letter > span { display: block; }
+
+.s-opening .na { position: absolute; left: var(--rand); right: var(--rand); bottom: 168px; }
+.s-opening .na .kop { font-size: 168px; }
+.s-opening .na .regel { margin-top: 34px; font-size: 30px; font-weight: 500; letter-spacing: .26em; text-transform: uppercase; color: var(--bone); opacity: .9; }
+
+/* --------------------------------------------------------------- manifest */
+
+.s-manifest .foto { opacity: .42; }
+.s-manifest .beat { position: absolute; left: var(--rand); right: var(--rand); bottom: 190px; }
+.s-manifest .boven { font-size: 50px; font-weight: 300; color: var(--bone); margin-bottom: 26px; letter-spacing: -.005em; }
+.s-manifest .groot { font-size: 250px; }
+.s-manifest .groot.accent .mi { color: var(--accent); }
+
+/* ---------------------------------------------------------------- waarden */
+
+.s-waarden .laag { position: absolute; inset: 0; }
+.s-waarden .woord { position: absolute; left: calc(var(--rand) - 10px); bottom: 210px; font-size: 380px; white-space: nowrap; }
+.s-waarden .tekst { position: absolute; left: var(--rand); bottom: 140px; font-size: 40px; font-weight: 300; }
+.s-waarden .teller {
+  position: absolute; right: var(--rand); bottom: 140px;
+  font-family: Anton, Impact, sans-serif; font-size: 40px; letter-spacing: .06em; color: var(--zacht);
+}
+.s-waarden .teller b { color: var(--bone); font-weight: 400; }
+
+/* ------------------------------------------------------------------ twee */
+
+.s-twee .helft { position: absolute; inset: 0; overflow: hidden; }
+.s-twee .helft.links  { clip-path: polygon(0 0, 57% 0, 43% 100%, 0 100%); }
+.s-twee .helft.rechts { clip-path: polygon(57% 0, 100% 0, 100% 100%, 43% 100%); }
+.s-twee .helft .film  { filter: grayscale(1) contrast(1.05); }
+.s-twee .helft.links .film  { object-position: 70% 50%; }
+.s-twee .helft.rechts .film { object-position: 40% 50%; }
+.s-twee .helft.links .sluier  { background: linear-gradient(to top, rgba(13,13,13,.92) 0%, rgba(13,13,13,.35) 48%, rgba(13,13,13,.15) 100%); }
+.s-twee .helft.rechts .sluier { background: linear-gradient(to bottom, rgba(13,13,13,.92) 0%, rgba(13,13,13,.35) 50%, rgba(13,13,13,.15) 100%); }
+.s-twee .naadlijn {
+  position: absolute; top: -5%; left: 50%; width: 3px; height: 110%;
+  background: var(--bone);
+  transform: translateX(-50%) rotate(13.97deg);
+  transform-origin: center;
+}
+.s-twee .blok { position: absolute; width: 760px; }
+.s-twee .blok.links  { left: var(--rand); bottom: 150px; }
+.s-twee .blok.rechts { right: var(--rand); top: 150px; text-align: right; }
+.s-twee .blok .oog { margin-bottom: 26px; }
+.s-twee .blok .kop { font-size: 116px; }
+.s-twee .items { margin-top: 34px; display: flex; flex-wrap: wrap; gap: 14px; }
+.s-twee .blok.rechts .items { justify-content: flex-end; }
+.s-twee .item {
+  font-size: 25px; font-weight: 500; letter-spacing: .12em; text-transform: uppercase;
+  padding: 14px 22px; border: 1px solid rgba(244,241,234,.45);
+}
+
+/* -------------------------------------------------------------------- nu */
+
+.s-nu .klokgroot {
+  position: absolute; left: calc(var(--rand) - 8px); top: 150px;
+  font-size: 430px; font-variant-numeric: tabular-nums;
+  display: flex;
+}
+.s-nu .klokgroot .dp { color: var(--zacht); }
+.s-nu .zij { position: absolute; right: var(--rand); top: 196px; width: 600px; text-align: right; }
+.s-nu .zij .dag { font-size: 110px; }
+.s-nu .zij .stand { margin-top: 26px; font-size: 40px; font-weight: 300; }
+.s-nu .zij .stand strong { font-weight: 600; }
+.s-nu .week {
+  position: absolute; left: var(--rand); right: var(--rand); bottom: 150px;
+  display: grid; grid-template-columns: repeat(7, 1fr);
+  border-top: 1px solid var(--lijn);
+}
+.s-nu .dagvak { padding: 30px 24px 26px; border-right: 1px solid var(--lijn); position: relative; }
+.s-nu .dagvak:last-child { border-right: 0; }
+.s-nu .dagvak .d { font-family: Anton, Impact, sans-serif; font-size: 52px; text-transform: uppercase; line-height: 1; }
+.s-nu .dagvak .u { margin-top: 16px; font-size: 28px; font-weight: 400; font-variant-numeric: tabular-nums; color: var(--zacht); white-space: nowrap; }
+.s-nu .dagvak.dicht .d { color: rgba(244,241,234,.35); }
+.s-nu .dagvak.vandaag { background: var(--bone); color: var(--ink); }
+.s-nu .dagvak.vandaag .u { color: var(--ink); font-weight: 600; }
+.s-nu .dagvak.vandaag .d { color: var(--ink); }
+
+/* -------------------------------------------------------------- teamintro */
+
+.s-teamintro .kop { position: absolute; left: var(--rand); top: 220px; font-size: 200px; z-index: 2; }
+.s-teamintro .tekst { position: absolute; left: var(--rand); top: 640px; width: 720px; font-size: 38px; font-weight: 300; line-height: 1.3; z-index: 2; }
+.s-teamintro .rij { top: 0; height: 1080px; left: 0; gap: 0; }
+.s-teamintro .rij img {
+  width: 432px; height: 1080px; object-fit: cover; object-position: 50% 20%;
+  filter: grayscale(1) contrast(1.1) brightness(.75);
+  border-right: 2px solid var(--ink);
+}
+.s-teamintro .sluier { background: linear-gradient(to right, rgba(13,13,13,.95) 0%, rgba(13,13,13,.86) 42%, rgba(13,13,13,.25) 75%, rgba(13,13,13,.1) 100%); }
+
+/* ---------------------------------------------------------------- persoon */
+
+.s-persoon .portret {
+  position: absolute; top: 0; bottom: 0; right: 0; width: 980px;
+  clip-path: polygon(15% 0, 100% 0, 100% 100%, 0 100%);
+  overflow: hidden;
+}
+.s-persoon .portret .foto { object-position: 50% 18%; --drijf-van: 1.02; --drijf-tot: 1.12; --drijf-x: 0%; --drijf-y: 1.5%; }
+.s-persoon .portret .sluier { background: linear-gradient(to top, rgba(13,13,13,.85) 0%, rgba(13,13,13,0) 32%); }
+.s-persoon .nr {
+  position: absolute; left: calc(var(--rand) - 16px); top: 70px;
+  font-size: 560px; line-height: .85;
+  color: transparent; -webkit-text-stroke: 2px rgba(244,241,234,.13);
+}
+.s-persoon .tekstkolom { position: absolute; left: var(--rand); top: 216px; width: 1000px; }
+.s-persoon .rol { margin-bottom: 26px; }
+.s-persoon .naam { font-size: 200px; white-space: nowrap; }
+.s-persoon .naam .achter { color: transparent; -webkit-text-stroke: 2.5px var(--bone); }
+
+.s-persoon .fav { position: absolute; left: var(--rand); top: 700px; width: 840px; height: 150px; }
+.s-persoon .fav .kaart { position: absolute; inset: 0; }
+.s-persoon .fav .lab { font-size: 26px; font-weight: 600; letter-spacing: .24em; text-transform: uppercase; color: var(--zacht); }
+.s-persoon .fav .waarde { margin-top: 14px; font-size: 54px; font-weight: 300; line-height: 1.12; letter-spacing: -.01em; }
+.s-persoon .fav .stippen { position: absolute; left: 0; top: -36px; display: flex; gap: 8px; }
+.s-persoon .fav .stippen i { width: 26px; height: 3px; background: rgba(244,241,234,.22); }
+.s-persoon .fav .stippen i.aan { background: var(--bone); }
+
+.s-persoon .diplomas { position: absolute; left: var(--rand); top: 700px; width: 820px; }
+.s-persoon .diplomas li { list-style: none; font-size: 36px; font-weight: 300; line-height: 1.25; padding: 14px 0; border-top: 1px solid var(--lijn); }
+
+.s-persoon .ticker {
+  position: absolute; left: 0; right: 0; bottom: 118px; height: 66px;
+  border-top: 1px solid var(--lijn); border-bottom: 1px solid var(--lijn);
+  background: rgba(13,13,13,.6);
+  overflow: hidden;
+}
+.s-persoon .ticker .band { top: 0; height: 64px; align-items: center; --band-duur: 30s; }
+.s-persoon .ticker span { font-size: 25px; font-weight: 500; letter-spacing: .16em; text-transform: uppercase; padding-right: 38px; }
+.s-persoon .ticker span.sep { color: var(--zacht); padding-right: 38px; }
+
+/* --------------------------------------------------------------- recensie */
+
+.s-recensie .portret {
+  position: absolute; top: 0; bottom: 0; left: 0; width: 820px;
+  clip-path: polygon(0 0, 100% 0, 84% 100%, 0 100%);
+  overflow: hidden;
+}
+.s-recensie .portret .foto { object-position: 50% 25%; --drijf-x: 1%; --drijf-y: 0%; }
+.s-recensie .aanhaling { position: absolute; left: 880px; top: 120px; font-size: 400px; line-height: 1; color: transparent; -webkit-text-stroke: 2px rgba(244,241,234,.3); }
+.s-recensie .citaat { position: absolute; left: 880px; right: var(--rand); top: 300px; font-size: 50px; font-weight: 300; line-height: 1.34; letter-spacing: -.012em; }
+.s-recensie .wie { position: absolute; left: 880px; bottom: 150px; }
+.s-recensie .wie .naam { font-size: 70px; }
+.s-recensie .wie .oog { margin-top: 16px; }
+
+/* ---------------------------------------------------------------- cijfers */
+
+.s-cijfers .foto { opacity: .16; }
+.s-cijfers .beat { position: absolute; left: var(--rand); right: var(--rand); top: 150px; bottom: 140px; }
+.s-cijfers .getal-m { position: absolute; left: -10px; top: 0; }
+.s-cijfers .getal {
+  filter: grayscale(1);
+  font-size: 600px; line-height: .86; white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+  background-size: cover; background-position: center;
+  -webkit-background-clip: text; background-clip: text;
+  color: transparent;
+}
+.s-cijfers .getal.zonder-beeld { color: var(--bone); background: none; }
+.s-cijfers .onder { position: absolute; left: 0; bottom: 0; display: flex; align-items: baseline; gap: 40px; }
+.s-cijfers .naam { font-size: 130px; }
+.s-cijfers .sub { font-size: 40px; font-weight: 300; color: var(--bone); }
+.s-cijfers .teller { position: absolute; right: var(--rand); bottom: 158px; font-family: Anton, Impact, sans-serif; font-size: 40px; letter-spacing: .06em; color: var(--zacht); }
+.s-cijfers .teller b { color: var(--bone); font-weight: 400; }
+
+/* ------------------------------------------------------------------- zaal */
+
+.s-zaal .rollen {
+  position: absolute; left: -200px; top: -260px; width: 2600px; height: 1600px;
+  transform: rotate(-8deg);
+}
+.s-zaal .rol { height: 520px; }
+.s-zaal .rol.r1 { top: 240px; --band-duur: 70s; }
+.s-zaal .rol.r2 { top: 776px; --band-duur: 80s; }
+.s-zaal .rol img { width: 520px; height: 520px; object-fit: cover; filter: grayscale(1) contrast(1.1) brightness(.85); margin-right: 16px; }
+.s-zaal .sluier { background: linear-gradient(to right, rgba(13,13,13,.97) 0%, rgba(13,13,13,.9) 34%, rgba(13,13,13,.2) 64%, rgba(13,13,13,0) 100%); }
+.s-zaal .kop { position: absolute; left: calc(var(--rand) - 8px); top: 250px; font-size: 330px; text-transform: none; }
+.s-zaal .kop sup { font-size: .42em; vertical-align: .9em; margin-left: .03em; }
+.s-zaal .tekst { position: absolute; left: var(--rand); top: 640px; width: 680px; font-size: 42px; font-weight: 300; line-height: 1.3; }
+
+/* --------------------------------------------------------------- partners */
+
+.s-partners .houder { position: absolute; inset: 0; }
+.s-partners .namen { top: 210px; height: 260px; align-items: center; --band-duur: 46s; }
+.s-partners .namen span { font-size: 230px; padding-right: 70px; }
+.s-partners .namen span.hol { -webkit-text-stroke: 2.5px rgba(244,241,234,.8); }
+.s-partners .namen span.ster { font-size: 80px; color: var(--zacht); padding-right: 70px; transform: translateY(-.6em); }
+/* De band is een eigen laag (hij beweegt); zonder eigen achtergrond heeft
+   'screen' daarbinnen niets om mee te mengen en blijft zwart gewoon zwart. */
+.s-partners .logos { top: 560px; height: 170px; align-items: center; --band-duur: 36s; background: var(--ink); }
+.s-partners .logos .logo { width: 300px; height: 150px; display: grid; place-items: center; border-left: 1px solid var(--lijn); }
+.s-partners .logos img { max-width: 190px; max-height: 120px; opacity: .92; }
+.s-partners .logos img.wit      { filter: grayscale(1) brightness(0) invert(1); }
+/* Omgekeerd wordt een witte achtergrond bijna-zwart; het extra contrast maakt
+   er echt zwart van, zodat er geen grijs vierkant achter het logo blijft. */
+.s-partners .logos img.negatief { filter: grayscale(1) invert(1) contrast(1.5) brightness(1.05); mix-blend-mode: screen; }
+.s-partners .logos img.grijs    { filter: grayscale(1) brightness(1.15); }
+.s-partners .tekst { position: absolute; left: var(--rand); bottom: 150px; width: 1100px; font-size: 42px; font-weight: 300; line-height: 1.3; }
+
+/* -------------------------------------------------------------- honoraria */
+
+.s-honoraria .foto { opacity: .14; }
+.s-honoraria .kop { position: absolute; left: calc(var(--rand) - 6px); top: 150px; font-size: 170px; }
+.s-honoraria .tabel { position: absolute; left: var(--rand); right: var(--rand); top: 372px; }
+.s-honoraria .rij {
+  display: grid; grid-template-columns: 1.25fr 1fr 1fr 1fr 1.1fr;
+  align-items: baseline; column-gap: 30px;
+  position: relative; padding: 14px 0 12px;
+}
+.s-honoraria .rij .lijn { position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: var(--lijn); transform-origin: left; }
+.s-honoraria .rij.hoofd { padding: 0 0 18px; }
+.s-honoraria .rij.hoofd .c { font-family: Inter, system-ui, sans-serif; text-transform: uppercase; font-size: 22px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: var(--zacht); line-height: 1.3; align-self: end; }
+.s-honoraria .c { line-height: 1.05; text-align: right; font-size: 46px; font-weight: 300; font-variant-numeric: tabular-nums; color: rgba(244,241,234,.86); }
+.s-honoraria .c:first-child { text-align: left; font-family: Anton, Impact, sans-serif; font-size: 54px; text-transform: uppercase; color: var(--bone); letter-spacing: .01em; }
+.s-honoraria .c.nadruk { color: var(--bone); font-weight: 600; }
+.s-honoraria .rij.hoofd .c.nadruk { color: var(--bone); }
+.s-honoraria .open { white-space: nowrap; font-size: 26px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: #E7C76A; border-bottom: 2px dashed #E7C76A; }
+.s-honoraria .voet { position: absolute; left: var(--rand); right: var(--rand); bottom: 124px; font-size: 28px; font-weight: 300; color: var(--zacht); line-height: 1.4; }
+
+/* ----------------------------------------------------------------- beleid */
+
+.s-beleid .groot {
+  position: absolute; left: calc(var(--rand) - 20px); top: 130px;
+  font-size: 760px; line-height: .86; text-transform: none;
+}
+.s-beleid .groot .hol { -webkit-text-stroke: 3px rgba(244,241,234,.35); }
+.s-beleid .groot .vol { position: absolute; inset: 0; color: var(--bone); }
+.s-beleid .rechts { position: absolute; left: 1080px; right: var(--rand); top: 250px; }
+.s-beleid .kop { font-size: 120px; }
+.s-beleid .nl { margin-top: 44px; font-size: 42px; font-weight: 300; line-height: 1.32; }
+.s-beleid .en { margin-top: 34px; padding-top: 30px; border-top: 1px solid var(--lijn); font-size: 30px; font-weight: 300; line-height: 1.4; color: var(--zacht); }
+
+/* ------------------------------------------------------------------ merch */
+
+.s-merch .paneel {
+  position: absolute; top: 0; bottom: 0; right: 0; width: 900px;
+  clip-path: polygon(16% 0, 100% 0, 100% 100%, 0 100%);
+  overflow: hidden;
+}
+.s-merch .paneel .foto { object-position: 50% 30%; --drijf-x: 0%; --drijf-y: -1.5%; }
+.s-merch .links { position: absolute; left: var(--rand); top: 170px; }
+.s-merch .prijs { font-size: 470px; line-height: .86; margin-top: 18px; }
+.s-merch .per { font-size: 90px; margin-top: 12px; color: var(--zacht); }
+.s-merch .tekst { margin-top: 40px; font-size: 42px; font-weight: 300; }
+
+/* ----------------------------------------------------------------- boeken */
+
+.s-boeken .foto { opacity: .55; }
+.s-boeken .links { position: absolute; left: var(--rand); top: 200px; width: 1040px; }
+.s-boeken .kop { font-size: 180px; }
+.s-boeken .tekst { margin-top: 44px; font-size: 40px; font-weight: 300; line-height: 1.3; width: 760px; }
+.s-boeken .tel { margin-top: 44px; font-size: 96px; letter-spacing: .02em; }
+.s-boeken .codes { position: absolute; right: var(--rand); bottom: 150px; display: flex; gap: 48px; }
+.s-boeken .code { width: 330px; text-align: center; }
+.s-boeken .code .tegel { position: relative; background: var(--bone); padding: 26px; }
+.s-boeken .code .tegel img { display: block; width: 100%; height: auto; }
+.s-boeken .code .hoek { position: absolute; width: 40px; height: 40px; border-color: var(--bone); border-style: solid; border-width: 0; }
+.s-boeken .code .hoek.lb { left: -18px; top: -18px; border-left-width: 3px; border-top-width: 3px; }
+.s-boeken .code .hoek.rb { right: -18px; top: -18px; border-right-width: 3px; border-top-width: 3px; }
+.s-boeken .code .hoek.lo { left: -18px; bottom: -18px; border-left-width: 3px; border-bottom-width: 3px; }
+.s-boeken .code .hoek.ro { right: -18px; bottom: -18px; border-right-width: 3px; border-bottom-width: 3px; }
+.s-boeken .code .lab { margin-top: 30px; font-size: 26px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; }
+
+/* ---------------------------------------------------------------- bericht */
+
+.s-bericht .foto { opacity: .3; }
+.s-bericht .blok { position: absolute; left: var(--rand); right: var(--rand); bottom: 190px; }
+.s-bericht .oog { margin-bottom: 30px; }
+.s-bericht .kop { font-size: 190px; }
+.s-bericht .tekst { margin-top: 40px; font-size: 44px; font-weight: 300; width: 1200px; line-height: 1.3; }
