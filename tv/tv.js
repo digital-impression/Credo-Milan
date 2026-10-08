@@ -1,15 +1,20 @@
 /* ============================================================================
-   CREDO — de motor achter het scherm in de wachtzaal
+   CREDO — de montage achter het scherm in de wachtzaal
 
-   Wat dit doet:
+   Dit is geen diavoorstelling met een timer eroverheen. Het is een montage:
+   een lijst shots die elk hun eigen duur en beweging hebben, met een harde
+   cut ertussen. Wat dit bestand doet:
+
    - het toneel van 1920x1080 schalen naar het scherm dat eraan hangt
-   - de slides uit inhoud.js opbouwen en in een lus afspelen
-   - per slide de tekst gestaffeld laten binnenkomen
-   - de klok en de status "nu open / nu gesloten" bijhouden
-   - de beelden vooraf inladen, zodat er nooit een leeg vlak verschijnt
+   - de shots uit inhoud.js opbouwen: stills met beweging, clips uit de
+     videobestanden, en kaarten (tussentitels op zwart)
+   - per shot de beweging precies zo lang maken als het shot duurt, zodat ze
+     samen uitgespeeld zijn op de cut
+   - de tekst laten komen en gaan binnen het shot, niet op de cut
+   - alles vooraf inladen, zodat er nooit een leeg kader staat
 
    Er wordt niets van buiten gehaald tijdens het afspelen. Valt het netwerk
-   weg, dan blijft de lus gewoon doordraaien.
+   weg, dan draait de lus door.
    ========================================================================= */
 
 (function () {
@@ -20,26 +25,15 @@
 
   var IN = C.instellingen || {};
   var P = C.praktijk || {};
-  var toneel = document.getElementById('toneel');
-  var balk = document.getElementById('balk');
-  var klokEl = document.getElementById('klok');
-  var tellerEl = document.getElementById('teller');
+  var kader = document.getElementById('kader');
+  var tijdEl = document.getElementById('tijd');
   var meldingEl = document.getElementById('melding');
-
-  // Welke soort slide welke opmaakfamilie krijgt. Zie de kop van tv.css.
-  var FAMILIE = {
-    merk: 'volbeeld', woord: 'volbeeld', beeld: 'volbeeld',
-    beleid: 'volbeeld', merch: 'volbeeld', boeken: 'volbeeld',
-    persoon: 'gedeeld', recensie: 'gedeeld',
-    uren: 'paneel', cijfers: 'paneel', aanbod: 'paneel',
-    partners: 'paneel', honoraria: 'paneel',
-  };
 
   /* --------------------------------------------------------------- schalen */
 
   function schaal() {
     var k = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
-    toneel.style.transform = 'scale(' + k + ')';
+    document.getElementById('toneel').style.transform = 'scale(' + k + ')';
   }
   window.addEventListener('resize', schaal);
   window.addEventListener('orientationchange', schaal);
@@ -54,56 +48,13 @@
     return e;
   }
 
-  // Een waarde die nog ingevuld moet worden, markeren in plaats van tonen.
   function tekst(v) {
     if (v == null) return '';
     return String(v).replace(/\[TE BEVESTIGEN\]/g,
       '<span class="tebevestigen">nog in te vullen</span>');
   }
 
-  function vlak(slide) {
-    var v = el('div', 'vlak');
-    slide.appendChild(v);
-    return v;
-  }
-
-  // Een blok dat zichzelf kleiner maakt als het niet past. De inhoud komt uit
-  // inhoud.js en kan dus groeien - een therapeut met acht diploma's, een
-  // langere recensie. In plaats van dat zoiets onderaan van het scherm valt,
-  // krimpt het blok net genoeg. Zie passen().
-  function krimpvak(ouder) {
-    var k = el('div', 'krimp');
-    ouder.appendChild(k);
-    return k;
-  }
-
-  // De foto, de sluier en de korrel. De korrel ligt er altijd, ook zonder
-  // foto: een groot vlak effen zwart op een televisie oogt als karton.
-  function lagen(slide, bron) {
-    if (bron) {
-      var img = el('img', 'vulbeeld');
-      img.src = bron; img.alt = '';
-      slide.appendChild(img);
-      slide.appendChild(el('div', 'sluier'));
-    }
-    slide.appendChild(el('div', 'korrel'));
-  }
-
-  // Het bovenregeltje met de sectienaam, zoals op de site.
-  function oog(ouder, naam, nummer) {
-    if (!naam) return;
-    var h = tekst(naam);
-    if (nummer) h += ' <span class="nr">/ ' + nummer + '</span>';
-    ouder.appendChild(el('p', 'label op', h));
-  }
-
-  function streep(ouder) { ouder.appendChild(el('div', 'streep')); }
-
   /* ---------------------------------------------------------- openingsuren */
-
-  function urenVan(d) {
-    return (P.uren || [])[d.getDay()] || { dag: '', open: null, dicht: null };
-  }
 
   function minuten(hhmm) {
     var p = String(hhmm).split(':');
@@ -111,7 +62,7 @@
   }
 
   function status(nu) {
-    var u = urenVan(nu);
+    var u = (P.uren || [])[nu.getDay()] || {};
     if (!u.open) return { open: false, zin: 'Vandaag gesloten' };
     var m = nu.getHours() * 60 + nu.getMinutes();
     if (m < minuten(u.open))
@@ -121,184 +72,61 @@
     return { open: true, zin: 'Nu open, tot <strong>' + u.dicht + '</strong>' };
   }
 
-  /* ------------------------------------------------------ de soorten slides */
+  /* --------------------------------------------------------- de lower-third */
 
-  var bouwers = {
+  // Tekst onder in het kader. Wat er staat bepaalt de maat: een naam is
+  // groot, een zin eronder klein. Niets gecentreerd, niets groot in het
+  // midden - dat is wat een shot in een dia verandert.
+  function onderregel(shot, d) {
+    if (!d.reuze && !d.groot && !d.mid && !d.citaat && !d.regel
+        && !d.onder && !d.extra) return false;
+    shot.appendChild(el('div', 'scrim'));
+    var o = el('div', 'onderregel');
+    o.appendChild(el('div', 'balkje'));
+    if (d.citaat) o.appendChild(el('p', 'citaat', '\u201c' + tekst(d.citaat) + '\u201d'));
+    if (d.reuze) o.appendChild(el('div', 'display reuze', tekst(d.reuze)));
+    if (d.groot) o.appendChild(el('div', 'display groot', tekst(d.groot)));
+    if (d.mid) o.appendChild(el('div', 'display mid', tekst(d.mid)));
+    if (d.onder) o.appendChild(el('div', 'onder', tekst(d.onder)));
+    if (d.regel) o.appendChild(el('p', 'regel', tekst(d.regel)));
+    if (d.extra) o.appendChild(el('div', 'extra', tekst(d.extra)));
+    shot.appendChild(o);
 
-    merk: function (s, d) {
-      lagen(s, d.beeld);
-      var v = vlak(s);
-      streep(v);
-      v.appendChild(el('h1', 'display titel op', tekst(d.titel)));
-      v.appendChild(el('div', 'display onder op', tekst(d.onder)));
-      if (d.regel) v.appendChild(el('div', 'regel op', tekst(d.regel)));
+    // De regels komen na elkaar op, niet samen.
+    var i = 0;
+    o.querySelectorAll(':scope > *').forEach(function (n) {
+      n.style.transitionDelay = (i * 0.1).toFixed(2) + 's';
+      i++;
+    });
+    return true;
+  }
+
+  /* ------------------------------------------------------------- de kaarten */
+
+  var kaarten = {
+
+    woord: function (v, d) {
+      v.classList.add('kaart-woord');
+      v.appendChild(el('div', 'display woord', tekst(d.woord)));
+      if (d.spreek) v.appendChild(el('div', 'spreek', tekst(d.spreek)));
+      if (d.uitleg) v.appendChild(el('p', 'uitleg', tekst(d.uitleg)));
     },
 
-    woord: function (s, d) {
-      lagen(s, d.beeld);
-      var v = vlak(s);
-      oog(v, d.oog);
-      v.appendChild(el('div', 'display woord op', tekst(d.woord)));
-      if (d.uitspraak) v.appendChild(el('div', 'uitspraak op', tekst(d.uitspraak)));
-      if (d.betekenis) v.appendChild(el('p', 'betekenis op', tekst(d.betekenis)));
+    zin: function (v, d) {
+      if (d.oog) v.appendChild(el('div', 'oog', tekst(d.oog)));
+      if (d.kop) v.appendChild(el('div', 'display kop', tekst(d.kop)));
+      if (d.nl) v.appendChild(el('p', 'zin', tekst(d.nl)));
+      if (d.en) v.appendChild(el('p', 'zin', tekst(d.en)));
     },
 
-    uren: function (s, d) {
-      lagen(s, d.beeld);
-      var k = krimpvak(vlak(s));
-
-      var links = el('div');
-      oog(links, d.oog);
-      streep(links);
-      links.appendChild(el('h2', 'display op', tekst(d.kop)));
-      var nu = el('div', 'nu op');
-      nu.setAttribute('data-nu', '1');
-      links.appendChild(nu);
-      k.appendChild(links);
-
-      var lijst = el('ul', 'op');
-      // Maandag eerst, zondag achteraan - zoals mensen een week lezen.
-      [1, 2, 3, 4, 5, 6, 0].forEach(function (i) {
-        var u = (P.uren || [])[i] || {};
-        var li = el('li');
-        li.setAttribute('data-dag', i);
-        li.appendChild(el('span', 'dag', u.dag || ''));
-        li.appendChild(el('span', 'tijd', u.open ? u.open + ' – ' + u.dicht : 'Gesloten'));
-        lijst.appendChild(li);
-      });
-      k.appendChild(lijst);
-    },
-
-    cijfers: function (s, d) {
-      lagen(s, d.beeld);
-      var k = krimpvak(vlak(s));
-
-      var links = el('div');
-      oog(links, d.oog);
-      streep(links);
-      links.appendChild(el('h2', 'display op',
-        tekst(d.kop) + '<span class="regel-accent accent">' + tekst(d.accent) + '</span>'));
-      k.appendChild(links);
-
-      var rechts = el('div');
-      (d.rijen || []).forEach(function (r) {
-        var rij = el('div', 'rij op');
-        rij.appendChild(el('div', 'display cijfer', tekst(r.cijfer)));
-        var n = el('div');
-        n.appendChild(el('div', 'display naam', tekst(r.naam)));
-        n.appendChild(el('div', 'sub', tekst(r.sub)));
-        rij.appendChild(n);
-        rechts.appendChild(rij);
-      });
-      k.appendChild(rechts);
-    },
-
-    aanbod: function (s, d) {
-      lagen(s, d.beeld);
-      var k = krimpvak(vlak(s));
-      oog(k, d.oog);
-      streep(k);
-      k.appendChild(el('h2', 'display op', tekst(d.kop)));
-      var r = el('div', 'raster');
-      (d.items || []).forEach(function (i) {
-        var vak = el('div', 'item op');
-        vak.appendChild(el('div', 'display t', tekst(i.titel)));
-        vak.appendChild(el('div', 'b', tekst(i.tekst)));
-        r.appendChild(vak);
-      });
-      k.appendChild(r);
-    },
-
-    persoon: function (s, d) {
-      var p = el('div', 'portret');
-      var img = el('img');
-      img.src = d.beeld; img.alt = '';
-      p.appendChild(img);
-      s.appendChild(p);
-      s.appendChild(el('div', 'naad'));
-      lagen(s, null);
-
-      var z = el('div', 'zij');
-      var k = krimpvak(z);
-      oog(k, d.oog || 'Ons team', d.nummer);
-      k.appendChild(el('div', 'display naam op', tekst(d.naam)));
-      k.appendChild(el('div', 'rol op', tekst(d.rol)));
-
-      if (d.credentials && d.credentials.length) {
-        var ul = el('ul', 'creds op');
-        d.credentials.forEach(function (c) { ul.appendChild(el('li', null, tekst(c))); });
-        k.appendChild(ul);
-      }
-
-      if (d.favoriet) {
-        var f = el('div', 'fav op');
-        f.appendChild(el('div', 'kop', 'Favorieten'));
-        var dl = el('dl');
-        Object.keys(d.favoriet).forEach(function (n) {
-          dl.appendChild(el('dt', null, tekst(n)));
-          dl.appendChild(el('dd', null, tekst(d.favoriet[n])));
-        });
-        f.appendChild(dl);
-        k.appendChild(f);
-      }
-      s.appendChild(z);
-    },
-
-    beeld: function (s, d) {
-      lagen(s, d.beeld);
-      var v = vlak(s);
-      oog(v, d.oog);
-      streep(v);
-      if (d.label) v.appendChild(el('div', 'display t op', tekst(d.label)));
-      if (d.tekst) v.appendChild(el('p', 'b op', tekst(d.tekst)));
-    },
-
-    partners: function (s, d) {
-      lagen(s, d.beeld);
-      var k = krimpvak(vlak(s));
-      oog(k, d.oog);
-      streep(k);
-      k.appendChild(el('h2', 'display op', tekst(d.kop)));
-      var r = el('div', 'raster op');
-      (d.logos || []).forEach(function (l) {
-        var vak = el('div', 'vak');
-        var img = el('img');
-        img.src = l.bron; img.alt = l.naam || '';
-        vak.appendChild(img);
-        r.appendChild(vak);
-      });
-      k.appendChild(r);
-    },
-
-    recensie: function (s, d) {
-      var p = el('div', 'portret');
-      var img = el('img');
-      img.src = d.beeld; img.alt = '';
-      p.appendChild(img);
-      s.appendChild(p);
-      s.appendChild(el('div', 'naad'));
-      lagen(s, null);
-
-      var z = el('div', 'zij');
-      var k = krimpvak(z);
-      oog(k, d.oog || 'Ervaringen');
-      k.appendChild(el('div', 'sterren op', '★★★★★'));
-      k.appendChild(el('blockquote', 'op', '“' + tekst(d.tekst) + '”'));
-      k.appendChild(el('div', 'display wie op', tekst(d.naam)));
-      k.appendChild(el('div', 'rol op', tekst(d.rol)));
-      s.appendChild(z);
-    },
-
-    honoraria: function (s, d) {
-      lagen(s, d.beeld);
-      var k = krimpvak(vlak(s));
-      oog(k, d.oog);
-      k.appendChild(el('h2', 'display op', tekst(d.kop)));
-      var t = el('table', 'op');
-      var thead = el('thead');
-      var tr = el('tr');
-      (d.kolommen || []).forEach(function (c) { tr.appendChild(el('th', null, tekst(c))); });
-      thead.appendChild(tr); t.appendChild(thead);
+    tarieven: function (v, d) {
+      v.classList.add('kaart-tarieven');
+      if (d.oog) v.appendChild(el('div', 'oog', tekst(d.oog)));
+      if (d.kop) v.appendChild(el('div', 'display kop', tekst(d.kop)));
+      var t = el('table');
+      var kop = el('tr');
+      (d.kolommen || []).forEach(function (k) { kop.appendChild(el('th', null, tekst(k))); });
+      var th = el('thead'); th.appendChild(kop); t.appendChild(th);
       var tb = el('tbody');
       (d.rijen || []).forEach(function (r) {
         var rij = el('tr');
@@ -306,61 +134,64 @@
         tb.appendChild(rij);
       });
       t.appendChild(tb);
-      k.appendChild(t);
-      if (d.voet) k.appendChild(el('p', 'voet op', tekst(d.voet)));
+      v.appendChild(t);
+      if (d.voet) v.appendChild(el('p', 'voet', tekst(d.voet)));
     },
 
-    beleid: function (s, d) {
-      lagen(s, d.beeld);
-      var v = vlak(s);
-      oog(v, d.oog);
-      streep(v);
-      v.appendChild(el('h2', 'display op', tekst(d.kop)));
-      v.appendChild(el('p', 'nl op', tekst(d.nl)));
-      if (d.en) v.appendChild(el('p', 'en op', tekst(d.en)));
+    uren: function (v, d) {
+      v.classList.add('kaart-uren');
+      if (d.oog) v.appendChild(el('div', 'oog', tekst(d.oog)));
+      if (d.kop) v.appendChild(el('div', 'display kop', tekst(d.kop)));
+      var r = el('div', 'rijen');
+      [1, 2, 3, 4, 5, 6, 0].forEach(function (i) {
+        var u = (P.uren || [])[i] || {};
+        var rij = el('div', 'rij');
+        rij.setAttribute('data-dag', i);
+        rij.appendChild(el('span', 'dag', u.dag || ''));
+        rij.appendChild(el('span', 'tijd', u.open ? u.open + ' – ' + u.dicht : 'Gesloten'));
+        r.appendChild(rij);
+      });
+      v.appendChild(r);
+      var nu = el('div', 'nu');
+      nu.setAttribute('data-nu', '1');
+      v.appendChild(nu);
     },
 
-    merch: function (s, d) {
-      lagen(s, d.beeld);
-      var v = vlak(s);
-      oog(v, d.oog);
-      streep(v);
-      v.appendChild(el('h2', 'display op', tekst(d.kop)));
-      v.appendChild(el('div', 'display prijs op', tekst(d.prijs)));
-      if (d.per) v.appendChild(el('div', 'per op', tekst(d.per)));
-      if (d.tekst) v.appendChild(el('p', 'b op', tekst(d.tekst)));
+    prijs: function (v, d) {
+      v.classList.add('kaart-prijs');
+      if (d.oog) v.appendChild(el('div', 'oog', tekst(d.oog)));
+      if (d.kop) v.appendChild(el('div', 'display kop', tekst(d.kop)));
+      v.appendChild(el('div', 'display prijs', tekst(d.prijs)));
+      if (d.per) v.appendChild(el('div', 'per', tekst(d.per)));
+      if (d.nl) v.appendChild(el('p', 'zin', tekst(d.nl)));
     },
 
-    boeken: function (s, d) {
-      lagen(s, d.beeld);
-      var v = vlak(s);
-
-      var links = el('div');
-      oog(links, d.oog);
-      streep(links);
-      links.appendChild(el('h2', 'display op', tekst(d.kop)));
-      links.appendChild(el('p', 'b op', tekst(d.tekst)));
-      links.appendChild(el('div', 'contact op',
+    boeken: function (v, d) {
+      v.classList.add('kaart-boeken');
+      var links = el('div', 'links');
+      if (d.oog) links.appendChild(el('div', 'oog', tekst(d.oog)));
+      if (d.kop) links.appendChild(el('div', 'display kop', tekst(d.kop)));
+      if (d.nl) links.appendChild(el('p', 'zin', tekst(d.nl)));
+      links.appendChild(el('div', 'contact',
         '<strong>' + tekst(P.tel) + '</strong><br>' + tekst(P.site)));
       v.appendChild(links);
 
-      var codes = el('div', 'codes op');
-      [[d.qr, d.qrLabel], [d.qr2, d.qr2Label]].forEach(function (paar) {
-        if (!paar[0]) return;
-        var c = el('div', 'code');
-        var vak = el('div', 'vak');
+      var codes = el('div', 'codes');
+      (d.codes || []).forEach(function (c) {
+        var vak = el('div', 'code');
+        var b = el('div', 'vak');
         var img = el('img');
-        img.src = paar[0]; img.alt = paar[1] || '';
-        vak.appendChild(img);
-        c.appendChild(vak);
-        if (paar[1]) c.appendChild(el('div', 'cap', tekst(paar[1])));
-        codes.appendChild(c);
+        img.src = c.qr; img.alt = c.label || '';
+        b.appendChild(img);
+        vak.appendChild(b);
+        if (c.label) vak.appendChild(el('div', 'cap', tekst(c.label)));
+        codes.appendChild(vak);
       });
       v.appendChild(codes);
     },
   };
 
-  /* --------------------------------------------------------- slides opbouwen */
+  /* ------------------------------------------------------- shots opbouwen */
 
   function binnenPeriode(d, nu) {
     var vandaag = nu.toISOString().slice(0, 10);
@@ -369,130 +200,192 @@
     return true;
   }
 
-  var slides = [];
+  var shots = [];
 
   function opbouwen() {
-    toneel.querySelectorAll('.slide').forEach(function (n) { n.remove(); });
-    slides = [];
+    kader.querySelectorAll('.shot').forEach(function (n) { n.remove(); });
+    shots = [];
     var nu = new Date();
 
-    (C.slides || []).forEach(function (d) {
+    (C.montage || []).forEach(function (d) {
       if (!binnenPeriode(d, nu)) return;
-      var bouwer = bouwers[d.soort];
-      if (!bouwer) { console.warn('onbekende slidesoort:', d.soort); return; }
-      var s = el('section', 'slide s-' + d.soort + ' ' + (FAMILIE[d.soort] || 'volbeeld'));
-      bouwer(s, d);
 
-      // De tekst komt regel na regel binnen in plaats van in één keer. Dit is
-      // het verschil tussen een scherm dat leeft en een reeks dia's.
-      var i = 0;
-      s.querySelectorAll('.op').forEach(function (n) {
-        n.style.transitionDelay = (0.14 + i * 0.09).toFixed(2) + 's';
-        i++;
-      });
+      var s = el('section', 'shot');
+      var duur = (d.duur || 3) * 1000;
+      var media = null;
 
-      toneel.insertBefore(s, toneel.firstChild);
-      slides.push({ node: s, soort: d.soort,
-                    duur: (d.duur || IN.standaardDuur || 10) * 1000 });
-    });
-  }
+      if (d.kaart) {
+        s.classList.add('kaart');
+        var v = el('div', 'kaartvlak');
+        var bouwer = kaarten[d.kaart];
+        if (!bouwer) { console.warn('onbekende kaart:', d.kaart); return; }
+        bouwer(v, d);
+        s.appendChild(v);
 
-  /* ----------------------------------------------------------- passend maken */
+      } else if (d.video) {
+        // Een clip uit een van de videobestanden. Het in-punt staat in `van`;
+        // zo levert een bestand van elf seconden vijf verschillende shots.
+        media = el('video', 'beeld');
+        // Twee bronnen, webm eerst: niet elke tv-browser heeft H.264, en niet
+        // elke browser kent webm. Samen dekken ze alles wat er in een
+        // wachtzaal kan hangen. Dezelfde aanpak als de hero's op de site.
+        var webm = el('source');
+        webm.src = d.video.replace(/\.mp4$/, '.webm');
+        webm.type = 'video/webm';
+        media.appendChild(webm);
+        var mp4 = el('source');
+        mp4.src = d.video;
+        mp4.type = 'video/mp4';
+        media.appendChild(mp4);
+        media.muted = true;
+        media.defaultMuted = true;
+        media.playsInline = true;
+        media.setAttribute('playsinline', '');
+        media.setAttribute('muted', '');
+        media.preload = 'auto';
+        media.loop = true;
+        s.appendChild(media);
+        onderregel(s, d);
 
-  // De inhoud komt uit een bestand dat later nog wordt bijgewerkt. Groeit een
-  // blok buiten zijn vak - een extra diploma, een langere recensie - dan
-  // krimpt het net genoeg in plaats van onderaan weg te vallen. Wordt het
-  // kleiner dan drie kwart, dan is er echt te veel tekst en zeggen we dat in
-  // de console, zodat het bij het nakijken opvalt.
-  function passen() {
-    toneel.querySelectorAll('.krimp').forEach(function (k) {
-      k.style.transform = '';
-      var ouder = k.parentNode;
-      var st = getComputedStyle(ouder);
-      var ruimte = ouder.clientHeight
-                 - parseFloat(st.paddingTop) - parseFloat(st.paddingBottom);
-      var hoog = k.scrollHeight;
-      if (hoog <= ruimte || !ruimte) return;
-      var f = Math.max(ruimte / hoog, .6);
-      k.style.transform = 'scale(' + f + ')';
-      if (f < .75) {
-        console.warn('te veel inhoud op deze slide (' + Math.round(f * 100) + '%):',
-                     ouder.parentNode.className);
+      } else if (d.beeld) {
+        media = el('img', 'beeld');
+        media.src = d.beeld;
+        media.alt = '';
+        s.appendChild(media);
+        if (d.portret) {
+          s.classList.add('portret');
+          s.appendChild(el('div', 'wig'));
+        }
+        onderregel(s, d);
       }
+
+      // Waar in het beeld het kader valt. Bij een staande of vierkante foto
+      // in een breedbeeldkader bepaalt dit of je het onderwerp ziet of zijn
+      // schouders.
+      if (media && d.positie) media.style.objectPosition = d.positie;
+
+      kader.appendChild(s);
+      shots.push({
+        node: s, media: media, duur: duur, d: d,
+        beweging: d.beweging || 'stil',
+        // Een stil beeld hoeft geen beweging als het een kaart is.
+        isKaart: !!d.kaart,
+      });
     });
   }
 
-  /* ------------------------------------------------------------- de beelden */
+  /* ------------------------------------------------------------- inladen */
 
-  // Alles eerst inladen. Pas als het klaar is (of na acht seconden, wat er ook
-  // misging) begint de lus. Zo komt er nooit een half beeld voorbij.
-  function beeldenInladen(klaar) {
+  function inladen(klaar) {
     var bronnen = [];
-    toneel.querySelectorAll('img').forEach(function (i) {
+    kader.querySelectorAll('img.beeld, .code img').forEach(function (i) {
       if (i.src && bronnen.indexOf(i.src) < 0) bronnen.push(i.src);
     });
-    if (!bronnen.length) return klaar();
+    var videos = [];
+    kader.querySelectorAll('video.beeld').forEach(function (v) {
+      if (videos.indexOf(v) < 0) videos.push(v);
+    });
 
-    var over = bronnen.length, afgerond = false;
+    var over = bronnen.length + videos.length;
+    if (!over) return klaar();
+    var afgerond = false;
     function tel() { if (--over <= 0 && !afgerond) { afgerond = true; klaar(); } }
+
     bronnen.forEach(function (b) {
       var i = new Image();
       i.onload = tel;
       i.onerror = function () { console.warn('beeld ontbreekt:', b); tel(); };
       i.src = b;
     });
-    setTimeout(function () { if (!afgerond) { afgerond = true; klaar(); } }, 8000);
+    videos.forEach(function (v) {
+      if (v.readyState >= 3) return tel();
+      var af = function () { v.removeEventListener('canplay', af); tel(); };
+      v.addEventListener('canplay', af);
+      v.addEventListener('error', function () {
+        console.warn('video ontbreekt:', v.src); tel();
+      });
+      v.load();
+    });
+    setTimeout(function () { if (!afgerond) { afgerond = true; klaar(); } }, 12000);
   }
 
-  /* ----------------------------------------------------------------- de lus */
+  /* ----------------------------------------------------------- de montage */
 
-  var i = -1, timer = null, gepauzeerd = false;
+  var i = -1, timer = null, tekstTimers = [], gepauzeerd = false;
 
-  function toon(n) {
-    if (!slides.length) return;
-    if (i >= 0) slides[i].node.classList.remove('aan');
-    i = ((n % slides.length) + slides.length) % slides.length;
-    var s = slides[i];
+  function speel(n) {
+    if (!shots.length) return;
 
-    // Een tel wachten voor de klasse erop gaat: anders ziet de browser het
-    // verwijderen en het toevoegen als één stap en speelt er niets af.
+    if (i >= 0) {
+      var vorig = shots[i];
+      vorig.node.classList.remove('aan', 'tekst-aan', 'tekst-uit');
+      if (vorig.media && vorig.media.tagName === 'VIDEO') vorig.media.pause();
+      if (vorig.media) vorig.media.style.animation = 'none';
+    }
+    tekstTimers.forEach(clearTimeout);
+    tekstTimers = [];
+
+    i = ((n % shots.length) + shots.length) % shots.length;
+    var s = shots[i];
+    var d = s.d;
+
+    // De overgang: standaard een harde cut. Een shot dat een nieuwe reeks
+    // opent mag een korte dissolve krijgen; dat staat in inhoud.js.
+    s.node.style.transitionDuration = (d.dissolve || 100) + 'ms';
+
+    if (s.media) {
+      if (s.media.tagName === 'VIDEO') {
+        try { s.media.currentTime = d.van || 0; } catch (e) {}
+        var p = s.media.play();
+        if (p && p.catch) p.catch(function () {});
+      } else {
+        // De beweging duurt precies zolang als het shot, zodat hij niet
+        // halverwege wordt afgekapt en niet blijft hangen.
+        s.media.style.animation = 'none';
+        void s.media.offsetWidth;                  // de browser laten herstarten
+        s.media.style.animation = 'tv-' + s.beweging + ' ' + (s.duur / 1000)
+                                + 's linear forwards';
+      }
+    }
+
     requestAnimationFrame(function () {
       requestAnimationFrame(function () { s.node.classList.add('aan'); });
     });
 
-    toneel.setAttribute('data-soort', s.soort);
-    if (tellerEl) {
-      tellerEl.textContent = String(i + 1).padStart(2, '0') + ' / '
-                           + String(slides.length).padStart(2, '0');
+    // Tekst komt niet op de cut maar even erna, en gaat waar gevraagd weg
+    // voordat het volgende shot begint. Dat laat het beeld even alleen.
+    var heeftTekst = s.isKaart || s.node.querySelector('.onderregel');
+    if (heeftTekst) {
+      var vanaf = (d.tekstVan != null ? d.tekstVan : (s.isKaart ? 0.25 : 0.55)) * 1000;
+      tekstTimers.push(setTimeout(function () {
+        s.node.classList.add('tekst-aan');
+      }, vanaf));
+      if (d.tekstTot != null) {
+        tekstTimers.push(setTimeout(function () {
+          s.node.classList.remove('tekst-aan');
+          s.node.classList.add('tekst-uit');
+        }, d.tekstTot * 1000));
+      }
     }
+
     ververs();
-
-    if (IN.voortgangsbalk !== false) {
-      balk.style.transition = 'none';
-      balk.style.width = '0';
-      requestAnimationFrame(function () {
-        requestAnimationFrame(function () {
-          balk.style.transition = 'width ' + s.duur + 'ms linear';
-          balk.style.width = '100%';
-        });
-      });
-    }
-
     clearTimeout(timer);
-    if (!gepauzeerd) timer = setTimeout(function () { toon(i + 1); }, s.duur);
+    if (!gepauzeerd) timer = setTimeout(function () { speel(i + 1); }, s.duur);
   }
 
   function pauze() {
     gepauzeerd = !gepauzeerd;
     if (gepauzeerd) {
       clearTimeout(timer);
-      var w = getComputedStyle(balk).width;
-      balk.style.transition = 'none';
-      balk.style.width = w;
+      var s = shots[i];
+      if (s && s.media) {
+        if (s.media.tagName === 'VIDEO') s.media.pause();
+        else s.media.style.animationPlayState = 'paused';
+      }
       melden('Pauze');
     } else {
       melden('Verder');
-      toon(i);
+      speel(i);
     }
   }
 
@@ -500,63 +393,54 @@
     meldingEl.textContent = t;
     meldingEl.classList.add('aan');
     clearTimeout(melden._t);
-    melden._t = setTimeout(function () { meldingEl.classList.remove('aan'); }, 1400);
+    melden._t = setTimeout(function () { meldingEl.classList.remove('aan'); }, 1300);
   }
 
-  /* ------------------------------------------------------- klok en de status */
-
-  var DAGEN = ['Zondag', 'Maandag', 'Dinsdag', 'Woensdag', 'Donderdag',
-               'Vrijdag', 'Zaterdag'];
+  /* ------------------------------------------------------------- de tijd */
 
   function ververs() {
     var nu = new Date();
-
-    if (IN.klok !== false && klokEl) {
-      var hh = String(nu.getHours()).padStart(2, '0');
-      var mm = String(nu.getMinutes()).padStart(2, '0');
-      klokEl.innerHTML = '<span class="dag">' + DAGEN[nu.getDay()] + '</span>' + hh + ':' + mm;
+    if (IN.tijd !== false && tijdEl) {
+      tijdEl.textContent = String(nu.getHours()).padStart(2, '0') + ':'
+                         + String(nu.getMinutes()).padStart(2, '0');
     }
-
     var st = status(nu);
-    toneel.querySelectorAll('[data-nu]').forEach(function (n) {
+    kader.querySelectorAll('[data-nu]').forEach(function (n) {
       n.innerHTML = '<span class="stip' + (st.open ? '' : ' dicht') + '"></span>' + st.zin;
     });
-    toneel.querySelectorAll('.s-uren li').forEach(function (li) {
-      li.classList.toggle('vandaag', Number(li.getAttribute('data-dag')) === nu.getDay());
+    kader.querySelectorAll('.kaart-uren .rij').forEach(function (r) {
+      r.classList.toggle('vandaag', Number(r.getAttribute('data-dag')) === nu.getDay());
     });
   }
 
-  /* ------------------------------------------------------------------ starten */
+  /* ------------------------------------------------------------- starten */
 
   var startDag = new Date().getDate();
 
   function start() {
     opbouwen();
-    beeldenInladen(function () {
-      passen();
-      toon(0);
+    inladen(function () {
+      speel(0);
       setInterval(ververs, 20000);
-      // Bij de dagwissel opnieuw opbouwen: periodeslides en "vandaag" moeten
-      // dan mee. Gebeurt tijdens een overgang, dus onzichtbaar.
       setInterval(function () {
-        var d = new Date().getDate();
-        if (d !== startDag) { startDag = d; opbouwen(); passen(); i = -1; toon(0); }
+        var dag = new Date().getDate();
+        if (dag !== startDag) { startDag = dag; opbouwen(); i = -1; speel(0); }
       }, 60000);
     });
   }
 
   document.addEventListener('keydown', function (e) {
-    if (e.key === 'ArrowRight') { gepauzeerd = false; toon(i + 1); }
-    else if (e.key === 'ArrowLeft') { gepauzeerd = false; toon(i - 1); }
+    // Stappen laat de pauze staan: wie met een afstandsbediening door de
+    // montage gaat, wil niet dat hij bij de eerste tik weer begint te lopen.
+    if (e.key === 'ArrowRight') { speel(i + 1); }
+    else if (e.key === 'ArrowLeft') { speel(i - 1); }
     else if (e.key === ' ') { e.preventDefault(); pauze(); }
     else if (e.key === 'f' || e.key === 'F') {
       if (document.fullscreenElement) document.exitFullscreen();
       else document.documentElement.requestFullscreen();
     }
   });
-
-  // Een tik op het scherm gaat ook een slide verder; handig bij een touchtv.
-  document.addEventListener('click', function () { gepauzeerd = false; toon(i + 1); });
+  document.addEventListener('click', function () { speel(i + 1); });
 
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(start);
   else start();

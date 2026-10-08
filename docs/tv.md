@@ -34,22 +34,64 @@ Zet in alle gevallen de slaapstand en de screensaver van het toestel uit. De
 pagina vraagt zelf om het scherm wakker te houden, maar niet elke speler
 luistert daarnaar.
 
+## Geen dia's maar shots
+
+Het scherm is een montage, geen diavoorstelling. Dat zit in vier keuzes, en wie
+eraan werkt doet er goed aan ze niet terug te draaien:
+
+1. **Beeld is de hoofdzaak.** Elk shot is beeld dat beweegt; tekst is een
+   lower-third die kort komt en weer gaat. Geen koppen in het midden.
+2. **Harde cuts.** Honderd milliseconden, geen overvloeier van een seconde.
+3. **Geen meubilair.** Geen voortgangsbalk, geen teller, geen sectiekoppen met
+   nummers. Dat is de taal van een presentatie en precies wat verraadt dat het
+   er een is.
+4. **Ritme.** De shots duren niet allemaal even lang: twee seconden, dan vijf,
+   dan anderhalf. Gelijke lengtes voelen meteen als een diareeks.
+
+Het beeld staat in een kader van **2:1** met zwarte balken erboven en eronder.
+Niet 2.39:1, al is dat filmischer: de hele fotobibliotheek is vierkant of
+staand, en in scope zou een portret tweederde van zijn hoogte kwijt zijn.
+
 ## De inhoud wijzigen
 
 Alles staat in **`tv/inhoud.js`**. Dat is het enige bestand dat je aanraakt.
-Bovenaan staan de praktijkgegevens en de openingsuren, daaronder de slides, in
-de volgorde waarin ze voorbijkomen.
+Bovenaan staan de praktijkgegevens en de openingsuren, daaronder de shotlijst
+in de volgorde waarin ze voorbijkomen.
 
-Elke slide heeft een `soort` die bepaalt hoe hij eruitziet. De soorten staan
-onderaan dat bestand opgesomd, met per soort welke velden hij gebruikt. Een
-slide verplaatsen doe je door hem in de lijst te verplaatsen; weghalen door hem
-te verwijderen of met `//` uit te commentariëren.
+Een shot is een van deze drie:
 
-`duur` is in seconden. Laat je hem weg, dan geldt de standaardduur bovenaan.
+| | |
+|---|---|
+| `beeld:` | een still die beweegt |
+| `video:` | een stuk uit een filmbestand, met `van` als in-punt in seconden |
+| `kaart:` | een tussentitel op zwart |
 
-**Een tijdelijk bericht** — geef een slide `van` en `tot` (JJJJ-MM-DD) mee. Hij
+`duur` is in seconden. `beweging` is `in`, `uit`, `links`, `rechts`, `op`,
+`neer` of `stil`; de beweging wordt automatisch precies zo lang gemaakt als het
+shot, zodat hij uitgespeeld is op de cut.
+
+**Kadreren.** Bij een vierkante of staande foto in een breedbeeldkader bepaalt
+`positie` (bijvoorbeeld `'50% 38%'`) of je het onderwerp ziet of zijn
+schouders. Voor gezichten is er `portret: true`: de foto staat dan rechts op
+zijn eigen hoogte met de naam ernaast, zodat het hoofd heel blijft.
+
+**Tekst.** `reuze`, `groot`, `mid`, `citaat`, `onder`, `regel` en `extra`, van
+groot naar klein. `tekstVan` bepaalt wanneer de tekst opkomt, `tekstTot`
+wanneer hij weer weggaat — laat dat laatste weg en hij blijft tot de cut. Tekst
+die vóór de cut weggaat laat het beeld even alleen, en dat is precies het
+verschil met een dia.
+
+De velden staan allemaal opgesomd in de kop van `inhoud.js`.
+
+**Een tijdelijk bericht** — geef een shot `van` en `tot` (JJJJ-MM-DD) mee. Het
 verschijnt dan alleen in die periode en verdwijnt daarna vanzelf. Bijvoorbeeld
 een sluitingsbericht voor het bouwverlof.
+
+**De video's.** Er is een kleine vijftien seconden echt beeldmateriaal
+(`hero-performance` en `hero-rehab`). Door met `van` verschillende in-punten te
+kiezen levert één bestand meerdere shots op. Elk videoshot krijgt twee bronnen,
+webm eerst en mp4 erachter: niet elke tv-browser heeft H.264, en niet elke
+browser kent webm.
 
 **Na een wijziging:** verhoog `VERSIE` bovenaan `tv/sw.js` (`credo-tv-1` wordt
 `credo-tv-2`). Anders blijft het scherm de oude versie uit zijn eigen geheugen
@@ -85,13 +127,14 @@ toetsenbord of afstandsbediening kan het wel:
 | F | volledig scherm aan of uit |
 | Klik of tik | een slide verder |
 
-## Blokken die te vol raken
+## Wat er bij een wijziging mee moet
 
-De slides met veel tekst — een therapeut, een recensie, de tarieven — meten
-zichzelf. Past de inhoud niet, dan krimpt het blok net genoeg in plaats van
-onderaan van het scherm te vallen. Moet er meer dan een kwart af, dan schrijft
-het scherm een waarschuwing in de console van de browser. Dat is het teken dat
-er echt te veel tekst staat.
+Verander je een kaart, let dan op de hoogte: het kader is 960 pixels hoog en
+niet 1080, dus er past minder dan je zou denken. Loopt er iets buiten, dan valt
+dat op in de doorloop maar niet per se op de televisie zelf.
+
+Voeg je beeld of video toe, zet het bestand dan ook in de lijst `NODIG` in
+`tv/sw.js`, anders is het er offline niet.
 
 ## Nog in te vullen
 
