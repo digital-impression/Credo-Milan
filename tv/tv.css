@@ -227,7 +227,9 @@ html, body {
      donkere achtergrond ziet gewone doorzichtigheid er hetzelfde uit. */
   opacity: .06;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)'/%3E%3C/svg%3E");
-  animation: korrel 1s steps(5) infinite;
+  /* De korrel stond te flikkeren (verspringen, vijf keer per seconde). Dat
+     was een laag van vier keer het scherm die elk beeldje mee moest. Stil
+     ziet hij er op deze sterkte bijna hetzelfde uit. */
 }
 @keyframes korrel {
   0%   { transform: translate3d(0, 0, 0); }
@@ -282,7 +284,8 @@ html, body {
 
 /* ---------------------------------------------------------------- waarden */
 
-.s-waarden .laag { position: absolute; inset: 0; }
+.s-waarden .laag { position: absolute; inset: 0; overflow: hidden; }
+.s-waarden .binnen { position: absolute; inset: 0; }
 .s-waarden .woord { position: absolute; left: calc(var(--rand) - 10px); bottom: 210px; font-size: 380px; white-space: nowrap; }
 .s-waarden .tekst { position: absolute; left: var(--rand); bottom: 140px; font-size: 40px; font-weight: 300; }
 .s-waarden .teller {
@@ -500,7 +503,8 @@ html, body {
   font-size: 760px; line-height: .86; text-transform: none;
 }
 .s-beleid .groot .hol { -webkit-text-stroke: 3px rgba(244,241,234,.35); }
-.s-beleid .groot .vol { position: absolute; inset: 0; color: var(--bone); }
+.s-beleid .groot .vol { position: absolute; inset: 0; color: var(--bone); overflow: hidden; }
+.s-beleid .groot .vol-in { position: absolute; inset: 0; }
 .s-beleid .rechts { position: absolute; left: 1080px; right: var(--rand); top: 250px; }
 .s-beleid .kop { font-size: 120px; }
 .s-beleid .nl { margin-top: 44px; font-size: 42px; font-weight: 300; line-height: 1.32; }
@@ -563,3 +567,10 @@ html, body {
   letter-spacing: 0;
 }
 .s-nu .zij .stand strong { font-weight: 600; }
+
+/* ------------------------------------------- zwart-wit zit al in het beeld */
+/* Zie zw() in tv.js. Voor beelden uit img/zw/ is de filter overbodig. */
+.foto.zw,
+.s-teamintro .rij img.zw,
+.s-zaal .rol img.zw,
+.s-cijfers .getal.zw { filter: none; }

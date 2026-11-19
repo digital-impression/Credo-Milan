@@ -140,6 +140,26 @@ toetsenbord of afstandsbediening kan het wel:
 
 Voor het nakijken: `/tv/?scene=7` begint bij de achtste scène.
 
+## Vlot afspelen
+
+Het scherm moet ook draaien op een zwakke televisie of een streamingstick.
+Daarom:
+
+- **Zwart-wit zit al in de beelden.** De foto's komen uit `tv/img/zw/`, niet
+  met een CSS-filter erover. Zo'n filter op een bewegende foto rekent een
+  televisie elk beeldje opnieuw uit. Na een nieuwe of gewijzigde foto in
+  `inhoud.js`: draai `python3 docs/zw.py` en verhoog `VERSIE` in `sw.js`.
+  Ontbreekt een zwart-witbeeld, dan valt het scherm vanzelf terug op het
+  origineel met de filter. `?filters=1` in de link doet dat voor alles.
+- **De video's spelen uit het geheugen.** Ze worden bij de start één keer in
+  hun geheel geladen, zodat de lus niet hapert op het naadje.
+- **De volgende scène wordt vooraf uitgepakt**, terwijl de huidige speelt.
+
+Afspelen gaat het vlotst als het toestel aan de televisie de pagina zelf opent
+(een mini-pc of laptop via HDMI, of een stick met een eigen browser). Een
+tabblad casten vanaf een laptop of gsm stuurt het hele beeld als video over
+de wifi en hapert altijd een beetje.
+
 ## Honoraria
 
 Alle bedragen staan in `inhoud.js`, in de scène `honoraria`. Twee speciale

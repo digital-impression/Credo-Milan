@@ -70,10 +70,59 @@
     return m;
   }
 
+  /* Zwart-wit staat al in de beelden zelf (img/zw/, gemaakt met
+     docs/zw.py). Een CSS-filter op een foto die beweegt, rekent een
+     televisie of Chromecast elk beeldje opnieuw uit, en dat hapert. Ontbreekt
+     zo'n bestand, dan valt het beeld terug op het origineel met de filter.
+     Met ?filters=1 in de link draait het scherm zoals vroeger. */
+  var ZW = !/[?&]filters=1/.test(location.search);
+  function zw(bron, soort) {
+    var m = typeof bron === 'string' && /^\.\.\/assets\/img\/(.+)\.(jpe?g|png)$/i.exec(bron);
+    return ZW && m ? 'img/zw/' + soort + '/' + m[1] + '.jpg' : bron;
+  }
+  function beeld(i, bron, soort) {
+    var b = zw(bron, soort);
+    if (b !== bron) {
+      i.classList.add('zw');
+      i.onerror = function () { i.onerror = null; i.classList.remove('zw'); i.src = bron; };
+    }
+    i.src = b;
+    return i;
+  }
+
   function foto(bron, klas) {
     var i = el('img', 'foto' + (klas ? ' ' + klas : ''));
-    i.src = bron; i.alt = ''; i.decoding = 'async';
-    return i;
+    i.alt = ''; i.decoding = 'async';
+    return beeld(i, bron, 'foto');
+  }
+
+  /* De video's worden één keer in hun geheel in het geheugen gezet en spelen
+     daarvandaan. Anders vraagt de speler ze in stukjes op, en bij elke
+     herhaling van de lus opnieuw: dat hokte, vooral net op het naadje. */
+  var filmGeheugen = {};
+  function filmSoort() {
+    var t = document.createElement('video');
+    return t.canPlayType && t.canPlayType('video/mp4') ? 'mp4' : 'webm';
+  }
+  function filmsVoorladen(klaar) {
+    var basissen = [];
+    (function zoek(v, sleutel) {
+      if (typeof v === 'string') { if (sleutel === 'video' && basissen.indexOf(v) < 0) basissen.push(v); }
+      else if (v && typeof v === 'object') for (var k in v) zoek(v[k], Array.isArray(v) ? sleutel : k);
+    })(C, '');
+    var over = basissen.length, afgerond = false;
+    function eentje() { if (--over <= 0 && !afgerond) { afgerond = true; klaar(); } }
+    if (!over || !window.fetch || !window.URL || !URL.createObjectURL) { klaar(); return; }
+    var ext = filmSoort();
+    basissen.forEach(function (b) {
+      fetch(b + '.' + ext).then(function (r) {
+        if (!r.ok) throw new Error(r.status);
+        return r.blob();
+      }).then(function (blob) {
+        filmGeheugen[b] = URL.createObjectURL(blob);
+      }).catch(function (e) { console.warn('film niet in geheugen:', b, e); }).then(eentje);
+    });
+    setTimeout(function () { if (!afgerond) { afgerond = true; klaar(); } }, 15000);
   }
 
   function film(basis, poster) {
@@ -82,6 +131,7 @@
     v.setAttribute('muted', ''); v.setAttribute('playsinline', '');
     v.preload = 'auto';
     if (poster) v.poster = poster;
+    if (filmGeheugen[basis]) { v.src = filmGeheugen[basis]; return v; }
     // mp4 eerst. Op een televisie of een Raspberry Pi wordt H.264 door de
     // chip gedecodeerd en VP9 vaak door de processor, en dat laatste hapert
     // op 1080p. De webm blijft erachter staan voor een browser zonder H.264.
@@ -144,6 +194,16 @@
     this.a.forEach(function (a) { try { a.cancel(); } catch (e) {} });
     this.t = []; this.a = [];
   };
+
+  // Van onder naar boven onthullen, zoals clip-path: inset(100% 0 0 0) -> 0,
+  // maar met twee verschuivingen die tegen elkaar in lopen: de buitenste laag
+  // (overflow: hidden) schuift omhoog, de binnenste even ver omlaag, zodat de
+  // inhoud zelf stil blijft staan. Een clip-path tekent de televisie elk
+  // beeldje opnieuw; een verschuiving doet de grafische chip alleen.
+  function onthul(spel, buiten, binnen, opts) {
+    spel.anim(buiten, [{ transform: 'translate3d(0, 100%, 0)' }, { transform: 'translate3d(0, 0, 0)' }], opts);
+    spel.anim(binnen, [{ transform: 'translate3d(0, -100%, 0)' }, { transform: 'translate3d(0, 0, 0)' }], opts);
+  }
 
   // Maskerregels omhoog laten komen, een voor een.
   function op(spel, nodes, start, stap, duur) {
@@ -341,15 +401,17 @@
       var ws = d.woorden || [];
       var lagen = ws.map(function (w, k) {
         var laag = el('div', 'laag');
+        var binnen = el('div', 'binnen');
+        laag.appendChild(binnen);
         var f = foto(w.beeld, 'drijf');
         f.style.setProperty('--drijf-x', (k % 2 ? 1.5 : -1.5) + '%');
-        laag.appendChild(f);
-        laag.appendChild(el('div', 'sluier sluier-onder'));
+        binnen.appendChild(f);
+        binnen.appendChild(el('div', 'sluier sluier-onder'));
         var woord = regel(w.woord, 'display woord');
         var t = regel(w.tekst || '', 'tekst');
-        laag.appendChild(woord); laag.appendChild(t);
+        binnen.appendChild(woord); binnen.appendChild(t);
         s.appendChild(laag);
-        return { laag: laag, woord: woord, tekst: t };
+        return { laag: laag, binnen: binnen, woord: woord, tekst: t };
       });
       var teller = el('div', 'teller');
       s.appendChild(teller);
@@ -360,9 +422,12 @@
           var per = duur / Math.max(1, lagen.length);
           lagen.forEach(function (l, k) {
             var t = k * per;
+            l.laag.style.visibility = '';
             if (k > 0) {
-              spel.anim(l.laag, [{ clipPath: 'inset(100% 0 0 0)' }, { clipPath: 'inset(0% 0 0 0)' }],
-                { delay: t, duration: 900, easing: INUIT });
+              onthul(spel, l.laag, l.binnen, { delay: t, duration: 900, easing: INUIT });
+              // De laag eronder is nu helemaal bedekt: niet meer meetekenen.
+              var vorige = lagen[k - 1].laag;
+              spel.na(t + 950, function () { vorige.style.visibility = 'hidden'; });
             }
             op(spel, [l.woord], t + (k ? 350 : 250), 0, 1100);
             op(spel, [l.tekst], t + (k ? 600 : 500), 0, 1000);
@@ -481,7 +546,7 @@
       var rij = el('div', 'band rij');
       rij.style.setProperty('--band-duur', '70s');
       var bronnen = (C.scenes || []).filter(function (x) { return x.soort === 'persoon'; }).map(function (x) { return x.beeld; });
-      bronnen.concat(bronnen).forEach(function (b) { var i = el('img'); i.src = b; i.alt = ''; rij.appendChild(i); });
+      bronnen.concat(bronnen).forEach(function (b) { var i = el('img'); i.alt = ''; beeld(i, b, 'team'); rij.appendChild(i); });
       s.appendChild(rij);
       s.appendChild(el('div', 'sluier'));
       var koppen = el('div', 'kop display');
@@ -637,8 +702,20 @@
         var vul = d.vulling || d.beeld;
         // Vooral licht, met de foto erdoor als textuur: zo blijft elk cijfer
         // even leesbaar, hoe donker de foto op die plek ook is.
-        if (vul) getal.style.backgroundImage =
-          'linear-gradient(rgba(244,241,234,.74), rgba(244,241,234,.74)), url("' + vul + '")';
+        if (vul) {
+          var grijs = zw(vul, 'grijs');
+          var zetVul = function (u) {
+            getal.style.backgroundImage =
+              'linear-gradient(rgba(244,241,234,.74), rgba(244,241,234,.74)), url("' + u + '")';
+          };
+          zetVul(grijs);
+          if (grijs !== vul) {
+            getal.classList.add('zw');
+            var test = new Image();
+            test.onerror = function () { getal.classList.remove('zw'); zetVul(vul); };
+            test.src = grijs;
+          }
+        }
         b.appendChild(g);
         var onder = el('div', 'onder');
         var naam = regel(r.naam || '', 'display naam');
@@ -698,7 +775,7 @@
       [b.slice(0, helft), b.slice(helft)].forEach(function (reeks, k) {
         var rol = el('div', 'band rol r' + (k + 1) + (k ? ' terug' : ''));
         reeks.concat(reeks).concat(reeks).concat(reeks).forEach(function (src) {
-          var i = el('img'); i.src = src; i.alt = ''; rol.appendChild(i);
+          var i = el('img'); i.alt = ''; beeld(i, src, 'zaal'); rol.appendChild(i);
         });
         rollen.appendChild(rol);
       });
@@ -796,7 +873,9 @@
       var s = scene('beleid');
       var groot = el('div', 'groot display');
       groot.appendChild(el('span', 'hol', d.groot || '24u'));
-      var vol = el('span', 'vol', d.groot || '24u');
+      var vol = el('span', 'vol');
+      var volIn = el('span', 'vol-in', d.groot || '24u');
+      vol.appendChild(volIn);
       groot.appendChild(vol);
       s.appendChild(groot);
       var r = el('div', 'rechts');
@@ -811,7 +890,7 @@
         speel: function (spel, duur) {
           spel.anim(groot, [{ opacity: 0, transform: 'translate3d(0, 60px, 0)' }, { opacity: 1, transform: 'translate3d(0, 0, 0)' }],
             { delay: 0, duration: 1500 });
-          spel.anim(vol, [{ clipPath: 'inset(100% 0 0 0)' }, { clipPath: 'inset(0% 0 0 0)' }],
+          onthul(spel, vol, volIn,
             { delay: 700, duration: Math.max(3000, duur - 1800), easing: 'cubic-bezier(.4, 0, .6, 1)' });
           op(spel, [kop], 400, 0, 1200);
           in_(spel, [nl, en], 850, 250, 24);
@@ -1012,6 +1091,17 @@
     if (KAN) balkAnim = hBalk.animate([{ transform: 'scaleX(0)' }, { transform: 'scaleX(1)' }],
                                      { duration: x.duur, easing: 'linear', fill: 'both' });
     huidig = x;
+
+    // De beelden van de volgende scène nu al uitpakken, terwijl deze speelt.
+    // Anders gebeurt dat precies tijdens de overgang, en daar zag je het.
+    clearTimeout(starten._v);
+    starten._v = setTimeout(function () {
+      var k = lijst.indexOf(x), nx = lijst[(k + 1) % lijst.length];
+      if (!nx || nx === x) return;
+      nx.node.querySelectorAll('img').forEach(function (im) {
+        if (im.decode) im.decode().catch(function () {});
+      });
+    }, 1200);
   }
 
   function toon(n, zonderOvergang) {
@@ -1108,8 +1198,11 @@
   var begin = vraag ? +vraag[1] : 0;
 
   function start() {
-    opbouwen();
     ververs();
+    filmsVoorladen(verder);
+  }
+  function verder() {
+    opbouwen();
     setInterval(ververs, 10000);
     inladen(function () {
       filmsKlaar(lijst[(begin % lijst.length + lijst.length) % lijst.length], function () { toon(begin, true); });

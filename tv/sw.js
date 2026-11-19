@@ -13,7 +13,7 @@
    opgeruimd en het scherm haalt alles opnieuw op.
    ========================================================================= */
 
-var VERSIE = 'credo-tv-8';
+var VERSIE = 'credo-tv-9';
 
 var VAST = [
   './',
@@ -35,6 +35,7 @@ var VAST = [
 // inhoud.js schrijft naar window.CREDO_TV; in een service worker heet dat self.
 self.window = self;
 try { importScripts('inhoud.js'); } catch (e) { console.warn('inhoud.js niet gelezen', e); }
+try { importScripts('zw-lijst.js'); } catch (e) { console.warn('zw-lijst.js niet gelezen', e); }
 
 function bestandenUitInhoud() {
   var uit = [];
@@ -51,7 +52,7 @@ function bestandenUitInhoud() {
 }
 
 self.addEventListener('install', function (e) {
-  var nodig = VAST.concat(bestandenUitInhoud());
+  var nodig = VAST.concat(bestandenUitInhoud(), self.ZW_LIJST || [], ['zw-lijst.js']);
   e.waitUntil(
     caches.open(VERSIE).then(function (c) {
       // Eén ontbrekend bestand mag de hele installatie niet tegenhouden.
@@ -97,12 +98,18 @@ self.addEventListener('fetch', function (e) {
   );
 });
 
+// Een video die al eens gelezen is, blijft in het geheugen. Anders wordt het
+// hele bestand voor elk stukje opnieuw uit de cache gehaald.
+var inGeheugen = {};
+
 function uitBereik(verzoek, url, bereik) {
   // "bytes=12345-", "bytes=12345-23456" of "bytes=-500" (de laatste 500)
   var m = /bytes=(\d*)-(\d*)/.exec(bereik);
   return caches.match(url, { ignoreSearch: true }).then(function (hit) {
     if (!hit || !m) return fetch(verzoek);
-    return hit.arrayBuffer().then(function (buf) {
+    var type = hit.headers.get('Content-Type') || 'application/octet-stream';
+    if (!inGeheugen[url]) inGeheugen[url] = hit.arrayBuffer();
+    return inGeheugen[url].then(function (buf) {
       var totaal = buf.byteLength, start, eind;
       if (m[1] === '' && m[2] !== '') { start = Math.max(0, totaal - parseInt(m[2], 10)); eind = totaal - 1; }
       else { start = parseInt(m[1] || '0', 10); eind = m[2] ? Math.min(parseInt(m[2], 10), totaal - 1) : totaal - 1; }
@@ -113,7 +120,7 @@ function uitBereik(verzoek, url, bereik) {
         status: 206,
         statusText: 'Partial Content',
         headers: {
-          'Content-Type': hit.headers.get('Content-Type') || 'application/octet-stream',
+          'Content-Type': type,
           'Content-Length': String(eind - start + 1),
           'Content-Range': 'bytes ' + start + '-' + eind + '/' + totaal,
           'Accept-Ranges': 'bytes',
