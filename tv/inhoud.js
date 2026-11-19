@@ -221,11 +221,12 @@ window.CREDO_TV = {
       // De kolom die het zwaarst moet doorkomen: wat de patiënt zelf betaalt.
       nadruk: 2,
       rijen: [
-        ['Courant',      '€36,00', '[TE BEVESTIGEN]', '€7,38',  '€1,84'],
+        ['Courant',      '€36,00', '€16,95', '€7,38',  '€1,84'],
         ['F-acuut',      '€36,00', '€16,39', '€33,75', '€8,43'],
-        ['F-chronisch',  '€36,00', '€16,39', '€32,86', '€8,21'],
-        ['E-pathologie', '€36,00', '€5,74',  '€33,75', '€0,00'],
-        ['Huisbezoek',   '€37,16', '€15,73', '€32,86', '€8,21'],
+        ['F-chronisch',  '€36,00', '€16,39', '€33,75', '€8,21'],
+        ['E-pathologie', '€36,00', '€15,18', '€33,75', '€0,00'],
+        // Bij een huisbezoek hangt de dossierkost af van de pathologie.
+        ['Huisbezoek',   '€37,19', '€15,06', '[ZIE PATHOLOGIE]', '[ZIE PATHOLOGIE]'],
       ],
       voet: 'Wij zijn een niet-geconventioneerde praktijk. Onze tarieven kunnen '
           + 'dus afwijken van de conventietarieven.' },

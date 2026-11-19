@@ -59,6 +59,7 @@
   // Een waarde die nog niet gekend is, valt op in plaats van te liegen.
   function tekst(v) {
     if (v === '[TE BEVESTIGEN]') return '<span class="open">nog in te vullen</span>';
+    if (v === '[ZIE PATHOLOGIE]') return '<span class="zie">zie pathologie</span>';
     return v == null ? '' : String(v);
   }
 

@@ -490,6 +490,7 @@ html, body {
 .s-honoraria .c.nadruk { color: var(--bone); font-weight: 600; }
 .s-honoraria .rij.hoofd .c.nadruk { color: var(--bone); }
 .s-honoraria .open { white-space: nowrap; font-size: 26px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: #E7C76A; border-bottom: 2px dashed #E7C76A; }
+.s-honoraria .zie { white-space: nowrap; font-size: 26px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--zacht); }
 .s-honoraria .voet { position: absolute; left: var(--rand); right: var(--rand); bottom: 124px; font-size: 28px; font-weight: 300; color: var(--zacht); line-height: 1.4; }
 
 /* ----------------------------------------------------------------- beleid */

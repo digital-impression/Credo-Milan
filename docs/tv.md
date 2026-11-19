@@ -140,18 +140,16 @@ toetsenbord of afstandsbediening kan het wel:
 
 Voor het nakijken: `/tv/?scene=7` begint bij de achtste scène.
 
-## Nog in te vullen
+## Honoraria
 
-Eén waarde staat in `inhoud.js` als `[TE BEVESTIGEN]` en verschijnt op het
-scherm als **nog in te vullen**, in het geel:
+Alle bedragen staan in `inhoud.js`, in de scène `honoraria`. Twee speciale
+waarden:
 
-- **Honoraria, rij "Courant", kolom "Bijdrage patiënt".** In de oude slideshow
-  stond op die plek een gewichtsschijf uit de achtergrondfoto precies over het
-  bedrag. Het was dus ook daar niet leesbaar. Het bedrag begon met `€16,` en
-  eindigde op `5`.
+- `[TE BEVESTIGEN]` verschijnt in het geel als **nog in te vullen**.
+- `[ZIE PATHOLOGIE]` verschijnt als **zie pathologie** (nu bij huisbezoek, want
+  daar hangt de dossierkost af van de pathologie).
 
-Zodra het bedrag bekend is, vervang je de tekst `[TE BEVESTIGEN]` door de
-waarde en verhoog je `VERSIE` in `sw.js`.
+Pas je een bedrag aan, verhoog dan `VERSIE` in `sw.js`.
 
 ## Wat er nog bij kan
 
